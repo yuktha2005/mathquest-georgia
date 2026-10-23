@@ -1,0 +1,247 @@
+[
+  {
+    "code": "MGSE5.NBT.3",
+    "topic": "decimals",
+    "grade": 5,
+    "title": "Grade 5 Decimals - MGSE5.NBT.3",
+    "description": "Read, write, and compare decimals to the thousandths place using base-ten numerals, number names, and expanded form.",
+    "summary": "Understand that each place value to the right of the decimal point represents a tenth, hundredth, or thousandth of a unit. Compare decimals by lining up digits by place value from left to right.",
+    "key_concepts": [
+      "tenths",
+      "hundredths",
+      "thousandths",
+      "place value",
+      "inequality symbols (<",
+      ">",
+      "=)."
+    ]
+  },
+  {
+    "code": "MGSE5.NBT.7",
+    "topic": "decimals",
+    "grade": 5,
+    "title": "Grade 5 Decimals - MGSE5.NBT.7",
+    "description": "Add, subtract, multiply, and divide decimals to hundredths using concrete models or drawings and strategies based on place value and properties of operations. ## Grade 6",
+    "summary": "When adding and subtracting decimals, strictly align the decimal points so place values match, and use placeholder zeros where needed. When multiplying, multiply as whole numbers and place the decimal point by counting total decimal places in both factors.",
+    "key_concepts": [
+      "aligning decimal points",
+      "placeholder zeros",
+      "regrouping across the decimal",
+      "multiplying decimal digits."
+    ]
+  },
+  {
+    "code": "MGSE6.NS.3",
+    "topic": "decimals",
+    "grade": 6,
+    "title": "Grade 6 Decimals - MGSE6.NS.3",
+    "description": "Fluently add, subtract, multiply, and divide multi-digit decimals using the standard algorithm for each operation.",
+    "summary": "Perform rapid, accurate calculations with multi-digit decimals in multi-step real-world problems (such as money, measurements, and scientific calculations). In division, shift the divisor's decimal point to make it a whole number and shift the dividend's decimal point the exact same number of places before dividing.",
+    "key_concepts": [
+      "standard long division algorithm with decimals",
+      "shifting decimal point in divisor",
+      "estimating products and quotients."
+    ]
+  },
+  {
+    "code": "MGSE5.NF.1",
+    "topic": "fractions",
+    "grade": 5,
+    "title": "Grade 5 Fractions - MGSE5.NF.1",
+    "description": "Add and subtract fractions and mixed numbers with unlike denominators by finding a common denominator and replacing them with equivalent fractions.",
+    "summary": "When denominators are different, find the least common denominator, convert both fractions so their bottom numbers match, and then add or subtract only the numerators while keeping the denominator identical.",
+    "key_concepts": [
+      "common denominator",
+      "equivalent fractions",
+      "LCD",
+      "simplifying to simplest form."
+    ]
+  },
+  {
+    "code": "MGSE5.NF.4",
+    "topic": "fractions",
+    "grade": 5,
+    "title": "Grade 5 Fractions - MGSE5.NF.4",
+    "description": "Multiply a fraction by a whole number or another fraction.",
+    "summary": "To multiply fractions, multiply the numerators straight across to get the new numerator, and multiply the denominators straight across to get the new denominator.",
+    "key_concepts": [
+      "multiplying straight across",
+      "fraction of a whole",
+      "area model tiling with fractional unit squares."
+    ]
+  },
+  {
+    "code": "MGSE5.NF.7",
+    "topic": "fractions",
+    "grade": 5,
+    "title": "Grade 5 Fractions - MGSE5.NF.7",
+    "description": "Divide unit fractions by whole numbers and divide whole numbers by unit fractions. ## Grade 6",
+    "summary": "Understand division as sharing or grouping. Dividing a unit fraction by a whole number splits a small part into even smaller equal slices; dividing a whole number by a unit fraction counts how many fractional pieces fit inside the whole.",
+    "key_concepts": [
+      "unit fractions (1/b)",
+      "partition into equal shares",
+      "visual fraction models."
+    ]
+  },
+  {
+    "code": "MGSE6.NS.1",
+    "topic": "fractions",
+    "grade": 6,
+    "title": "Grade 6 Fractions - MGSE6.NS.1",
+    "description": "Interpret and compute quotients of fractions divided by fractions, and solve real-world word problems involving fraction division.",
+    "summary": "Divide any fraction by another fraction using the reciprocal of the divisor: Keep the first fraction, Change division to multiplication, and Flip the second fraction (Keep-Change-Flip).",
+    "key_concepts": [
+      "reciprocal",
+      "multiplicative inverse",
+      "Keep-Change-Flip",
+      "visual tape diagrams."
+    ]
+  },
+  {
+    "code": "MGSE6.NS.4",
+    "topic": "fractions",
+    "grade": 6,
+    "title": "Grade 6 Fractions - MGSE6.NS.4",
+    "description": "Find the greatest common factor (GCF) of two numbers up to 100 and the least common multiple (LCM) of two numbers up to 12.",
+    "summary": "Use prime factorization or listing multiples to find common multiples when adding fractions, and greatest common factors when simplifying fractions to lowest terms.",
+    "key_concepts": [
+      "GCF for simplifying fractions",
+      "LCM for least common denominators."
+    ]
+  },
+  {
+    "code": "MGSE5.MD.1",
+    "topic": "geometry",
+    "grade": 5,
+    "title": "Grade 5 Geometry - MGSE5.MD.1",
+    "description": "Convert among different-sized standard measurement units within a given measurement system (metric and customary) and use these conversions in solving multi-step real-world problems.",
+    "summary": "Convert between units such as meters to centimeters or feet to inches. When converting to a smaller unit, multiply by the conversion factor; when converting to a larger unit, divide.",
+    "key_concepts": [
+      "metric conversions",
+      "customary units",
+      "multi-step measurement problems."
+    ]
+  },
+  {
+    "code": "MGSE5.MD.5",
+    "topic": "geometry",
+    "grade": 5,
+    "title": "Grade 5 Geometry - MGSE5.MD.5",
+    "description": "Relate volume to the operations of multiplication and addition and solve real-world problems involving volume of right rectangular prisms. ## Grade 6",
+    "summary": "Understand that volume measures 3D space filled with unit cubes. Calculate volume by multiplying length by width by height (or base area times height). Solve perimeter (P = 2l + 2w) and area (A = l * w) as foundations.",
+    "key_concepts": [
+      "volume of rectangular prisms",
+      "unit cubes",
+      "base area",
+      "perimeter and 2D area formulas."
+    ]
+  },
+  {
+    "code": "MGSE6.G.1",
+    "topic": "geometry",
+    "grade": 6,
+    "title": "Grade 6 Geometry - MGSE6.G.1",
+    "description": "Find the area of right triangles, other triangles, special quadrilaterals, and polygons by composing into rectangles or decomposing into triangles.",
+    "summary": "Any triangle has an area equal to half of a rectangle with the same base and height. Decompose complex polygons into familiar shapes (rectangles and triangles) and sum their areas.",
+    "key_concepts": [
+      "triangle area formula",
+      "base and height",
+      "composing and decomposing polygons."
+    ]
+  },
+  {
+    "code": "MGSE6.G.2",
+    "topic": "geometry",
+    "grade": 6,
+    "title": "Grade 6 Geometry - MGSE6.G.2",
+    "description": "Find the volume of a right rectangular prism with fractional edge lengths by packing it with unit cubes of appropriate unit fraction edge lengths.",
+    "summary": "Apply the volume formula V = l * w * h to rectangular prisms even when dimensions are fractions or mixed numbers, showing that the formula holds identically.",
+    "key_concepts": [
+      "fractional side lengths",
+      "prism volume",
+      "cubic units."
+    ]
+  },
+  {
+    "code": "MGSE6.G.4",
+    "topic": "geometry",
+    "grade": 6,
+    "title": "Grade 6 Geometry - MGSE6.G.4",
+    "description": "Represent three-dimensional figures using nets made up of rectangles and triangles, and use the nets to find the surface area of these figures.",
+    "summary": "Unfold 3D prisms and pyramids into 2D flat nets, find the area of each individual rectangular or triangular face, and add them all together to find total surface area.",
+    "key_concepts": [
+      "nets",
+      "3D polyhedra",
+      "surface area summation."
+    ]
+  },
+  {
+    "code": "MGSE5.OA.3",
+    "topic": "ratios",
+    "grade": 5,
+    "title": "Grade 5 Ratios - MGSE5.OA.3",
+    "description": "Generate two numerical patterns using two given rules, identify relationships between corresponding terms, and graph ordered pairs on a coordinate plane.",
+    "summary": "Lay the foundational groundwork for ratios and tables of equivalent pairs by creating sequences of numbers governed by rules (e.g., add 3, add 6) and observing constant relationships between them.",
+    "key_concepts": [
+      "numerical patterns",
+      "corresponding terms",
+      "proportional tables",
+      "coordinate graphing."
+    ]
+  },
+  {
+    "code": "MGSE5.NF.5",
+    "topic": "ratios",
+    "grade": 5,
+    "title": "Grade 5 Ratios - MGSE5.NF.5",
+    "description": "Interpret multiplication as scaling (resizing), comparing the size of a product to the size of one factor without performing arithmetic. ## Grade 6",
+    "summary": "Understand that multiplying by a fraction greater than 1 increases quantity, while multiplying by a fraction less than 1 decreases quantity. This is the direct conceptual precursor to ratio scaling and scale factors.",
+    "key_concepts": [
+      "scaling up",
+      "scaling down",
+      "scale factor",
+      "multiplier comparison."
+    ]
+  },
+  {
+    "code": "MGSE6.RP.1",
+    "topic": "ratios",
+    "grade": 6,
+    "title": "Grade 6 Ratios - MGSE6.RP.1",
+    "description": "Understand the concept of a ratio and use ratio language to describe a multiplicative comparison between two quantities.",
+    "summary": "A ratio compares two quantities (part-to-part or part-to-whole). Ratios can be expressed with words (\"3 to 2\"), a colon (\"3:2\"), or as a fraction (\"3/2\").",
+    "key_concepts": [
+      "ratio comparison",
+      "part-to-part",
+      "part-to-whole",
+      "ratio notation."
+    ]
+  },
+  {
+    "code": "MGSE6.RP.2",
+    "topic": "ratios",
+    "grade": 6,
+    "title": "Grade 6 Ratios - MGSE6.RP.2",
+    "description": "Understand the concept of a unit rate a/b associated with a ratio a:b with b != 0, and use rate language in real-world contexts.",
+    "summary": "A unit rate describes how much of one quantity corresponds to 1 unit of another quantity (e.g., miles per hour, price per ounce, heartbeats per minute).",
+    "key_concepts": [
+      "unit rate",
+      "per unit",
+      "dividing numerator by denominator."
+    ]
+  },
+  {
+    "code": "MGSE6.RP.3",
+    "topic": "ratios",
+    "grade": 6,
+    "title": "Grade 6 Ratios - MGSE6.RP.3",
+    "description": "Use ratio and rate reasoning to solve real-world and mathematical problems using tables of equivalent ratios, tape diagrams, double number line diagrams, or cross-multiplication equations.",
+    "summary": "Find unknown quantities in proportions by creating equivalent ratio tables, finding the scale factor between rows, and solving unit pricing and speed problems.",
+    "key_concepts": [
+      "equivalent ratios",
+      "cross multiplication",
+      "tape diagrams",
+      "unit price comparison."
+    ]
+  }
+]
