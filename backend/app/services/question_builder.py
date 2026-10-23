@@ -43,6 +43,33 @@ PROMPTS_DIR = Path(__file__).resolve().parent.parent.parent / "eval" / "prompts"
 PROMPT_V1_PATH = PROMPTS_DIR / "v1.txt"
 FALLBACK_BANK_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "fallback_bank.json"
 
+_QUESTION_CACHE: dict[str, Question] = {}
+
+
+def register_question(question: Question) -> Question:
+    """Store question in memory cache for submission retrieval."""
+    _QUESTION_CACHE[question.id] = question
+    return question
+
+
+def get_question_by_id(question_id: str) -> Question | None:
+    """Retrieve question by ID from active memory cache or fallback bank."""
+    if question_id in _QUESTION_CACHE:
+        return _QUESTION_CACHE[question_id]
+
+    try:
+        bank = load_fallback_bank()
+        for item in bank:
+            raw_id = item.get("id", "")
+            if raw_id == question_id or (raw_id and question_id.startswith(raw_id)):
+                q = Question.model_validate(item)
+                _QUESTION_CACHE[question_id] = q
+                return q
+    except Exception as exc:
+        logger.warning("Failed to lookup question by id '%s': %s", question_id, exc)
+
+    return None
+
 
 def load_prompt_template() -> str:
     """Load system prompt template from file."""
@@ -57,6 +84,7 @@ def load_fallback_bank() -> list[dict]:
         raise FileNotFoundError(f"Fallback bank not found at {FALLBACK_BANK_PATH}")
     with open(FALLBACK_BANK_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 
 def get_fallback_question(
@@ -85,7 +113,8 @@ def get_fallback_question(
 
     # Assign a unique session ID while retaining question integrity
     chosen_dict["id"] = f"{chosen_dict['id']}-{uuid.uuid4().hex[:6]}"
-    return Question.model_validate(chosen_dict)
+    q = Question.model_validate(chosen_dict)
+    return register_question(q)
 
 
 def _generate_distractors_for_template(
@@ -227,11 +256,17 @@ def build_question_pipeline(
     """
     start_time = time.perf_counter()
     tier_obj = tier if isinstance(tier, Tier) else Tier(str(tier).lower())
+    from app.services.rag import format_standards_for_prompt, retrieve_standards
+
     prompt_template = load_prompt_template()
+    standards = retrieve_standards(query=topic, topic=topic, grade=grade, limit=2)
+    standards_ctx = format_standards_for_prompt(standards)
+
     base_prompt = prompt_template.format(
         grade=grade,
         topic=topic,
         tier=tier_obj.value,
+        standards_context=standards_ctx,
     )
 
     current_prompt = base_prompt
@@ -333,6 +368,7 @@ def build_question_pipeline(
             explanation=explanation,
             standard_code=template.standard_code,
         )
+        register_question(question)
         elapsed_ms = (time.perf_counter() - start_time) * 1000
         return question, retries, elapsed_ms, False
 
