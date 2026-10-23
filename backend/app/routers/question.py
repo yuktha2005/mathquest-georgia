@@ -1,8 +1,16 @@
 """Question generation endpoints."""
 
 import logging
-from fastapi import APIRouter
-from app.schemas import BatchQuestionResponse, Question, QuestionRequest
+from fastapi import APIRouter, Request
+from app.limiter import limiter
+from app.schemas import (
+    AnswerResult,
+    AnswerSubmission,
+    BatchQuestionResponse,
+    Question,
+    QuestionRequest,
+)
+from app.services.adaptive import evaluate_submission
 from app.services.question_builder import (
     build_question_pipeline,
     build_questions_batch,
@@ -15,37 +23,38 @@ router = APIRouter(tags=["question"])
 
 @router.post("/api/question")
 @router.post("/question")
-def create_question(request: QuestionRequest) -> Question | BatchQuestionResponse:
+@limiter.limit("60/minute")
+def create_question(request: Request, payload: QuestionRequest) -> Question | BatchQuestionResponse:
     """Generate a single verified question or a batch of questions (e.g. 10 for a round).
 
     Applies strict math verification, repair retries, and fallback safety per question.
     """
-    if request.count > 1:
+    if payload.count > 1:
         questions, total_retries, latency_ms = build_questions_batch(
-            grade=request.grade,
-            topic=request.topic,
-            tier=request.tier,
-            count=request.count,
+            grade=payload.grade,
+            topic=payload.topic,
+            tier=payload.tier,
+            count=payload.count,
         )
         logger.info(
             "POST /api/question (batch %d) completed in %.2fms | total retries: %d | topic: %s | tier: %s",
             len(questions),
             latency_ms,
             total_retries,
-            request.topic,
-            request.tier.value,
+            payload.topic,
+            payload.tier.value,
         )
         return BatchQuestionResponse(
             questions=questions,
             count=len(questions),
-            topic=request.topic,
-            tier=request.tier,
+            topic=payload.topic,
+            tier=payload.tier,
         )
 
     question, retries, latency_ms, used_fallback = build_question_pipeline(
-        grade=request.grade,
-        topic=request.topic,
-        tier=request.tier,
+        grade=payload.grade,
+        topic=payload.topic,
+        tier=payload.tier,
     )
 
     logger.info(
@@ -53,8 +62,8 @@ def create_question(request: QuestionRequest) -> Question | BatchQuestionRespons
         latency_ms,
         retries,
         used_fallback,
-        request.topic,
-        request.tier.value,
+        payload.topic,
+        payload.tier.value,
         question.id,
     )
 
@@ -62,13 +71,14 @@ def create_question(request: QuestionRequest) -> Question | BatchQuestionRespons
 
 
 @router.post("/api/question/batch", response_model=BatchQuestionResponse)
-def create_question_batch(request: QuestionRequest) -> BatchQuestionResponse:
+@limiter.limit("20/minute")
+def create_question_batch(request: Request, payload: QuestionRequest) -> BatchQuestionResponse:
     """Explicit batch endpoint generating up to 10 questions for a game round or prefetching."""
-    count = max(1, min(request.count if request.count > 1 else 10, 10))
+    count = max(1, min(payload.count if payload.count > 1 else 10, 10))
     questions, total_retries, latency_ms = build_questions_batch(
-        grade=request.grade,
-        topic=request.topic,
-        tier=request.tier,
+        grade=payload.grade,
+        topic=payload.topic,
+        tier=payload.tier,
         count=count,
     )
     logger.info(
@@ -80,6 +90,29 @@ def create_question_batch(request: QuestionRequest) -> BatchQuestionResponse:
     return BatchQuestionResponse(
         questions=questions,
         count=len(questions),
-        topic=request.topic,
-        tier=request.tier,
+        topic=payload.topic,
+        tier=payload.tier,
     )
+
+
+@router.post("/api/answer", response_model=AnswerResult)
+@router.post("/answer", response_model=AnswerResult)
+@router.post("/api/question/answer", response_model=AnswerResult)
+@limiter.limit("120/minute")
+def submit_answer(request: Request, submission: AnswerSubmission) -> AnswerResult:
+    """Evaluate a student's answer submission.
+
+    Returns correctness, correct answer, explanation, misconception feedback,
+    awarded points, next difficulty tier, updated mastery score, and newly unlocked badges.
+    """
+    result = evaluate_submission(submission)
+    logger.info(
+        "POST /api/answer: q_id=%s | correct=%s | points=%d | next_tier=%s | mastery=%.1f | badges=%s",
+        submission.question_id,
+        result.is_correct,
+        result.points,
+        result.next_tier.value,
+        result.new_mastery,
+        result.new_badges,
+    )
+    return result
