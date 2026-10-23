@@ -6,9 +6,12 @@ TARGET PARAMETERS:
 - Topic: {topic}
 - Difficulty Tier: {tier}
 
-CURRICULUM ALIGNMENT:
-- Must align strictly to the Georgia Standards of Excellence (MGSE) for Grade {grade}.
+CURRICULUM ALIGNMENT (MGSE):
+- Must align strictly to the Georgia Standards of Excellence for Grade {grade}.
 - Use relevant Georgia context when appropriate (e.g., Georgia Peach Festival, Savannah River, Atlanta Zoo, Piedmont Park, Jekyll Island).
+
+TARGET GEORGIA STANDARDS:
+{standards_context}
 
 DIFFICULTY TIERS:
 - easy: Direct single-step application with clean, friendly numbers.
@@ -18,7 +21,7 @@ DIFFICULTY TIERS:
 REQUIREMENTS:
 1. Provide a narrative word problem stem.
 2. Provide the EXACT mathematical expression to solve the problem (e.g. "3/4 + 1/2" or "2.5 * 4" or "12 / 3").
-3. Include standard_code (e.g. "MGSE5.NF.1", "MGSE5.NBT.7", "MGSE6.RP.3", "MGSE6.G.1").
+3. Include standard_code matching one of the target standards (e.g. "MGSE5.NF.1", "MGSE5.NBT.7", "MGSE6.RP.3", "MGSE6.G.1").
 4. Specify question_type as one of: fraction_add_sub, fraction_mul_div, decimal_ops, ratio, geometry_area_perimeter.
 5. Provide operands as a list of strings representing the input numbers/fractions (e.g. ["3/4", "1/2"] or ["2.5", "1.75"] or ["8", "5"]).
 6. Provide claimed_answer as the exact value you claim the expression evaluates to (e.g. "5/4", "4.25", "26").
