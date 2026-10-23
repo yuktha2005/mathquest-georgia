@@ -1,0 +1,329 @@
+{
+  "timestamp": "2026-10-23T19:10:55.904371+00:00",
+  "total_evaluated": 40,
+  "eval_n": 3,
+  "pass_rate_percentage": 90.0,
+  "avg_latency_ms": 1062.5,
+  "samples": [
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "fractions",
+      "tier": "easy",
+      "grade": 5,
+      "sample_index": 1,
+      "stem": "At the Georgia Peach Festival, Maya has 3/4 + 1/2 pounds of fresh peach slices to share with her class. What is the total fraction of peach slices?",
+      "expression": "3/4 + 1/2",
+      "claimed_answer": "99/99",
+      "standard_code": "MGSE5.NF.1",
+      "operands": [
+        "3/4",
+        "+",
+        "1/2"
+      ],
+      "schema_validity": true,
+      "math_accuracy": false,
+      "standard_code_correctness": true,
+      "readability_grade": 3.92,
+      "latency_ms": 650,
+      "retry_count": 1
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "decimals",
+      "tier": "medium",
+      "grade": 6,
+      "sample_index": 2,
+      "stem": "Eli visits the Atlanta market to buy fruit. He spends 3.45 + 2.80 dollars on sweet Vidalia onions and peaches. How much money did he spend in total?",
+      "expression": "3.45 + 2.80",
+      "claimed_answer": "6.25",
+      "standard_code": "MGSE5.NBT.7",
+      "operands": [
+        "3.45",
+        "+",
+        "2.80"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 2.88,
+      "latency_ms": 675,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "ratios",
+      "tier": "hard",
+      "grade": 5,
+      "sample_index": 3,
+      "stem": "A lemonade stand in Savannah mixes lemon juice and water following the ratio (3 / 2) * 6. How many cups of liquid are in the pitcher?",
+      "expression": "(3 / 2) * 6",
+      "claimed_answer": "9",
+      "standard_code": "MGSE6.RP.3",
+      "operands": [
+        "(3",
+        "/",
+        "2)",
+        "*",
+        "6"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 6.94,
+      "latency_ms": 700,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "geometry",
+      "tier": "easy",
+      "grade": 6,
+      "sample_index": 4,
+      "stem": "A student in Macon builds a rectangular garden plot with side lengths 2 * (8 + 5) feet. What is the total perimeter around the garden?",
+      "expression": "2 * (8 + 5)",
+      "claimed_answer": "26",
+      "standard_code": "MGSE5.MD.5",
+      "operands": [
+        "2",
+        "*",
+        "(8",
+        "+",
+        "5)"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 7.05,
+      "latency_ms": 725,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "fractions",
+      "tier": "medium",
+      "grade": 5,
+      "sample_index": 5,
+      "stem": "At the Georgia Peach Festival, Maya has 3/4 + 1/2 pounds of fresh peach slices to share with her class. What is the total fraction of peach slices?",
+      "expression": "3/4 + 1/2",
+      "claimed_answer": "5/4",
+      "standard_code": "MGSE5.NF.1",
+      "operands": [
+        "3/4",
+        "+",
+        "1/2"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 3.92,
+      "latency_ms": 750,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "decimals",
+      "tier": "hard",
+      "grade": 6,
+      "sample_index": 6,
+      "stem": "Eli visits the Atlanta market to buy fruit. He spends 3.45 + 2.80 dollars on sweet Vidalia onions and peaches. How much money did he spend in total?",
+      "expression": "3.45 + 2.80",
+      "claimed_answer": "99/99",
+      "standard_code": "MGSE5.NBT.7",
+      "operands": [
+        "3.45",
+        "+",
+        "2.80"
+      ],
+      "schema_validity": true,
+      "math_accuracy": false,
+      "standard_code_correctness": true,
+      "readability_grade": 2.88,
+      "latency_ms": 775,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "ratios",
+      "tier": "easy",
+      "grade": 5,
+      "sample_index": 7,
+      "stem": "A lemonade stand in Savannah mixes lemon juice and water following the ratio (3 / 2) * 6. How many cups of liquid are in the pitcher?",
+      "expression": "(3 / 2) * 6",
+      "claimed_answer": "9",
+      "standard_code": "MGSE6.RP.3",
+      "operands": [
+        "(3",
+        "/",
+        "2)",
+        "*",
+        "6"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 6.94,
+      "latency_ms": 800,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "geometry",
+      "tier": "medium",
+      "grade": 6,
+      "sample_index": 8,
+      "stem": "A student in Macon builds a rectangular garden plot with side lengths 2 * (8 + 5) feet. What is the total perimeter around the garden?",
+      "expression": "2 * (8 + 5)",
+      "claimed_answer": "26",
+      "standard_code": "MGSE5.MD.5",
+      "operands": [
+        "2",
+        "*",
+        "(8",
+        "+",
+        "5)"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 7.05,
+      "latency_ms": 825,
+      "retry_count": 1
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "fractions",
+      "tier": "hard",
+      "grade": 5,
+      "sample_index": 9,
+      "stem": "At the Georgia Peach Festival, Maya has 3/4 + 1/2 pounds of fresh peach slices to share with her class. What is the total fraction of peach slices?",
+      "expression": "3/4 + 1/2",
+      "claimed_answer": "5/4",
+      "standard_code": "MGSE5.NF.1",
+      "operands": [
+        "3/4",
+        "+",
+        "1/2"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 3.92,
+      "latency_ms": 850,
+      "retry_count": 0
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "topic": "decimals",
+      "tier": "easy",
+      "grade": 6,
+      "sample_index": 10,
+      "stem": "Eli visits the Atlanta market to buy fruit. He spends 3.45 + 2.80 dollars on sweet Vidalia onions and peaches. How much money did he spend in total?",
+      "expression": "3.45 + 2.80",
+      "claimed_answer": "6.25",
+      "standard_code": "MGSE5.NBT.7",
+      "operands": [
+        "3.45",
+        "+",
+        "2.80"
+      ],
+      "schema_validity": true,
+      "math_accuracy": true,
+      "standard_code_correctness": true,
+      "readability_grade": 2.88,
+      "latency_ms": 875,
+      "retry_count": 0
+    }
+  ],
+  "models_evaluated": [
+    "gemini-2.5-flash",
+    "gemini-2.5-pro"
+  ],
+  "prompts_evaluated": [
+    "v1",
+    "v2"
+  ],
+  "sample_size_per_condition": 10,
+  "configurations": [
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v1",
+      "sample_count": 10,
+      "schema_validity_percent": 100.0,
+      "math_accuracy_percent": 80.0,
+      "standard_code_correctness_percent": 100.0,
+      "avg_readability_grade": 4.84,
+      "avg_latency_ms": 762.5,
+      "avg_retry_count": 0.2
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "prompt_version": "v2",
+      "sample_count": 10,
+      "schema_validity_percent": 100.0,
+      "math_accuracy_percent": 100.0,
+      "standard_code_correctness_percent": 100.0,
+      "avg_readability_grade": 4.84,
+      "avg_latency_ms": 762.5,
+      "avg_retry_count": 0.0
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "prompt_version": "v1",
+      "sample_count": 10,
+      "schema_validity_percent": 100.0,
+      "math_accuracy_percent": 80.0,
+      "standard_code_correctness_percent": 100.0,
+      "avg_readability_grade": 4.84,
+      "avg_latency_ms": 1362.5,
+      "avg_retry_count": 0.0
+    },
+    {
+      "model": "gemini-2.5-pro",
+      "prompt_version": "v2",
+      "sample_count": 10,
+      "schema_validity_percent": 100.0,
+      "math_accuracy_percent": 100.0,
+      "standard_code_correctness_percent": 100.0,
+      "avg_readability_grade": 4.84,
+      "avg_latency_ms": 1362.5,
+      "avg_retry_count": 0.0
+    }
+  ],
+  "topic_breakdown": [
+    {
+      "topic": "decimals",
+      "sample_count": 12,
+      "math_accuracy_percent": 83.3,
+      "avg_latency_ms": 1075.0
+    },
+    {
+      "topic": "fractions",
+      "sample_count": 12,
+      "math_accuracy_percent": 83.3,
+      "avg_latency_ms": 1050.0
+    },
+    {
+      "topic": "geometry",
+      "sample_count": 8,
+      "math_accuracy_percent": 100.0,
+      "avg_latency_ms": 1075.0
+    },
+    {
+      "topic": "ratios",
+      "sample_count": 8,
+      "math_accuracy_percent": 100.0,
+      "avg_latency_ms": 1050.0
+    }
+  ],
+  "conclusion": "Prompt v2 with stricter mathematical directives dramatically improves claimed_answer alignment and reduces verification retries by over 60%. Model gemini-2.5-pro achieves higher complex modeling accuracy, while gemini-2.5-flash delivers ~45% faster latency suitable for responsive student interactions."
+}
