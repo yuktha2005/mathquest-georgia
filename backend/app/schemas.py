@@ -7,8 +7,8 @@ LLM question generation templates, and student answer evaluation.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Annotated
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from typing import Annotated, Any
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class Tier(str, Enum):
@@ -17,6 +17,15 @@ class Tier(str, Enum):
     EASY = "easy"
     MEDIUM = "medium"
     HARD = "hard"
+
+
+class MathTopic(str, Enum):
+    """Curriculum math domain topics aligned with Georgia Standards of Excellence (MGSE)."""
+
+    FRACTIONS = "fractions"
+    DECIMALS = "decimals"
+    RATIOS = "ratios"
+    GEOMETRY = "geometry"
 
 
 class Option(BaseModel):
@@ -123,23 +132,35 @@ class QuestionTemplate(BaseModel):
 class AnswerSubmission(BaseModel):
     """Payload submitted by the frontend when a student selects an answer."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
-    question_id: Annotated[str, Field(description="ID of the question being answered")]
-    selected_option_id: Annotated[str, Field(description="ID of the option chosen by the student")]
+    question_id: Annotated[str, Field(min_length=1, max_length=100, description="ID of the question being answered")]
+    selected_option_id: Annotated[str, Field(min_length=1, max_length=10, description="ID of the option chosen by the student")]
     time_taken_seconds: Annotated[
         float | None,
-        Field(default=None, ge=0, description="Optional time spent answering in seconds"),
+        Field(default=None, ge=0.0, le=3600.0, description="Optional time spent answering in seconds"),
     ] = None
+    topic: Annotated[str | None, Field(default=None, description="Topic of the question")] = None
+    tier: Annotated[Tier, Field(default=Tier.MEDIUM, description="Current difficulty tier")] = Tier.MEDIUM
+    hints_used: Annotated[int, Field(default=0, ge=0, le=3, description="Number of hints used on this problem (0-3)")] = 0
+    streak: Annotated[int, Field(default=0, ge=0, description="Current consecutive correct answer streak")] = 0
+    history: list[bool] = Field(default_factory=list, description="Recent answer history booleans")
+    current_mastery: Annotated[float, Field(default=50.0, ge=0.0, le=100.0, description="Current topic mastery score (0-100)")] = 50.0
+    session_stats: dict = Field(default_factory=dict, description="Session statistics for badge tracking")
+    correct_option_id: Annotated[str | None, Field(default=None, description="Optional correct option ID override for client-stored questions")] = None
+
+    options: Annotated[list[Option] | None, Field(default=None, description="Optional list of question options")] = None
+    explanation: Annotated[str | None, Field(default=None, description="Optional explanation override")] = None
 
 
 class AnswerResult(BaseModel):
     """Response returned after evaluating a student's answer submission."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
     is_correct: Annotated[bool, Field(description="Whether the submitted answer was correct")]
     correct_option_id: Annotated[str, Field(description="ID of the correct option")]
+    correct_answer: Annotated[str, Field(default="", description="Text representation of the correct answer")] = ""
     explanation: Annotated[str, Field(description="Encouraging step-by-step explanation")]
     misconception_tag: Annotated[
         str | None,
@@ -155,7 +176,14 @@ class AnswerResult(BaseModel):
             description="Child-friendly hint addressing the specific misconception",
         ),
     ] = None
-    xp_earned: Annotated[int, Field(default=0, ge=0, description="Gamified XP points awarded")]
+    points: Annotated[int, Field(default=0, ge=0, description="Gamified points awarded for this problem")] = 0
+    xp_earned: Annotated[int, Field(default=0, ge=0, description="Gamified XP points awarded (alias for points)")] = 0
+    next_tier: Annotated[Tier, Field(default=Tier.MEDIUM, description="Recommended tier for the next question")] = Tier.MEDIUM
+    new_mastery: Annotated[float, Field(default=50.0, ge=0, le=100, description="Updated topic mastery score (0-100)")] = 50.0
+    new_badges: list[str] = Field(default_factory=list, description="Newly unlocked badges")
+    streak: Annotated[int, Field(default=0, ge=0, description="Updated consecutive correct answer streak")] = 0
+
+
 
 
 class QuestionRequest(BaseModel):
@@ -164,9 +192,16 @@ class QuestionRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     grade: Annotated[int, Field(ge=5, le=6, default=5, description="Grade level: 5 or 6")]
-    topic: Annotated[str, Field(default="fractions", description="Topic: fractions, decimals, ratios, geometry")]
+    topic: Annotated[MathTopic, Field(default=MathTopic.FRACTIONS, description="Topic: fractions, decimals, ratios, geometry")]
     tier: Annotated[Tier, Field(default=Tier.MEDIUM, description="Difficulty tier: easy, medium, hard")]
     count: Annotated[int, Field(ge=1, le=10, default=1, description="Number of questions to generate (1 to 10 for a round)")] = 1
+
+    @field_validator("topic", mode="before")
+    @classmethod
+    def normalize_topic(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip().lower()
+        return v
 
 
 class BatchQuestionResponse(BaseModel):
@@ -187,4 +222,127 @@ class HealthResponse(BaseModel):
     status: str = Field(default="ok", description="Health status string")
     app: str = Field(default="MathQuest Georgia API", description="Service name")
     version: str = Field(default="0.1.0", description="API version")
+
+
+class ExplainStyle(str, Enum):
+    """Pedagogical explanation style."""
+
+    DEFAULT = "default"
+    SIMPLER = "simpler"
+    REAL_LIFE = "real_life"
+    STEP_BY_STEP = "step_by_step"
+
+
+class WorkedExample(BaseModel):
+    """Step-by-step worked problem example with mathematically verified answer."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    problem: Annotated[str, Field(description="Word problem or contextual math problem statement")]
+    expression: Annotated[str, Field(description="Mathematical expression to evaluate")]
+    steps: Annotated[list[str], Field(description="Clear, numbered steps leading to the answer")]
+    verified_answer: Annotated[str, Field(description="The verified final answer computed by verify.py")]
+
+
+class ExplainRequest(BaseModel):
+    """Request payload for pedagogical concept explanation."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    grade: Annotated[int, Field(ge=5, le=6, default=5, description="Grade level: 5 or 6")]
+    topic: Annotated[MathTopic, Field(default=MathTopic.FRACTIONS, description="fractions, decimals, ratios, or geometry")]
+    style: Annotated[ExplainStyle, Field(default=ExplainStyle.DEFAULT, description="Explanation style")]
+
+    @field_validator("topic", mode="before")
+    @classmethod
+    def normalize_topic(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip().lower()
+        return v
+
+
+class ExplainResponse(BaseModel):
+    """Structured educational response for topic learning."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    title: Annotated[str, Field(description="Engaging headline for the topic")]
+    intro: Annotated[str, Field(description="Child-friendly introductory concept explanation")]
+    key_ideas: Annotated[list[str], Field(description="Bullet points of crucial conceptual rules")]
+    worked_examples: Annotated[list[WorkedExample], Field(min_length=2, max_length=2, description="Exactly 2 worked examples")]
+    common_mistakes: Annotated[list[str], Field(description="Common pitfalls and misconceptions")]
+    standard_code: Annotated[str, Field(description="Aligned Georgia MGSE code")]
+    standard_snippet: Annotated[str, Field(default="", description="Short snippet of the aligned MGSE standard")]
+    topic: Annotated[str, Field(description="Subject topic")]
+    grade: Annotated[int, Field(description="Target grade")]
+    style: Annotated[ExplainStyle, Field(description="Explanation style requested")]
+    cached: Annotated[bool, Field(default=False, description="Whether returned from cache")]
+
+
+class InfographicResponse(BaseModel):
+    """Topic educational infographic image payload."""
+
+    topic: Annotated[str, Field(description="Topic identifier")]
+    grade: Annotated[int, Field(default=5, description="Grade level")]
+    image_url: Annotated[str, Field(description="Pollinations.ai generated image URL")]
+    url: Annotated[str, Field(description="Direct image URL")]
+    fallback_url: Annotated[str, Field(description="Local SVG fallback image path")]
+    prompt: Annotated[str, Field(description="Prompt used for the image generation")]
+    format: Annotated[str, Field(default="svg", description="Format descriptor")] = "svg"
+    source: Annotated[str, Field(default="cache", description="Source descriptor")] = "cache"
+    local_path: Annotated[str, Field(default="", description="Path to local cached file if available")] = ""
+
+
+class Slide(BaseModel):
+    """Single slide in the educational video script."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    slide_number: Annotated[int, Field(ge=1, le=6, description="Slide sequence number (1 to 6)")]
+    title: Annotated[str, Field(description="Slide headline")]
+    bullets: Annotated[list[str], Field(description="Key bullet points displayed on the slide")]
+    narration: Annotated[str, Field(description="Child-friendly spoken script for speech synthesis")]
+    visual_component: Annotated[
+        str,
+        Field(
+            default="TopicGraphic",
+            description="Name of the visual component: FractionBar, NumberLine, ShapeDiagram, or TopicGraphic",
+        ),
+    ]
+    visual_props: Annotated[
+        dict[str, Any],
+        Field(default_factory=dict, description="Props passed into the visual component"),
+    ]
+    duration_seconds: Annotated[int, Field(default=8, ge=3, le=30, description="Estimated duration in seconds")] = 8
+
+
+class ScriptRequest(BaseModel):
+    """Request payload for topic video script."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    grade: Annotated[int, Field(ge=5, le=6, default=5, description="Grade level: 5 or 6")]
+    topic: Annotated[MathTopic, Field(default=MathTopic.FRACTIONS, description="fractions, decimals, ratios, or geometry")]
+
+    @field_validator("topic", mode="before")
+    @classmethod
+    def normalize_topic(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            return v.strip().lower()
+        return v
+
+
+class ScriptResponse(BaseModel):
+    """6-slide educational video script payload."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    topic: Annotated[str, Field(description="Topic identifier")]
+    grade: Annotated[int, Field(description="Grade level")]
+    title: Annotated[str, Field(description="Overall video presentation title")]
+    standard_code: Annotated[str, Field(description="Georgia MGSE standard code")]
+    slides: Annotated[list[Slide], Field(min_length=6, max_length=6, description="Exactly 6 slide objects")]
+    cached: Annotated[bool, Field(default=False, description="Whether returned from cache")] = False
+
+
 
