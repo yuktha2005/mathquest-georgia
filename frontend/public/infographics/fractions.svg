@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="peach" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+    <linearGradient id="emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" rx="20" fill="url(#bg)"/>
+  <rect x="20" y="20" width="760" height="560" rx="16" fill="none" stroke="#312e81" stroke-width="2"/>
+
+  <!-- Title Banner -->
+  <text x="400" y="70" text-anchor="middle" font-family="'Outfit', sans-serif" font-weight="bold" font-size="28" fill="#f8fafc">
+    🥧 MathQuest: Fractions Mastery Guide
+  </text>
+  <text x="400" y="100" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" fill="#94a3b8">
+    Georgia Standards MGSE5.NF.1 &amp; MGSE6.NS.1
+  </text>
+
+  <!-- Rule 1: Addition & Common Denominators -->
+  <rect x="50" y="130" width="330" height="200" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="70" y="165" font-family="'Outfit', sans-serif" font-weight="bold" font-size="18" fill="#fb923c">
+    1. Adding Fractions
+  </text>
+  <text x="70" y="195" font-family="'Inter', sans-serif" font-size="13" fill="#cbd5e1">
+    Find a Common Denominator!
+  </text>
+  <!-- Visual Fractions -->
+  <rect x="70" y="220" width="60" height="28" rx="4" fill="#fb923c"/>
+  <text x="100" y="239" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="bold" font-size="13" fill="#fff">1/2</text>
+  <text x="145" y="239" font-family="'Inter', sans-serif" font-weight="bold" font-size="18" fill="#94a3b8">+</text>
+  <rect x="170" y="220" width="60" height="28" rx="4" fill="#fb923c"/>
+  <text x="200" y="239" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="bold" font-size="13" fill="#fff">1/4</text>
+  <text x="245" y="239" font-family="'Inter', sans-serif" font-weight="bold" font-size="18" fill="#94a3b8">=</text>
+  <rect x="270" y="220" width="60" height="28" rx="4" fill="#10b981"/>
+  <text x="300" y="239" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="bold" font-size="13" fill="#fff">3/4</text>
+  
+  <text x="70" y="280" font-family="'Inter', sans-serif" font-size="12" fill="#94a3b8">
+    ⚠️ Misconception Alert:
+  </text>
+  <text x="70" y="300" font-family="'Inter', sans-serif" font-size="12" fill="#f87171">
+    Never add denominators: 1/2 + 1/4 ≠ 2/6!
+  </text>
+
+  <!-- Rule 2: Division (Keep Change Flip) -->
+  <rect x="420" y="130" width="330" height="200" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="440" y="165" font-family="'Outfit', sans-serif" font-weight="bold" font-size="18" fill="#38bdf8">
+    2. Dividing Fractions
+  </text>
+  <text x="440" y="195" font-family="'Inter', sans-serif" font-weight="bold" font-size="14" fill="#38bdf8">
+    Keep • Change • Flip
+  </text>
+  <text x="440" y="225" font-family="'Inter', sans-serif" font-size="13" fill="#cbd5e1">
+    • KEEP the 1st fraction: 3/4
+  </text>
+  <text x="440" y="250" font-family="'Inter', sans-serif" font-size="13" fill="#cbd5e1">
+    • CHANGE ÷ to multiplication: ×
+  </text>
+  <text x="440" y="275" font-family="'Inter', sans-serif" font-size="13" fill="#cbd5e1">
+    • FLIP the 2nd fraction: 1/8 → 8/1
+  </text>
+  <text x="440" y="305" font-family="'Inter', sans-serif" font-weight="bold" font-size="13" fill="#34d399">
+    Result: 3/4 × 8/1 = 24/4 = 6
+  </text>
+
+  <!-- Rule 3: Simplification -->
+  <rect x="50" y="360" width="700" height="180" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="400" font-family="'Outfit', sans-serif" font-weight="bold" font-size="18" fill="#a78bfa">
+    3. Simplifying &amp; Mixed Numbers
+  </text>
+  <text x="80" y="430" font-family="'Inter', sans-serif" font-size="13" fill="#cbd5e1">
+    Divide numerator and denominator by their Greatest Common Factor (GCF): 6/8 ÷ 2/2 = 3/4.
+  </text>
+  <text x="80" y="460" font-family="'Inter', sans-serif" font-size="13" fill="#cbd5e1">
+    Improper Fraction to Mixed Number: 7/3 → 7 ÷ 3 = 2 with remainder 1 → 2 1/3.
+  </text>
+  <text x="80" y="505" font-family="'Inter', sans-serif" font-style="italic" font-size="13" fill="#fb923c">
+    🌟 MathQuest Pro Tip: Always write your final quest answers in lowest terms!
+  </text>
+</svg>
