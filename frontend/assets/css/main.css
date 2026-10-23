@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Fredoka', 'Outfit', sans-serif;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: #f8fafc;
+    color: #1e293b;
+    min-height: 100vh;
+  }
+
+  /* Accessible focus indicators */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #6366f1 !important;
+  }
+}
+
+/* Dyslexia-Friendly Mode with Enhanced Spacing & Legibility */
+html.dyslexia-font,
+.dyslexia-font,
+.dyslexia-font body,
+.dyslexia-font button,
+.dyslexia-font input,
+.dyslexia-font h1,
+.dyslexia-font h2,
+.dyslexia-font h3,
+.dyslexia-font p,
+.dyslexia-font span {
+  font-family: 'Lexend', sans-serif !important;
+  letter-spacing: 0.04em !important;
+  word-spacing: 0.08em !important;
+  line-height: 1.75 !important;
+}
+
+@layer components {
+  /* Tactile Gamified Buttons with 3D press effect & high contrast */
+  .btn-game {
+    @apply inline-flex items-center justify-center font-bold select-none cursor-pointer text-center rounded-2xl transition-all duration-150 active:translate-y-1 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-offset-2;
+  }
+
+  .btn-game-blue {
+    @apply btn-game bg-blue-600 hover:bg-blue-700 text-white shadow-game-blue focus-visible:ring-blue-400;
+  }
+
+  .btn-game-green {
+    @apply btn-game bg-emerald-600 hover:bg-emerald-700 text-white shadow-game-green focus-visible:ring-emerald-400;
+  }
+
+  .btn-game-purple {
+    @apply btn-game bg-purple-600 hover:bg-purple-700 text-white shadow-game-purple focus-visible:ring-purple-400;
+  }
+
+  .btn-game-amber {
+    @apply btn-game bg-amber-500 hover:bg-amber-600 text-slate-900 shadow-game-amber focus-visible:ring-amber-400;
+  }
+
+  .btn-game-rose {
+    @apply btn-game bg-rose-600 hover:bg-rose-700 text-white shadow-game-rose focus-visible:ring-rose-400;
+  }
+
+  .btn-game-white {
+    @apply btn-game bg-white hover:bg-slate-50 text-slate-900 shadow-game border-2 border-slate-300 focus-visible:ring-slate-400;
+  }
+
+  /* Playful Rounded Game Cards */
+  .card-game {
+    @apply bg-white rounded-3xl p-4 sm:p-6 shadow-game border-2 border-slate-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-game-lg;
+  }
+
+  .badge-game {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase;
+  }
+}
