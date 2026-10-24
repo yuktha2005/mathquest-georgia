@@ -1,0 +1,2042 @@
+[
+  {
+    "id": "fallback-g5-fractions-easy-1",
+    "topic": "fractions",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "Maya painted 1/5 of a mural in the morning and 2/5 in the afternoon. What fraction of the mural did she paint in all?",
+    "expression": "1/5 + 2/5",
+    "options": [
+      {
+        "id": "A",
+        "text": "3/5",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "3/10",
+        "misconception_tag": "added_denominators"
+      },
+      {
+        "id": "C",
+        "text": "2/5",
+        "misconception_tag": "no_common_denominator"
+      },
+      {
+        "id": "D",
+        "text": "6/10",
+        "misconception_tag": "forgot_to_simplify"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Add the numerators 1 + 2 = 3 over the common denominator 5 to get 3/5.",
+    "standard_code": "MGSE5.NF.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-fractions-easy-2",
+    "topic": "fractions",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "Caleb had 5/8 yard of ribbon and used 2/8 yard to wrap a present. How much ribbon does he have left?",
+    "expression": "5/8 - 2/8",
+    "options": [
+      {
+        "id": "A",
+        "text": "7/8",
+        "misconception_tag": "wrong_operation"
+      },
+      {
+        "id": "B",
+        "text": "3/8",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "3/16",
+        "misconception_tag": "added_denominators"
+      },
+      {
+        "id": "D",
+        "text": "6/16",
+        "misconception_tag": "forgot_to_simplify"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Subtract the numerators 5 - 2 = 3 while keeping denominator 8 to get 3/8 yard.",
+    "standard_code": "MGSE5.NF.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-fractions-medium-1",
+    "topic": "fractions",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "Leo needs 1/2 cup of sugar for a peach cobbler and 1/3 cup for tea. How much sugar does he need in total?",
+    "expression": "1/2 + 1/3",
+    "options": [
+      {
+        "id": "A",
+        "text": "2/5",
+        "misconception_tag": "added_denominators"
+      },
+      {
+        "id": "B",
+        "text": "2/3",
+        "misconception_tag": "no_common_denominator"
+      },
+      {
+        "id": "C",
+        "text": "5/6",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "1/6",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Common denominator is 6. 3/6 + 2/6 = 5/6 cup of sugar.",
+    "standard_code": "MGSE5.NF.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-fractions-medium-2",
+    "topic": "fractions",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "Ava had 3/4 pound of Georgia pecans and used 1/3 pound in pie. How many pounds remain?",
+    "expression": "3/4 - 1/3",
+    "options": [
+      {
+        "id": "A",
+        "text": "5/12",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "2/1",
+        "misconception_tag": "added_denominators"
+      },
+      {
+        "id": "C",
+        "text": "2/4",
+        "misconception_tag": "no_common_denominator"
+      },
+      {
+        "id": "D",
+        "text": "10/24",
+        "misconception_tag": "forgot_to_simplify"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Find common denominator 12: 9/12 - 4/12 = 5/12 pound.",
+    "standard_code": "MGSE5.NF.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-fractions-hard-1",
+    "topic": "fractions",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A gardener mixed 2 1/2 bags of potting soil with 1 1/4 bags of compost. How many bags of mixture does he have?",
+    "expression": "2 1/2 + 1 1/4",
+    "options": [
+      {
+        "id": "A",
+        "text": "3 3/4",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "3 2/6",
+        "misconception_tag": "added_denominators"
+      },
+      {
+        "id": "C",
+        "text": "3 1/4",
+        "misconception_tag": "no_common_denominator"
+      },
+      {
+        "id": "D",
+        "text": "1 1/4",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "2 1/2 is 2 2/4. 2 2/4 + 1 1/4 = 3 3/4 bags.",
+    "standard_code": "MGSE5.NF.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-fractions-hard-2",
+    "topic": "fractions",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "Sam had 3 1/3 gallons of lemonade and sold 1 1/2 gallons. How much lemonade is left?",
+    "expression": "3 1/3 - 1 1/2",
+    "options": [
+      {
+        "id": "A",
+        "text": "2 1/6",
+        "misconception_tag": "no_common_denominator"
+      },
+      {
+        "id": "B",
+        "text": "1 5/6",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "2 0/1",
+        "misconception_tag": "added_denominators"
+      },
+      {
+        "id": "D",
+        "text": "4 5/6",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Convert to common denominator 6: 3 2/6 - 1 3/6 = 2 8/6 - 1 3/6 = 1 5/6 gallons.",
+    "standard_code": "MGSE5.NF.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-decimals-easy-1",
+    "topic": "decimals",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "Elena bought a peach for $1.25 and an apple for $0.50. How much did she spend in total?",
+    "expression": "1.25 + 0.50",
+    "options": [
+      {
+        "id": "A",
+        "text": "1.75",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "1.3",
+        "misconception_tag": "misaligned_decimal_point"
+      },
+      {
+        "id": "C",
+        "text": "1.255",
+        "misconception_tag": "dropped_trailing_zero"
+      },
+      {
+        "id": "D",
+        "text": "0.75",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Line up decimal points: 1.25 + 0.50 = 1.75 dollars.",
+    "standard_code": "MGSE5.NBT.7",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-decimals-easy-2",
+    "topic": "decimals",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "A seedling grew from 4.8 inches to 6.9 inches. How many inches did it grow?",
+    "expression": "6.9 - 4.8",
+    "options": [
+      {
+        "id": "A",
+        "text": "2.9",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "B",
+        "text": "11.7",
+        "misconception_tag": "wrong_operation"
+      },
+      {
+        "id": "C",
+        "text": "2.1",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "0.21",
+        "misconception_tag": "decimal_place_shift"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Subtract tenths: 9 - 8 = 1. Subtract whole: 6 - 4 = 2. Growth is 2.1 inches.",
+    "standard_code": "MGSE5.NBT.7",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-decimals-medium-1",
+    "topic": "decimals",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "Noah walks 3.4 miles along a park path and then 2.85 miles along the river. How far does he walk in all?",
+    "expression": "3.4 + 2.85",
+    "options": [
+      {
+        "id": "A",
+        "text": "5.89",
+        "misconception_tag": "misaligned_decimal_point"
+      },
+      {
+        "id": "B",
+        "text": "6.25",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "5.125",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "D",
+        "text": "0.55",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Write 3.4 as 3.40 and add 2.85 to get 6.25 miles.",
+    "standard_code": "MGSE5.NBT.7",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-decimals-medium-2",
+    "topic": "decimals",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "A beverage container holds 5.0 liters. After lunch, 2.35 liters were served. How many liters remain?",
+    "expression": "5.0 - 2.35",
+    "options": [
+      {
+        "id": "A",
+        "text": "3.35",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "B",
+        "text": "2.75",
+        "misconception_tag": "dropped_trailing_zero"
+      },
+      {
+        "id": "C",
+        "text": "7.35",
+        "misconception_tag": "wrong_operation"
+      },
+      {
+        "id": "D",
+        "text": "2.65",
+        "misconception_tag": null
+      }
+    ],
+    "correct_option_id": "D",
+    "explanation": "Pad with zero: 5.00 - 2.35 = 2.65 liters.",
+    "standard_code": "MGSE5.NBT.7",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-decimals-hard-1",
+    "topic": "decimals",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A craft shop sells rolls of lace for $12.50 each. How much will 3 rolls cost?",
+    "expression": "12.50 * 3",
+    "options": [
+      {
+        "id": "A",
+        "text": "37.5",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "36.5",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "C",
+        "text": "375",
+        "misconception_tag": "misaligned_decimal_point"
+      },
+      {
+        "id": "D",
+        "text": "15.5",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "12 * 3 = 36 and 0.50 * 3 = 1.50. Total is $37.50.",
+    "standard_code": "MGSE5.NBT.7",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-decimals-hard-2",
+    "topic": "decimals",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A length of decorative wood measuring 15.75 feet is cut into 3 equal pieces. How long is each piece in feet?",
+    "expression": "15.75 / 3",
+    "options": [
+      {
+        "id": "A",
+        "text": "5.25",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "5.15",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "C",
+        "text": "52.5",
+        "misconception_tag": "decimal_place_shift"
+      },
+      {
+        "id": "D",
+        "text": "12.75",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Divide 15.75 by 3 to get 5.25 feet per piece.",
+    "standard_code": "MGSE5.NBT.7",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-ratios-easy-1",
+    "topic": "ratios",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "A juice blend has 1 cup of cranberry juice for every 2 cups of apple juice. How many cups of apple juice are needed for 3 cups of cranberry?",
+    "expression": "2 * 3",
+    "options": [
+      {
+        "id": "A",
+        "text": "5",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "6",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "4",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "8",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Scale factor is 3. Multiply 2 cups by 3 to get 6 cups of apple juice.",
+    "standard_code": "MGSE5.OA.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-ratios-easy-2",
+    "topic": "ratios",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "For every 1 table, there are 3 chairs. How many chairs are needed for 4 tables?",
+    "expression": "3 * 4",
+    "options": [
+      {
+        "id": "A",
+        "text": "12",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "6",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "C",
+        "text": "7",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "15",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Multiply 3 chairs by 4 tables to get 12 chairs.",
+    "standard_code": "MGSE5.OA.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-ratios-medium-1",
+    "topic": "ratios",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "A craft uses 2 blue beads for every 4 yellow beads. If a necklace uses 10 blue beads, how many yellow beads are needed?",
+    "expression": "4 * (10 / 2)",
+    "options": [
+      {
+        "id": "A",
+        "text": "12",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "5",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "C",
+        "text": "20",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "16",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Scale factor is 10 / 2 = 5. Multiply 4 yellow beads by 5 to get 20.",
+    "standard_code": "MGSE5.OA.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-ratios-medium-2",
+    "topic": "ratios",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "A recipe uses 3 cups of oats for every 4 cups of flour. If 12 cups of flour are used, how many cups of oats are needed?",
+    "expression": "3 * (12 / 4)",
+    "options": [
+      {
+        "id": "A",
+        "text": "9",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "11",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "C",
+        "text": "16",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "15",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Scale factor is 12 / 4 = 3. Multiply 3 by 3 to get 9 cups of oats.",
+    "standard_code": "MGSE5.OA.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-ratios-hard-1",
+    "topic": "ratios",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A school store sells 6 pencils for every 5 erasers. If they sold 18 pencils today, how many erasers were sold?",
+    "expression": "5 * (18 / 6)",
+    "options": [
+      {
+        "id": "A",
+        "text": "17",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "15",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "21.6",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "20",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Scale factor is 18 / 6 = 3. Multiply 5 by 3 to get 15 erasers.",
+    "standard_code": "MGSE5.OA.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-ratios-hard-2",
+    "topic": "ratios",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A gear machine turns 8 small gears for every 4 large gears. If 24 small gears turn, how many large gears turn?",
+    "expression": "4 * (24 / 8)",
+    "options": [
+      {
+        "id": "A",
+        "text": "20",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "48",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "C",
+        "text": "12",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "16",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Scale factor is 24 / 8 = 3. Multiply 4 by 3 to get 12 large gears.",
+    "standard_code": "MGSE5.OA.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-geometry-easy-1",
+    "topic": "geometry",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "A rectangular garden plot in Savannah is 8 meters long and 5 meters wide. What is its perimeter?",
+    "expression": "2 * (8 + 5)",
+    "options": [
+      {
+        "id": "A",
+        "text": "40",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "B",
+        "text": "13",
+        "misconception_tag": "forgot_other_sides"
+      },
+      {
+        "id": "C",
+        "text": "26",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "28",
+        "misconception_tag": "calculation_error"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Perimeter is 2 * (8 + 5) = 2 * 13 = 26 meters.",
+    "standard_code": "MGSE5.MD.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-geometry-easy-2",
+    "topic": "geometry",
+    "grade": 5,
+    "tier": "easy",
+    "stem": "A classroom reading rug is 7 feet long and 4 feet wide. What is the area of the rug in square feet?",
+    "expression": "7 * 4",
+    "options": [
+      {
+        "id": "A",
+        "text": "28",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "22",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "C",
+        "text": "11",
+        "misconception_tag": "added_dimensions"
+      },
+      {
+        "id": "D",
+        "text": "49",
+        "misconception_tag": "incorrect_formula"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Area is length * width = 7 * 4 = 28 square feet.",
+    "standard_code": "MGSE5.MD.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-geometry-medium-1",
+    "topic": "geometry",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "A rectangular swimming pool deck is 14 meters long and 6 meters wide. What is the perimeter around the deck?",
+    "expression": "2 * (14 + 6)",
+    "options": [
+      {
+        "id": "A",
+        "text": "84",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "B",
+        "text": "20",
+        "misconception_tag": "forgot_other_sides"
+      },
+      {
+        "id": "C",
+        "text": "40",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "44",
+        "misconception_tag": "calculation_error"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Perimeter is 2 * (14 + 6) = 2 * 20 = 40 meters.",
+    "standard_code": "MGSE5.MD.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-geometry-medium-2",
+    "topic": "geometry",
+    "grade": 5,
+    "tier": "medium",
+    "stem": "A park lawn in Macon is 12 meters long and 9 meters wide. What is the area of the lawn in square meters?",
+    "expression": "12 * 9",
+    "options": [
+      {
+        "id": "A",
+        "text": "42",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "B",
+        "text": "21",
+        "misconception_tag": "added_dimensions"
+      },
+      {
+        "id": "C",
+        "text": "144",
+        "misconception_tag": "incorrect_formula"
+      },
+      {
+        "id": "D",
+        "text": "108",
+        "misconception_tag": null
+      }
+    ],
+    "correct_option_id": "D",
+    "explanation": "Area is length * width = 12 * 9 = 108 square meters.",
+    "standard_code": "MGSE5.MD.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-geometry-hard-1",
+    "topic": "geometry",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A display board is 15.5 feet long and 4.5 feet wide. What is the perimeter of the display board?",
+    "expression": "2 * (15.5 + 4.5)",
+    "options": [
+      {
+        "id": "A",
+        "text": "40",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "69.75",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "C",
+        "text": "20",
+        "misconception_tag": "forgot_other_sides"
+      },
+      {
+        "id": "D",
+        "text": "42",
+        "misconception_tag": "calculation_error"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Perimeter is 2 * (15.5 + 4.5) = 2 * 20 = 40 feet.",
+    "standard_code": "MGSE5.MD.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g5-geometry-hard-2",
+    "topic": "geometry",
+    "grade": 5,
+    "tier": "hard",
+    "stem": "A community basketball court is 16 yards long and 12 yards wide. What is the area of the court?",
+    "expression": "16 * 12",
+    "options": [
+      {
+        "id": "A",
+        "text": "56",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "B",
+        "text": "192",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "28",
+        "misconception_tag": "added_dimensions"
+      },
+      {
+        "id": "D",
+        "text": "256",
+        "misconception_tag": "incorrect_formula"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Area is length * width = 16 * 12 = 192 square yards.",
+    "standard_code": "MGSE5.MD.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-fractions-easy-1",
+    "topic": "fractions",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "Elena has 1/2 pound of almonds and uses 2/3 of them in trail mix. What fraction of a pound does she use?",
+    "expression": "1/2 * (2/3)",
+    "options": [
+      {
+        "id": "A",
+        "text": "1/3",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "3/4",
+        "misconception_tag": "multiplied_instead_of_inverting"
+      },
+      {
+        "id": "C",
+        "text": "7/6",
+        "misconception_tag": "wrong_operation"
+      },
+      {
+        "id": "D",
+        "text": "2/6",
+        "misconception_tag": "forgot_to_simplify"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Multiply straight across: (1 * 2) / (2 * 3) = 2/6 = 1/3 pound.",
+    "standard_code": "MGSE6.NS.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-fractions-easy-2",
+    "topic": "fractions",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A recipe calls for 3/4 cup of honey. Chef Liam prepares 4/5 of the recipe. How much honey does he need?",
+    "expression": "3/4 * (4/5)",
+    "options": [
+      {
+        "id": "A",
+        "text": "15/16",
+        "misconception_tag": "multiplied_instead_of_inverting"
+      },
+      {
+        "id": "B",
+        "text": "3/5",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "12/20",
+        "misconception_tag": "forgot_to_simplify"
+      },
+      {
+        "id": "D",
+        "text": "31/20",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Multiply numerators and denominators: (3 * 4) / (4 * 5) = 12/20 = 3/5 cup.",
+    "standard_code": "MGSE6.NS.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-fractions-medium-1",
+    "topic": "fractions",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "Lucas has 2/3 of a cake left and cuts it into portions that are 1/6 of a whole cake. How many portions can he make?",
+    "expression": "2/3 / (1/6)",
+    "options": [
+      {
+        "id": "A",
+        "text": "4",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "2/18",
+        "misconception_tag": "multiplied_instead_of_inverting"
+      },
+      {
+        "id": "C",
+        "text": "1/4",
+        "misconception_tag": "flipped_wrong_fraction"
+      },
+      {
+        "id": "D",
+        "text": "5/6",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Divide using Keep-Change-Flip: 2/3 * 6/1 = 12/3 = 4 portions.",
+    "standard_code": "MGSE6.NS.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-fractions-medium-2",
+    "topic": "fractions",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "A craft wire is 3/5 meter long. How many 3/10 meter segments can be cut from it?",
+    "expression": "3/5 / (3/10)",
+    "options": [
+      {
+        "id": "A",
+        "text": "9/50",
+        "misconception_tag": "multiplied_instead_of_inverting"
+      },
+      {
+        "id": "B",
+        "text": "1/2",
+        "misconception_tag": "flipped_wrong_fraction"
+      },
+      {
+        "id": "C",
+        "text": "2",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "9/10",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Keep-Change-Flip: 3/5 * 10/3 = 30/15 = 2 segments.",
+    "standard_code": "MGSE6.NS.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-fractions-hard-1",
+    "topic": "fractions",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A trail guide has 3/4 gallon of water. She pours it into bottles holding 1/8 gallon each. How many bottles does she fill?",
+    "expression": "3/4 / (1/8)",
+    "options": [
+      {
+        "id": "A",
+        "text": "3/32",
+        "misconception_tag": "multiplied_instead_of_inverting"
+      },
+      {
+        "id": "B",
+        "text": "1/6",
+        "misconception_tag": "flipped_wrong_fraction"
+      },
+      {
+        "id": "C",
+        "text": "7/8",
+        "misconception_tag": "wrong_operation"
+      },
+      {
+        "id": "D",
+        "text": "6",
+        "misconception_tag": null
+      }
+    ],
+    "correct_option_id": "D",
+    "explanation": "3/4 * 8/1 = 24/4 = 6 bottles.",
+    "standard_code": "MGSE6.NS.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-fractions-hard-2",
+    "topic": "fractions",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "Marcus has 2 1/2 cups of flour. Each mini-cake requires 1/4 cup. How many mini-cakes can he bake?",
+    "expression": "2 1/2 / (1/4)",
+    "options": [
+      {
+        "id": "A",
+        "text": "5/8",
+        "misconception_tag": "multiplied_instead_of_inverting"
+      },
+      {
+        "id": "B",
+        "text": "10",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "1/10",
+        "misconception_tag": "flipped_wrong_fraction"
+      },
+      {
+        "id": "D",
+        "text": "2 3/4",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Convert to improper fraction: 5/2 / (1/4) = 5/2 * 4/1 = 20/2 = 10 mini-cakes.",
+    "standard_code": "MGSE6.NS.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-decimals-easy-1",
+    "topic": "decimals",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A scientist records two temperature shifts: +14.2 degrees and +8.6 degrees. What is the total shift?",
+    "expression": "14.2 + 8.6",
+    "options": [
+      {
+        "id": "A",
+        "text": "22.8",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "22.08",
+        "misconception_tag": "misaligned_decimal_point"
+      },
+      {
+        "id": "C",
+        "text": "23.8",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "D",
+        "text": "5.6",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Add 14.2 + 8.6 = 22.8 degrees.",
+    "standard_code": "MGSE6.NS.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-decimals-easy-2",
+    "topic": "decimals",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A cyclist rode 25.5 miles yesterday and 12.3 miles today. How many more miles did she ride yesterday?",
+    "expression": "25.5 - 12.3",
+    "options": [
+      {
+        "id": "A",
+        "text": "13.2",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "13.8",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "C",
+        "text": "37.8",
+        "misconception_tag": "wrong_operation"
+      },
+      {
+        "id": "D",
+        "text": "1.32",
+        "misconception_tag": "decimal_place_shift"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Subtract 25.5 - 12.3 = 13.2 miles.",
+    "standard_code": "MGSE6.NS.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-decimals-medium-1",
+    "topic": "decimals",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "Admission to the Georgia Aquarium is $14.50 per student. What is the cost for a group of 4 students?",
+    "expression": "14.50 * 4",
+    "options": [
+      {
+        "id": "A",
+        "text": "58",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "56.2",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "C",
+        "text": "580",
+        "misconception_tag": "misaligned_decimal_point"
+      },
+      {
+        "id": "D",
+        "text": "18.5",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "14.50 * 4 = $58.00.",
+    "standard_code": "MGSE6.NS.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-decimals-medium-2",
+    "topic": "decimals",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "A cross-country runner finishes a 7.5 mile trail over 3 equal laps. How many miles is each lap?",
+    "expression": "7.5 / 3",
+    "options": [
+      {
+        "id": "A",
+        "text": "2.15",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "B",
+        "text": "25",
+        "misconception_tag": "decimal_place_shift"
+      },
+      {
+        "id": "C",
+        "text": "2.5",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "4.5",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "7.5 divided by 3 is 2.5 miles.",
+    "standard_code": "MGSE6.NS.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-decimals-hard-1",
+    "topic": "decimals",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A chemistry experiment divides 18.75 milliliters of solution into equal test tubes holding 2.5 ml each. How many test tubes are filled?",
+    "expression": "18.75 / 2.5",
+    "options": [
+      {
+        "id": "A",
+        "text": "7.5",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "75",
+        "misconception_tag": "decimal_place_shift"
+      },
+      {
+        "id": "C",
+        "text": "6.25",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "D",
+        "text": "16.25",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "18.75 / 2.5 = 7.5 test tubes.",
+    "standard_code": "MGSE6.NS.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-decimals-hard-2",
+    "topic": "decimals",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A solar panel produces 4.25 kilowatt-hours per hour. How much energy does it generate in 3.2 hours?",
+    "expression": "4.25 * 3.2",
+    "options": [
+      {
+        "id": "A",
+        "text": "13.6",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "12.1",
+        "misconception_tag": "ignored_place_value"
+      },
+      {
+        "id": "C",
+        "text": "136",
+        "misconception_tag": "misaligned_decimal_point"
+      },
+      {
+        "id": "D",
+        "text": "7.45",
+        "misconception_tag": "wrong_operation"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "4.25 * 3.2 = 13.6 kilowatt-hours.",
+    "standard_code": "MGSE6.NS.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-ratios-easy-1",
+    "topic": "ratios",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "In the school orchestra, the ratio of flutes to clarinets is 2 to 3. If there are 4 flutes, how many clarinets are there?",
+    "expression": "3 * 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "5",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "6",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "4",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "8",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Scale factor is 2. 3 * 2 = 6 clarinets.",
+    "standard_code": "MGSE6.RP.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-ratios-easy-2",
+    "topic": "ratios",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A bakery uses 1 cup of cocoa for every 4 cups of milk. For 3 cups of cocoa, how many cups of milk are needed?",
+    "expression": "4 * 3",
+    "options": [
+      {
+        "id": "A",
+        "text": "12",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "6",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "C",
+        "text": "7",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "16",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Multiply 4 by scale factor 3 to get 12 cups of milk.",
+    "standard_code": "MGSE6.RP.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-ratios-medium-1",
+    "topic": "ratios",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "A painter mixes red and blue paint in a 3:5 ratio. If she uses 15 cans of blue paint, how many cans of red paint are needed?",
+    "expression": "3 * (15 / 5)",
+    "options": [
+      {
+        "id": "A",
+        "text": "13",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "25",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "C",
+        "text": "9",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "12",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Scale factor is 15 / 5 = 3. 3 * 3 = 9 cans of red paint.",
+    "standard_code": "MGSE6.RP.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-ratios-medium-2",
+    "topic": "ratios",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "At an Athens animal rescue, the ratio of dogs to cats is 4 to 5. If there are 20 dogs, how many cats are there?",
+    "expression": "5 * (20 / 4)",
+    "options": [
+      {
+        "id": "A",
+        "text": "21",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "16",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "C",
+        "text": "30",
+        "misconception_tag": "incorrect_scale_factor"
+      },
+      {
+        "id": "D",
+        "text": "25",
+        "misconception_tag": null
+      }
+    ],
+    "correct_option_id": "D",
+    "explanation": "Scale factor is 20 / 4 = 5. 5 * 5 = 25 cats.",
+    "standard_code": "MGSE6.RP.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-ratios-hard-1",
+    "topic": "ratios",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A vehicle travels 150 miles on 5 gallons of fuel. How many miles can it travel on 8 gallons of fuel at the same rate?",
+    "expression": "(150 / 5) * 8",
+    "options": [
+      {
+        "id": "A",
+        "text": "240",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "153",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "C",
+        "text": "93.75",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "210",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Unit rate is 150 / 5 = 30 miles per gallon. 30 * 8 = 240 miles.",
+    "standard_code": "MGSE6.RP.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-ratios-hard-2",
+    "topic": "ratios",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A market sells 6 bags of Vidalia onions for $18. How much would 10 bags cost at the same unit rate?",
+    "expression": "(18 / 6) * 10",
+    "options": [
+      {
+        "id": "A",
+        "text": "22",
+        "misconception_tag": "added_instead_of_scaled"
+      },
+      {
+        "id": "B",
+        "text": "30",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "3.33",
+        "misconception_tag": "inverted_ratio"
+      },
+      {
+        "id": "D",
+        "text": "36",
+        "misconception_tag": "incorrect_scale_factor"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Unit price is $18 / 6 = $3 per bag. 3 * 10 = $30.",
+    "standard_code": "MGSE6.RP.3",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-geometry-easy-1",
+    "topic": "geometry",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A triangular flag has a base of 6 feet and a height of 4 feet. What is the area of the flag in square feet?",
+    "expression": "(6 * 4) / 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "24",
+        "misconception_tag": "forgot_to_halve_triangle"
+      },
+      {
+        "id": "B",
+        "text": "12",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "10",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "D",
+        "text": "6",
+        "misconception_tag": "halved_both_dimensions"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Area is 1/2 * base * height = (6 * 4) / 2 = 12 square feet.",
+    "standard_code": "MGSE6.G.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-geometry-easy-2",
+    "topic": "geometry",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A triangular sail has a base of 8 meters and a height of 5 meters. What is its area in square meters?",
+    "expression": "(8 * 5) / 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "40",
+        "misconception_tag": "forgot_to_halve_triangle"
+      },
+      {
+        "id": "B",
+        "text": "13",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "C",
+        "text": "20",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "10",
+        "misconception_tag": "halved_both_dimensions"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Area is (8 * 5) / 2 = 40 / 2 = 20 square meters.",
+    "standard_code": "MGSE6.G.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-geometry-medium-1",
+    "topic": "geometry",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "A triangular banner for the school team has a base of 10 inches and a height of 6 inches. What is its area?",
+    "expression": "(10 * 6) / 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "60",
+        "misconception_tag": "forgot_to_halve_triangle"
+      },
+      {
+        "id": "B",
+        "text": "30",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "16",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "D",
+        "text": "15",
+        "misconception_tag": "halved_both_dimensions"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Area is (10 * 6) / 2 = 60 / 2 = 30 square inches.",
+    "standard_code": "MGSE6.G.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-geometry-medium-2",
+    "topic": "geometry",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "A triangular garden plot has a base of 12 yards and a height of 8 yards. What is the area of the plot?",
+    "expression": "(12 * 8) / 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "96",
+        "misconception_tag": "forgot_to_halve_triangle"
+      },
+      {
+        "id": "B",
+        "text": "20",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "C",
+        "text": "48",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "24",
+        "misconception_tag": "halved_both_dimensions"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Area is (12 * 8) / 2 = 96 / 2 = 48 square yards.",
+    "standard_code": "MGSE6.G.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-geometry-hard-1",
+    "topic": "geometry",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A triangular parcel near Stone Mountain has a base of 14 yards and a height of 9 yards. What is its area?",
+    "expression": "(14 * 9) / 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "126",
+        "misconception_tag": "forgot_to_halve_triangle"
+      },
+      {
+        "id": "B",
+        "text": "23",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "C",
+        "text": "63",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "31.5",
+        "misconception_tag": "halved_both_dimensions"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Area is (14 * 9) / 2 = 126 / 2 = 63 square yards.",
+    "standard_code": "MGSE6.G.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-g6-geometry-hard-2",
+    "topic": "geometry",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "A recreational park in Augusta has a playground measuring 15.5 meters long and 8 meters wide. What is its area?",
+    "expression": "15.5 * 8",
+    "options": [
+      {
+        "id": "A",
+        "text": "124",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "47",
+        "misconception_tag": "confused_area_perimeter"
+      },
+      {
+        "id": "C",
+        "text": "23.5",
+        "misconception_tag": "added_dimensions"
+      },
+      {
+        "id": "D",
+        "text": "62",
+        "misconception_tag": "halved_both_dimensions"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Area is length * width = 15.5 * 8 = 124 square meters.",
+    "standard_code": "MGSE6.G.1",
+    "board": "georgia"
+  },
+  {
+    "id": "fallback-cbse-g6-factors_multiples-easy-1",
+    "board": "cbse",
+    "topic": "factors_multiples",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "Find the smallest prime factor of 12.",
+    "expression": "2",
+    "options": [
+      {
+        "id": "A",
+        "text": "2",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "3",
+        "misconception_tag": "other_prime_factor"
+      },
+      {
+        "id": "C",
+        "text": "4",
+        "misconception_tag": "composite_not_prime"
+      },
+      {
+        "id": "D",
+        "text": "6",
+        "misconception_tag": "composite_factor"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "The factors of 12 are 1, 2, 3, 4, 6, 12. Among its prime factors {2, 3}, the smallest is 2.",
+    "standard_code": "CBSE6.TH.1"
+  },
+  {
+    "id": "fallback-cbse-g6-factors_multiples-easy-2",
+    "board": "cbse",
+    "topic": "factors_multiples",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "What is the Highest Common Factor (HCF / GCD) of 12 and 18?",
+    "expression": "6",
+    "options": [
+      {
+        "id": "A",
+        "text": "3",
+        "misconception_tag": "common_factor_not_greatest"
+      },
+      {
+        "id": "B",
+        "text": "6",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "2",
+        "misconception_tag": "small_factor"
+      },
+      {
+        "id": "D",
+        "text": "36",
+        "misconception_tag": "lcm_confusion"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Factors of 12: 1, 2, 3, 4, 6, 12. Factors of 18: 1, 2, 3, 6, 9, 18. The common factors are 1, 2, 3, 6. The highest is 6.",
+    "standard_code": "CBSE6.TH.2"
+  },
+  {
+    "id": "fallback-cbse-g6-factors_multiples-medium-1",
+    "board": "cbse",
+    "topic": "factors_multiples",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "Find the Least Common Multiple (LCM) of 4 and 6.",
+    "expression": "(4 * 6) / 2",
+    "options": [
+      {
+        "id": "A",
+        "text": "24",
+        "misconception_tag": "product_without_dividing_gcd"
+      },
+      {
+        "id": "B",
+        "text": "2",
+        "misconception_tag": "hcf_instead_of_lcm"
+      },
+      {
+        "id": "C",
+        "text": "12",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "10",
+        "misconception_tag": "added_numbers"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Multiples of 4: 4, 8, 12, 16... Multiples of 6: 6, 12, 18... The least common multiple is 12.",
+    "standard_code": "CBSE6.TH.2"
+  },
+  {
+    "id": "fallback-cbse-g6-factors_multiples-medium-2",
+    "board": "cbse",
+    "topic": "factors_multiples",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "How many distinct prime factors are in the prime factorization of 30?",
+    "expression": "1 + 1 + 1",
+    "options": [
+      {
+        "id": "A",
+        "text": "3",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "2",
+        "misconception_tag": "missed_one_factor"
+      },
+      {
+        "id": "C",
+        "text": "4",
+        "misconception_tag": "counted_composite"
+      },
+      {
+        "id": "D",
+        "text": "5",
+        "misconception_tag": "largest_factor"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "The prime factorization of 30 is 2 * 3 * 5, which consists of 3 distinct prime factors.",
+    "standard_code": "CBSE6.TH.1"
+  },
+  {
+    "id": "fallback-cbse-g6-factors_multiples-hard-1",
+    "board": "cbse",
+    "topic": "factors_multiples",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "Find the LCM of 12 and 15 using prime factor powers.",
+    "expression": "(12 * 15) / 3",
+    "options": [
+      {
+        "id": "A",
+        "text": "3",
+        "misconception_tag": "hcf_instead_of_lcm"
+      },
+      {
+        "id": "B",
+        "text": "60",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "180",
+        "misconception_tag": "product_without_dividing_gcd"
+      },
+      {
+        "id": "D",
+        "text": "30",
+        "misconception_tag": "multiple_of_15_not_12"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "12 = 2^2 * 3, 15 = 3 * 5. LCM = 2^2 * 3 * 5 = 4 * 15 = 60.",
+    "standard_code": "CBSE6.TH.2"
+  },
+  {
+    "id": "fallback-cbse-g6-factors_multiples-hard-2",
+    "board": "cbse",
+    "topic": "factors_multiples",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "Find the Highest Common Factor (HCF) of 36 and 48.",
+    "expression": "12",
+    "options": [
+      {
+        "id": "A",
+        "text": "12",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "6",
+        "misconception_tag": "common_factor_not_greatest"
+      },
+      {
+        "id": "C",
+        "text": "4",
+        "misconception_tag": "small_factor"
+      },
+      {
+        "id": "D",
+        "text": "144",
+        "misconception_tag": "lcm_confusion"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "36 = 12 * 3, 48 = 12 * 4. Since 3 and 4 are co-prime, the HCF is 12.",
+    "standard_code": "CBSE6.TH.2"
+  },
+  {
+    "id": "fallback-cbse-g6-integers-easy-1",
+    "board": "cbse",
+    "topic": "integers",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "In Shimla, the morning temperature was -3 degrees Celsius. By noon, it rose by 5 degrees. What is the temperature at noon?",
+    "expression": "-3 + 5",
+    "options": [
+      {
+        "id": "A",
+        "text": "2",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "-8",
+        "misconception_tag": "wrong_sign_add"
+      },
+      {
+        "id": "C",
+        "text": "8",
+        "misconception_tag": "ignored_negative"
+      },
+      {
+        "id": "D",
+        "text": "-2",
+        "misconception_tag": "sign_flip"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Starting at -3 and adding 5: -3 + 5 = 2 degrees Celsius.",
+    "standard_code": "CBSE6.INT.2"
+  },
+  {
+    "id": "fallback-cbse-g6-integers-easy-2",
+    "board": "cbse",
+    "topic": "integers",
+    "grade": 6,
+    "tier": "easy",
+    "stem": "A submarine is at 7 meters below sea level (-7). It dives 4 meters deeper. What is its new depth as an integer?",
+    "expression": "-7 - 4",
+    "options": [
+      {
+        "id": "A",
+        "text": "-3",
+        "misconception_tag": "subtracted_magnitudes"
+      },
+      {
+        "id": "B",
+        "text": "-11",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "11",
+        "misconception_tag": "ignored_negative"
+      },
+      {
+        "id": "D",
+        "text": "3",
+        "misconception_tag": "wrong_sign"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Starting at -7 and going 4 meters deeper: -7 - 4 = -11 meters.",
+    "standard_code": "CBSE6.INT.2"
+  },
+  {
+    "id": "fallback-cbse-g6-integers-medium-1",
+    "board": "cbse",
+    "topic": "integers",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "Evaluate the integer addition: 8 + (-12).",
+    "expression": "8 - 12",
+    "options": [
+      {
+        "id": "A",
+        "text": "-4",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "4",
+        "misconception_tag": "sign_error"
+      },
+      {
+        "id": "C",
+        "text": "-20",
+        "misconception_tag": "added_magnitudes"
+      },
+      {
+        "id": "D",
+        "text": "20",
+        "misconception_tag": "added_positives"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Adding a negative integer is the same as subtraction: 8 + (-12) = 8 - 12 = -4.",
+    "standard_code": "CBSE6.INT.2"
+  },
+  {
+    "id": "fallback-cbse-g6-integers-medium-2",
+    "board": "cbse",
+    "topic": "integers",
+    "grade": 6,
+    "tier": "medium",
+    "stem": "Evaluate the integer subtraction: -15 - (-9).",
+    "expression": "-15 + 9",
+    "options": [
+      {
+        "id": "A",
+        "text": "-24",
+        "misconception_tag": "treated_double_negative_as_minus"
+      },
+      {
+        "id": "B",
+        "text": "-6",
+        "misconception_tag": null
+      },
+      {
+        "id": "C",
+        "text": "6",
+        "misconception_tag": "sign_error"
+      },
+      {
+        "id": "D",
+        "text": "24",
+        "misconception_tag": "all_positive"
+      }
+    ],
+    "correct_option_id": "B",
+    "explanation": "Subtracting a negative number becomes addition: -15 - (-9) = -15 + 9 = -6.",
+    "standard_code": "CBSE6.INT.2"
+  },
+  {
+    "id": "fallback-cbse-g6-integers-hard-1",
+    "board": "cbse",
+    "topic": "integers",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "Simplify the three-term integer expression: -10 + 15 - 8.",
+    "expression": "-10 + 15 - 8",
+    "options": [
+      {
+        "id": "A",
+        "text": "3",
+        "misconception_tag": "sign_error"
+      },
+      {
+        "id": "B",
+        "text": "13",
+        "misconception_tag": "order_of_operations_confusion"
+      },
+      {
+        "id": "C",
+        "text": "-3",
+        "misconception_tag": null
+      },
+      {
+        "id": "D",
+        "text": "-33",
+        "misconception_tag": "added_all_magnitudes"
+      }
+    ],
+    "correct_option_id": "C",
+    "explanation": "Work left to right: (-10 + 15) = 5, then 5 - 8 = -3.",
+    "standard_code": "CBSE6.INT.2"
+  },
+  {
+    "id": "fallback-cbse-g6-integers-hard-2",
+    "board": "cbse",
+    "topic": "integers",
+    "grade": 6,
+    "tier": "hard",
+    "stem": "Simplify the mixed integer expression: (-4 * 5) + 12.",
+    "expression": "-4 * 5 + 12",
+    "options": [
+      {
+        "id": "A",
+        "text": "-8",
+        "misconception_tag": null
+      },
+      {
+        "id": "B",
+        "text": "8",
+        "misconception_tag": "sign_error"
+      },
+      {
+        "id": "C",
+        "text": "-32",
+        "misconception_tag": "added_before_multiply"
+      },
+      {
+        "id": "D",
+        "text": "32",
+        "misconception_tag": "wrong_operations"
+      }
+    ],
+    "correct_option_id": "A",
+    "explanation": "Multiply first: -4 * 5 = -20. Then add: -20 + 12 = -8.",
+    "standard_code": "CBSE6.INT.2"
+  }
+]
