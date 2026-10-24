@@ -402,6 +402,170 @@ def _get_curated_script(grade: int, topic: str, standard_code: str) -> ScriptRes
             ),
         ]
 
+    elif topic_clean == "factors_multiples":
+        slides = [
+            Slide(
+                slide_number=1,
+                title="Welcome to Factors & Multiples!",
+                bullets=[
+                    "Discovering prime building blocks",
+                    "Factor trees and factor pairs",
+                    "Our quest: LCM and HCF mastery!",
+                ],
+                narration="Welcome, math adventurer! Every whole number has secret building blocks called factors. Today we unlock prime numbers, factor trees, and the superpowers of LCM and HCF!",
+                visual_component="TopicGraphic",
+                visual_props={"emoji": "🔢", "label": "Prime Numbers & Factors"},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=2,
+                title="Primes vs. Composites",
+                bullets=[
+                    "Prime numbers have exactly 2 factors: 1 and itself",
+                    "1 is neither prime nor composite",
+                    "2 is the ONLY even prime number!",
+                ],
+                narration="A prime number can only be divided by 1 and itself, like 2, 3, 5, and 7. Remember: the number 1 is not prime because it only has one single factor!",
+                visual_component="NumberLine",
+                visual_props={"startVal": 2, "endVal": 7, "min": 1, "max": 10},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=3,
+                title="Prime Factorization Trees",
+                bullets=[
+                    "Break numbers down until only primes remain",
+                    "Example: 12 = 2 × 2 × 3",
+                    "Every composite number has a unique prime fingerprint!",
+                ],
+                narration="To find the prime factorization, branch the number into factor pairs until all branches end in prime numbers. For 12, that's 2 times 2 times 3. That is its unique prime fingerprint!",
+                visual_component="FractionBar",
+                visual_props={"numerator": 2, "denominator": 6},
+                duration_seconds=9,
+            ),
+            Slide(
+                slide_number=4,
+                title="Finding LCM and HCF",
+                bullets=[
+                    "HCF (GCD): Greatest factor shared by both numbers",
+                    "LCM: Smallest positive common multiple",
+                    "Example: 4 and 6 -> LCM is 12, HCF is 2",
+                ],
+                narration="For any pair of numbers, the Highest Common Factor is the largest shared divisor, and the Lowest Common Multiple is the first spot their multiples meet on the number line!",
+                visual_component="NumberLine",
+                visual_props={"startVal": 4, "endVal": 12, "min": 0, "max": 15},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=5,
+                title="Trap Alert: Primes vs Odds!",
+                bullets=[
+                    "🚫 TRAP: Assuming all odd numbers are prime",
+                    "Numbers like 9, 15, and 21 are composite (3 × 3 = 9)",
+                    "Always test for divisibility!",
+                ],
+                narration="Watch out for the odd number trap! Not every odd number is prime. For instance, 9 can be broken into 3 times 3, and 15 is 3 times 5. Always check for factors!",
+                visual_component="TopicGraphic",
+                visual_props={"emoji": "🚫", "label": "Divisibility Check"},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=6,
+                title="Prime Time Ready!",
+                bullets=[
+                    "Factor trees and multiples conquered",
+                    "Earn your CBSE Champion badge",
+                    "Step into the arena!",
+                ],
+                narration="You have cracked the code of factors and multiples! Jump into the challenge round, build your streak, and earn your trophy!",
+                visual_component="TopicGraphic",
+                visual_props={"emoji": "🌟", "label": "Factors Champion"},
+                duration_seconds=7,
+            ),
+        ]
+
+    elif topic_clean == "integers":
+        slides = [
+            Slide(
+                slide_number=1,
+                title="Welcome to the Integer Frontier!",
+                bullets=[
+                    "Numbers below zero in the freezing mountains",
+                    "Positive, negative, and zero",
+                    "Our quest: Number line navigation!",
+                ],
+                narration="Welcome to the Integer Frontier! Numbers don't stop at zero. When temperatures plummet below freezing or submarines dive into the ocean, negative integers come to the rescue!",
+                visual_component="TopicGraphic",
+                visual_props={"emoji": "🏔️", "label": "Below Zero Navigation"},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=2,
+                title="What Are Integers?",
+                bullets=[
+                    "Whole numbers and their opposites",
+                    "Zero is the origin: neither positive nor negative",
+                    "Opposite of +5 is -5",
+                ],
+                narration="Integers are all positive whole numbers, negative whole numbers, and zero. Every positive number has an opposite partner across zero on the number line!",
+                visual_component="NumberLine",
+                visual_props={"startVal": -5, "endVal": 5, "min": -6, "max": 6},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=3,
+                title="Walking the Integer Number Line",
+                bullets=[
+                    "Moving RIGHT means adding or increasing",
+                    "Moving LEFT means subtracting or decreasing",
+                    "-10 is smaller than -2!",
+                ],
+                narration="Think of the number line as a hiking trail: moving right always means getting bigger, and moving left means getting smaller. Even though 10 is big, negative 10 is way to the left, so it is smaller than negative 2!",
+                visual_component="NumberLine",
+                visual_props={"startVal": -4, "endVal": 3, "min": -5, "max": 5},
+                duration_seconds=9,
+            ),
+            Slide(
+                slide_number=4,
+                title="Adding Integers: Like vs Unlike Signs",
+                bullets=[
+                    "Same signs: Add the values and keep the sign (-3 + -4 = -7)",
+                    "Different signs: Subtract the values and take the sign of the larger distance",
+                    "Example: -5 + 8 = +3",
+                ],
+                narration="When signs are the same, join them together and keep the sign! When signs are different, find the difference between their distances and keep the sign of the bigger team!",
+                visual_component="NumberLine",
+                visual_props={"startVal": -5, "endVal": 3, "min": -6, "max": 6},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=5,
+                title="Trap Alert: Addition vs Multiplication Signs!",
+                bullets=[
+                    "🚫 TRAP: Thinking two negatives always make a positive",
+                    "In addition: (-3) + (-4) = -7, NOT +7",
+                    "Two debts make a bigger debt!",
+                ],
+                narration="Beware the double-negative trap! Two negatives only multiply to make a positive. When adding debts, two negatives combine into a bigger negative!",
+                visual_component="TopicGraphic",
+                visual_props={"emoji": "🚫", "label": "Debts Combine Negative"},
+                duration_seconds=8,
+            ),
+            Slide(
+                slide_number=6,
+                title="Master the Integer Realm!",
+                bullets=[
+                    "Direction and distance mastered",
+                    "Conquer absolute values and sums",
+                    "Begin your quest now!",
+                ],
+                narration="You are now a master of positive and negative numbers! Step into the quest, solve your challenges, and conquer the Integer Frontier!",
+                visual_component="TopicGraphic",
+                visual_props={"emoji": "⚡", "label": "Integer Pro"},
+                duration_seconds=7,
+            ),
+        ]
+
     else:  # geometry
         slides = [
             Slide(
