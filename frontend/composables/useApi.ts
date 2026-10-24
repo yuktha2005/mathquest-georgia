@@ -200,12 +200,12 @@ export const useApi = () => {
     isServerWakingUp.value = false
     wakeUpNotice.value = ''
 
-    // If server takes longer than 2.5 seconds, show cold-start message
+    // If server takes longer than 3 seconds, show cold-start message
     const wakeTimer = setTimeout(() => {
       isServerWakingUp.value = true
       wakeUpNotice.value =
         '🚀 Waking up the MathQuest adventure server! (Render free services sleep after inactivity and take ~50s to start). Hang tight!'
-    }, 2500)
+    }, 3000)
 
     try {
       const url = `${apiBase.replace(/\/$/, '')}/${endpoint.replace(/^\//, '')}`
