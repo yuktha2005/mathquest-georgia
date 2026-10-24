@@ -23,6 +23,8 @@ router = APIRouter(tags=["question"])
 
 @router.post("/api/question")
 @router.post("/question")
+@router.post("/api/questions")
+@router.post("/questions")
 @limiter.limit("60/minute")
 def create_question(request: Request, payload: QuestionRequest) -> Question | BatchQuestionResponse:
     """Generate a single verified question or a batch of questions (e.g. 10 for a round).
@@ -75,6 +77,9 @@ def create_question(request: Request, payload: QuestionRequest) -> Question | Ba
 
 
 @router.post("/api/question/batch", response_model=BatchQuestionResponse)
+@router.post("/question/batch", response_model=BatchQuestionResponse)
+@router.post("/api/questions/batch", response_model=BatchQuestionResponse)
+@router.post("/questions/batch", response_model=BatchQuestionResponse)
 @limiter.limit("20/minute")
 def create_question_batch(request: Request, payload: QuestionRequest) -> BatchQuestionResponse:
     """Explicit batch endpoint generating up to 10 questions for a game round or prefetching."""
