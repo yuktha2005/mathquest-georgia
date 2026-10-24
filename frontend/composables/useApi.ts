@@ -7,6 +7,32 @@
  * - Robust error handling with graceful fallback options
  */
 
+export interface TierRule {
+  tier: 'easy' | 'medium' | 'hard'
+  description: string
+  operands_range?: Record<string, any>
+  example_expression?: string
+}
+
+export interface TopicConfig {
+  id: string
+  title: string
+  description: string
+  standard_code: string
+  standard_title?: string
+  verified?: boolean
+  tier_rules?: Record<string, TierRule>
+}
+
+export interface CurriculumPack {
+  board: string
+  board_name: string
+  grade: number
+  version: string
+  verified: boolean
+  topics: TopicConfig[]
+}
+
 export interface Option {
   id: string
   text: string
@@ -15,6 +41,7 @@ export interface Option {
 
 export interface Question {
   id: string
+  board?: string
   topic: string
   grade: number
   tier: 'easy' | 'medium' | 'hard'
@@ -31,11 +58,13 @@ export interface BatchQuestionResponse {
   count: number
   topic: string
   tier: string
+  board?: string
 }
 
 export interface AnswerSubmissionPayload {
   question_id: string
   selected_option_id: string
+  board?: string
   topic?: string
   tier?: 'easy' | 'medium' | 'hard'
   hints_used?: number
@@ -62,6 +91,7 @@ export interface AnswerResultResponse {
   new_mastery: number
   new_badges: string[]
   streak: number
+  board?: string
 }
 
 export type ExplainStyle = 'default' | 'simpler' | 'real_life' | 'step_by_step'
@@ -213,11 +243,12 @@ export const useApi = () => {
     grade: number,
     topic: string,
     tier: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 1
+    count: number = 1,
+    board: string = 'georgia'
   ): Promise<Question | BatchQuestionResponse> => {
     return requestWithColdStartHandling<Question | BatchQuestionResponse>('api/question', {
       method: 'POST',
-      body: JSON.stringify({ grade, topic, tier, count }),
+      body: JSON.stringify({ grade, topic, tier, count, board }),
     })
   }
 
@@ -228,11 +259,12 @@ export const useApi = () => {
     grade: number,
     topic: string,
     tier: 'easy' | 'medium' | 'hard' = 'medium',
-    count: number = 10
+    count: number = 10,
+    board: string = 'georgia'
   ): Promise<BatchQuestionResponse> => {
     return requestWithColdStartHandling<BatchQuestionResponse>('api/question/batch', {
       method: 'POST',
-      body: JSON.stringify({ grade, topic, tier, count }),
+      body: JSON.stringify({ grade, topic, tier, count, board }),
     })
   }
 
@@ -289,6 +321,39 @@ export const useApi = () => {
   }
 
   /**
+   * Fetch all available curriculum packs across boards and grades.
+   */
+  const fetchCurriculumPacks = async (): Promise<CurriculumPack[]> => {
+    return requestWithColdStartHandling<CurriculumPack[]>('api/curriculum/packs', {
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Fetch a specific curriculum pack by board and grade.
+   */
+  const fetchCurriculumPack = async (
+    board: string,
+    grade: number
+  ): Promise<CurriculumPack> => {
+    return requestWithColdStartHandling<CurriculumPack>(`api/curriculum/pack/${board}/${grade}`, {
+      method: 'GET',
+    })
+  }
+
+  /**
+   * Fetch topic definitions for a given board and grade.
+   */
+  const fetchCurriculumTopics = async (
+    board: string,
+    grade: number
+  ): Promise<TopicConfig[]> => {
+    return requestWithColdStartHandling<TopicConfig[]>(`api/curriculum/topics/${board}/${grade}`, {
+      method: 'GET',
+    })
+  }
+
+  /**
    * Fetch model and prompt benchmark evaluation summary.
    */
   const fetchEvalSummary = async (): Promise<EvalSummaryResponse> => {
@@ -327,8 +392,12 @@ export const useApi = () => {
     fetchExplanation,
     fetchInfographic,
     fetchScript,
+    fetchCurriculumPacks,
+    fetchCurriculumPack,
+    fetchCurriculumTopics,
     fetchEvalSummary,
     triggerEvalRun,
     checkHealth,
   }
 }
+
