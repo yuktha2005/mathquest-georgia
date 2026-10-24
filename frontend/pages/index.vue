@@ -7,15 +7,88 @@
       </div>
       <div class="max-w-2xl relative z-10 space-y-3">
         <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider">
-          <span>🇬🇪</span>
-          <span>Georgia Standards of Excellence (MGSE)</span>
+          <span>{{ sessionStore.board === 'cbse' ? '🇮🇳' : '🇬🇪' }}</span>
+          <span>{{ sessionStore.boardTitle }}</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
           Choose Your Math Quest!
         </h1>
         <p class="text-white/90 text-sm sm:text-lg">
-          Master real math with smart feedback, earn XP points, and unlock heroic badges in Grade 5 and 6.
+          Master curriculum-aligned math with smart adaptive feedback, earn XP points, and unlock heroic badges.
         </p>
+      </div>
+    </div>
+
+    <!-- Curriculum Board Selection -->
+    <div class="space-y-3">
+      <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+        <span aria-hidden="true">🏛️</span>
+        <span>Select Curriculum Board</span>
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" role="tablist" aria-label="Curriculum board selection">
+        <!-- Georgia Standards of Excellence -->
+        <button
+          type="button"
+          role="tab"
+          :aria-selected="sessionStore.board === 'georgia'"
+          aria-label="Georgia Standards of Excellence (MGSE), Grades 5 & 6"
+          @click="selectBoard('georgia')"
+          :class="[
+            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-400 focus-visible:ring-offset-2',
+            sessionStore.board === 'georgia'
+              ? 'bg-indigo-50 border-indigo-600 shadow-game-blue translate-y-0'
+              : 'bg-white border-slate-300 hover:border-slate-400 shadow-sm opacity-90 hover:opacity-100'
+          ]"
+        >
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl" aria-hidden="true">🇬🇪</span>
+              <span class="text-xl font-black text-slate-900">Georgia GSE (MGSE)</span>
+              <span
+                v-if="sessionStore.board === 'georgia'"
+                class="bg-indigo-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
+              >
+                Active
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700">
+              Primary Assessment Curriculum for Grades 5 and 6 (NF, NBT, RP, G, MD).
+            </p>
+          </div>
+          <span class="text-3xl text-indigo-600 font-bold ml-2" aria-hidden="true">➜</span>
+        </button>
+
+        <!-- CBSE NCERT Ganita Prakash -->
+        <button
+          type="button"
+          role="tab"
+          :aria-selected="sessionStore.board === 'cbse'"
+          aria-label="CBSE Class 6 NCERT Ganita Prakash"
+          @click="selectBoard('cbse')"
+          :class="[
+            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2',
+            sessionStore.board === 'cbse'
+              ? 'bg-purple-50 border-purple-600 shadow-game-purple translate-y-0'
+              : 'bg-white border-slate-300 hover:border-slate-400 shadow-sm opacity-90 hover:opacity-100'
+          ]"
+        >
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl" aria-hidden="true">🇮🇳</span>
+              <span class="text-xl font-black text-slate-900">CBSE Class 6 (NCERT)</span>
+              <span
+                v-if="sessionStore.board === 'cbse'"
+                class="bg-purple-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
+              >
+                Active
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700">
+              NCERT Ganita Prakash Class 6: Factors, Integers, Fractions, Decimals, Ratios.
+            </p>
+          </div>
+          <span class="text-3xl text-purple-600 font-bold ml-2" aria-hidden="true">➜</span>
+        </button>
       </div>
     </div>
 
@@ -25,9 +98,17 @@
         <span aria-hidden="true">🎒</span>
         <span>Select Your Grade Level</span>
       </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" role="tablist" aria-label="Grade level selection">
-        <!-- Grade 5 Tab -->
+      <div
+        :class="[
+          'grid gap-4',
+          sessionStore.board === 'cbse' ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'
+        ]"
+        role="tablist"
+        aria-label="Grade level selection"
+      >
+        <!-- Grade 5 Tab (Only for Georgia) -->
         <button
+          v-if="sessionStore.board === 'georgia'"
           type="button"
           role="tab"
           :aria-selected="sessionStore.grade === 5"
@@ -63,7 +144,7 @@
           type="button"
           role="tab"
           :aria-selected="sessionStore.grade === 6"
-          aria-label="Grade 6 Quest: Ratios, unit rates, fraction division, integers, and surface area"
+          :aria-label="sessionStore.board === 'cbse' ? 'CBSE Class 6 Quest (NCERT Ganita Prakash)' : 'Grade 6 Quest (MGSE)'"
           @click="selectGrade(6)"
           :class="[
             'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2',
@@ -75,7 +156,9 @@
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-2xl" aria-hidden="true">🚀</span>
-              <span class="text-2xl font-black text-slate-900">Grade 6 Quest</span>
+              <span class="text-2xl font-black text-slate-900">
+                {{ sessionStore.board === 'cbse' ? 'Class 6 Quest (NCERT Ganita Prakash)' : 'Grade 6 Quest' }}
+              </span>
               <span
                 v-if="sessionStore.grade === 6"
                 class="bg-purple-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
@@ -84,7 +167,9 @@
               </span>
             </div>
             <p class="text-xs sm:text-sm text-slate-700">
-              Ratios, unit rates, fraction division, integers, and surface area.
+              {{ sessionStore.board === 'cbse'
+                ? 'Prime factorization, LCM/HCF, negative integers, rational fractions, decimals, and geometry.'
+                : 'Ratios, unit rates, fraction division, integers, and surface area.' }}
             </p>
           </div>
           <span class="text-3xl text-purple-600 font-bold ml-2" aria-hidden="true">➜</span>
@@ -97,14 +182,14 @@
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
           <span>🗺️</span>
-          <span>Pick a Mathematical Territory</span>
+          <span>Pick a Mathematical Territory ({{ currentTopics.length }} Topics)</span>
         </h2>
         <span class="text-xs text-slate-500 font-medium">Click a topic to inspect rules or jump straight into a quiz</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div
-          v-for="t in topics"
+          v-for="t in currentTopics"
           :key="t.id"
           class="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-game hover:shadow-game-lg transition-all duration-200 flex flex-col justify-between group"
         >
@@ -121,7 +206,7 @@
                   </h3>
                   <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600 mt-0.5">
                     <span>📜</span>
-                    <span>{{ sessionStore.grade === 5 ? t.mgseG5 : t.mgseG6 }}</span>
+                    <span>{{ t.standardCode }}</span>
                   </div>
                 </div>
               </div>
@@ -137,7 +222,7 @@
 
             <!-- Description -->
             <p class="text-sm text-slate-600 mb-4 leading-relaxed">
-              {{ sessionStore.grade === 5 ? t.descG5 : t.descG6 }}
+              {{ t.description }}
             </p>
 
             <!-- Mastery Progress Bar -->
@@ -191,11 +276,11 @@
             <span>Adventure Trophy Shelf</span>
           </h2>
           <p class="text-xs sm:text-sm text-slate-500">
-            Accomplish challenges to unlock all 5 heroic badges
+            Accomplish challenges to unlock all 10 heroic badges across Georgia & CBSE quests
           </p>
         </div>
         <div class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3.5 py-1.5 rounded-2xl border border-indigo-200 self-start">
-          {{ sessionStore.badges.length }} of 5 Unlocked
+          {{ sessionStore.badges.length }} of 10 Unlocked
         </div>
       </div>
 
@@ -238,72 +323,202 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
-import { useSessionStore, type GradeLevel, type TopicType } from '~/stores/session'
+import { useSessionStore, type BoardType, type GradeLevel, type TopicType } from '~/stores/session'
 
 const router = useRouter()
 const { fetchRoundBatch, isLoading } = useApi()
 const sessionStore = useSessionStore()
 
+const selectBoard = (b: BoardType) => {
+  sessionStore.setBoard(b)
+  if (b === 'cbse') {
+    sessionStore.setGrade(6)
+  }
+}
+
 const selectGrade = (g: GradeLevel) => {
   sessionStore.setGrade(g)
 }
 
-const topics = [
+interface DisplayTopic {
+  id: TopicType
+  name: string
+  emoji: string
+  iconBg: string
+  btnColor: string
+  progressColor: string
+  standardCode: string
+  description: string
+}
+
+const georgiaTopicsG5: DisplayTopic[] = [
   {
-    id: 'fractions' as TopicType,
+    id: 'fractions',
     name: 'Fractions',
     emoji: '🍕',
     iconBg: 'bg-emerald-100 text-emerald-700',
     btnColor: 'btn-game-green',
     progressColor: 'bg-emerald-500',
-    mgseG5: 'MGSE5.NF.1 / MGSE5.NF.4',
-    mgseG6: 'MGSE6.NS.1',
-    descG5: 'Add and subtract fractions with unlike denominators, and multiply fractions by fractions.',
-    descG6: 'Divide fractions by fractions using reciprocals and solve real-world quotient scenarios.',
+    standardCode: 'MGSE5.NF.1 / MGSE5.NF.4',
+    description: 'Add and subtract fractions with unlike denominators, and multiply fractions by fractions.',
   },
   {
-    id: 'decimals' as TopicType,
+    id: 'decimals',
     name: 'Decimals',
     emoji: '🎯',
     iconBg: 'bg-sky-100 text-sky-700',
     btnColor: 'btn-game-blue',
     progressColor: 'bg-sky-500',
-    mgseG5: 'MGSE5.NBT.7',
-    mgseG6: 'MGSE6.NS.3',
-    descG5: 'Add, subtract, and multiply decimals to hundredths using place-value models.',
-    descG6: 'Fluently calculate with multi-digit decimals using standard algorithms with zero drop checks.',
+    standardCode: 'MGSE5.NBT.7',
+    description: 'Add, subtract, and multiply decimals to hundredths using place-value models.',
   },
   {
-    id: 'ratios' as TopicType,
+    id: 'ratios',
+    name: 'Patterns & Ratios',
+    emoji: '⚖️',
+    iconBg: 'bg-amber-100 text-amber-800',
+    btnColor: 'btn-game-amber',
+    progressColor: 'bg-amber-500',
+    standardCode: 'MGSE5.OA.3',
+    description: 'Generate numerical patterns, analyze rules, and understand multiplicative scale relationships.',
+  },
+  {
+    id: 'geometry',
+    name: 'Geometry & Volume',
+    emoji: '📐',
+    iconBg: 'bg-purple-100 text-purple-700',
+    btnColor: 'btn-game-purple',
+    progressColor: 'bg-purple-500',
+    standardCode: 'MGSE5.MD.5',
+    description: 'Calculate rectangular area, perimeter, and volume of rectangular prisms.',
+  },
+]
+
+const georgiaTopicsG6: DisplayTopic[] = [
+  {
+    id: 'fractions',
+    name: 'Fractions',
+    emoji: '🍕',
+    iconBg: 'bg-emerald-100 text-emerald-700',
+    btnColor: 'btn-game-green',
+    progressColor: 'bg-emerald-500',
+    standardCode: 'MGSE6.NS.1',
+    description: 'Divide fractions by fractions using reciprocals and solve real-world quotient scenarios.',
+  },
+  {
+    id: 'decimals',
+    name: 'Decimals',
+    emoji: '🎯',
+    iconBg: 'bg-sky-100 text-sky-700',
+    btnColor: 'btn-game-blue',
+    progressColor: 'bg-sky-500',
+    standardCode: 'MGSE6.NS.3',
+    description: 'Fluently calculate with multi-digit decimals using standard algorithms with zero drop checks.',
+  },
+  {
+    id: 'ratios',
     name: 'Ratios & Proportions',
     emoji: '⚖️',
     iconBg: 'bg-amber-100 text-amber-800',
     btnColor: 'btn-game-amber',
     progressColor: 'bg-amber-500',
-    mgseG5: 'MGSE5.OA.3',
-    mgseG6: 'MGSE6.RP.1 / MGSE6.RP.2',
-    descG5: 'Generate numerical patterns, analyze rules, and understand multiplicative scale relationships.',
-    descG6: 'Understand ratio concepts, scale factors, equivalent rates, and unit pricing.',
+    standardCode: 'MGSE6.RP.1 / MGSE6.RP.2',
+    description: 'Understand ratio concepts, scale factors, equivalent rates, and unit pricing.',
   },
   {
-    id: 'geometry' as TopicType,
+    id: 'geometry',
     name: 'Geometry & Area',
     emoji: '📐',
     iconBg: 'bg-purple-100 text-purple-700',
     btnColor: 'btn-game-purple',
     progressColor: 'bg-purple-500',
-    mgseG5: 'MGSE5.MD.5',
-    mgseG6: 'MGSE6.G.1',
-    descG5: 'Calculate rectangular area, perimeter, and volume of rectangular prisms.',
-    descG6: 'Find the area of triangles, special quadrilaterals, and composite geometric polygons.',
+    standardCode: 'MGSE6.G.1',
+    description: 'Find the area of triangles, special quadrilaterals, and composite geometric polygons.',
   },
 ]
+
+const cbseTopicsG6: DisplayTopic[] = [
+  {
+    id: 'factors_multiples',
+    name: 'Factors & Multiples',
+    emoji: '🔢',
+    iconBg: 'bg-blue-100 text-blue-700',
+    btnColor: 'btn-game-blue',
+    progressColor: 'bg-blue-500',
+    standardCode: 'CBSE6.MATH.01 (NCERT)',
+    description: 'Prime factorization, prime/composite numbers, lowest common multiple (LCM), and HCF/GCD.',
+  },
+  {
+    id: 'fractions',
+    name: 'Fractions',
+    emoji: '🍕',
+    iconBg: 'bg-emerald-100 text-emerald-700',
+    btnColor: 'btn-game-green',
+    progressColor: 'bg-emerald-500',
+    standardCode: 'CBSE6.MATH.02 (NCERT)',
+    description: 'Fractions on number lines, proper/improper fractions, equivalent fractions, and rational operations.',
+  },
+  {
+    id: 'decimals',
+    name: 'Decimals',
+    emoji: '🎯',
+    iconBg: 'bg-sky-100 text-sky-700',
+    btnColor: 'btn-game-blue',
+    progressColor: 'bg-sky-500',
+    standardCode: 'CBSE6.MATH.03 (NCERT)',
+    description: 'Decimal place values, tenths and hundredths, money/length conversion, and arithmetic.',
+  },
+  {
+    id: 'integers',
+    name: 'Integers',
+    emoji: '🏔️',
+    iconBg: 'bg-teal-100 text-teal-700',
+    btnColor: 'btn-game-green',
+    progressColor: 'bg-teal-500',
+    standardCode: 'CBSE6.MATH.04 (NCERT)',
+    description: 'Positive and negative numbers, number line representation, ordering, and addition/subtraction.',
+  },
+  {
+    id: 'ratios',
+    name: 'Ratio & Proportion',
+    emoji: '⚖️',
+    iconBg: 'bg-amber-100 text-amber-800',
+    btnColor: 'btn-game-amber',
+    progressColor: 'bg-amber-500',
+    standardCode: 'CBSE6.MATH.05 (NCERT)',
+    description: 'Ratio comparison, simplest forms, proportions, and unitary method problem solving.',
+  },
+  {
+    id: 'geometry',
+    name: 'Mensuration & Geometry',
+    emoji: '📐',
+    iconBg: 'bg-purple-100 text-purple-700',
+    btnColor: 'btn-game-purple',
+    progressColor: 'bg-purple-500',
+    standardCode: 'CBSE6.MATH.06 (NCERT)',
+    description: 'Perimeter and area of rectangles, squares, and introductory 2D geometric shapes.',
+  },
+]
+
+const currentTopics = computed<DisplayTopic[]>(() => {
+  if (sessionStore.board === 'cbse') {
+    return cbseTopicsG6
+  }
+  return sessionStore.grade === 5 ? georgiaTopicsG5 : georgiaTopicsG6
+})
 
 const allBadges = [
   { name: 'First Steps', emoji: '👣', desc: 'Answer your very first quest question.' },
   { name: '5-Streak', emoji: '🔥', desc: 'Get 5 correct answers in a row.' },
   { name: 'Fraction Master', emoji: '🍕', desc: 'Reach 80+ mastery or 5 correct in fractions.' },
+  { name: 'Decimal Dynamo', emoji: '🎯', desc: 'Reach 80+ mastery or 5 correct in decimals.' },
+  { name: 'Ratio Ranger', emoji: '⚖️', desc: 'Reach 80+ mastery or 5 correct in ratios.' },
+  { name: 'Geometry Giant', emoji: '📐', desc: 'Reach 80+ mastery or 5 correct in geometry.' },
+  { name: 'CBSE Champion', emoji: '🇮🇳', desc: 'Complete a CBSE round with 80%+ accuracy.' },
+  { name: 'Tenacious Thinker', emoji: '🧠', desc: 'Successfully conquer a Hard difficulty challenge.' },
   { name: 'Comeback Kid', emoji: '⚡', desc: 'Bounce back with a correct answer after a mistake.' },
   { name: 'Perfect Round', emoji: '🌟', desc: 'Complete a full round with 100% accuracy.' },
 ]
@@ -311,7 +526,7 @@ const allBadges = [
 const startQuickQuiz = async (topicId: TopicType) => {
   sessionStore.setTopic(topicId)
   try {
-    const res = await fetchRoundBatch(sessionStore.grade, topicId, sessionStore.tier, 10)
+    const res = await fetchRoundBatch(sessionStore.grade, topicId, sessionStore.tier, 10, sessionStore.board)
     sessionStore.startRound(res.questions)
     router.push('/quiz')
   } catch (err) {
