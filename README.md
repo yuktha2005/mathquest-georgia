@@ -60,7 +60,7 @@ NUXT_PUBLIC_API_BASE=
 - [x] **Phase 2**: Curriculum pack schema, loader, Georgia G5/G6 & CBSE G6 packs, `docs/UNVERIFIED_CONTENT.md`.
 - [x] **Phase 3**: `llm.py`, `question_builder.py`, `fallback_bank.json`, `/api/questions`, Render deployment instructions.
 - [x] **Phase 4**: `adaptive.py`, `/api/answer` progression engine, mastery & badge tests.
-- [ ] **Phase 5**: Nuxt 3 multi-board scaffold, board/grade/topic navigation, quiz & results flow, Vercel deployment guide.
+- [x] **Phase 5**: Nuxt 3 multi-board scaffold, board/grade/topic navigation, quiz & results flow, Vercel deployment guide.
 - [ ] **Phase 6**: Explanations, video scripts, infographics, RAG retrieval, Web Speech narration, SVG diagrams, hint ladder.
 - [ ] **Phase 7**: Evaluation benchmark harness (`run_eval.py`), comparative metrics, `/eval` dashboard.
 - [ ] **Phase 8**: Production hardening (slowapi rate limiting, error handlers, a11y, mobile responsiveness, CI workflow).
