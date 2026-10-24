@@ -98,3 +98,40 @@ def test_get_api_infographic_returns_pollinations_url():
     assert "pollinations.ai" in data["url"]
     assert data["fallback_url"] == "/infographics/fractions.svg"
     assert "fractions" in data["prompt"].lower()
+
+
+def test_post_api_explain_cbse_topics():
+    """Verify POST /api/explain returns verified explanations for CBSE Grade 6 topics."""
+    cbse_topics = ["factors_multiples", "integers"]
+    for t in cbse_topics:
+        response = client.post(
+            "/api/explain",
+            json={"grade": 6, "topic": t, "style": "default"},
+        )
+        assert response.status_code == 200, response.text
+        data = response.json()
+
+        assert data["title"]
+        assert data["intro"]
+        assert len(data["key_ideas"]) >= 3
+        assert len(data["worked_examples"]) == 2
+        assert len(data["common_mistakes"]) >= 1
+
+        for ex in data["worked_examples"]:
+            assert ex["problem"]
+            assert ex["expression"]
+            # verify math evaluation
+            val = evaluate(ex["expression"])
+            assert val is not None, f"Expression {ex['expression']} failed evaluation"
+
+
+def test_get_api_infographic_cbse_topics():
+    """Verify GET /api/infographic returns valid payloads and SVG fallbacks for CBSE topics."""
+    cbse_topics = ["factors_multiples", "integers"]
+    for t in cbse_topics:
+        response = client.get(f"/api/infographic?topic={t}&grade=6")
+        assert response.status_code == 200, response.text
+        data = response.json()
+        assert data["topic"] == t
+        assert f"/infographics/{t}.svg" in data["fallback_url"]
+
