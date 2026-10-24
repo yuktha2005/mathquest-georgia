@@ -10,11 +10,16 @@ from app.main import app
 from app.schemas import (
     AnswerResult,
     AnswerSubmission,
+    CurriculumPack,
     HealthResponse,
+    MathTopic,
     Option,
     Question,
     QuestionTemplate,
+    QuestionType,
     Tier,
+    TierRule,
+    TopicConfig,
 )
 
 client = TestClient(app)
@@ -156,4 +161,98 @@ def test_fallback_bank_validates_against_question_schema() -> None:
     for item in items:
         q = Question.model_validate(item)
         assert q.grade in (5, 6)
+        assert q.board == "georgia"  # Default board value
         assert q.correct_option_id in [opt.id for opt in q.options]
+
+
+def test_question_and_template_board_field() -> None:
+    """Test Question and QuestionTemplate support board field (default 'georgia', customizable to 'cbse')."""
+    # Question with default board
+    q_default = Question(
+        id="q-geo-1",
+        topic="fractions",
+        grade=5,
+        tier=Tier.EASY,
+        stem="1/2 + 1/4 = ?",
+        expression="1/2 + 1/4",
+        options=[Option(id="A", text="3/4"), Option(id="B", text="2/6")],
+        correct_option_id="A",
+        explanation="Add fractions with common denominator.",
+        standard_code="MGSE5.NF.1",
+    )
+    assert q_default.board == "georgia"
+
+    # Question with CBSE board
+    q_cbse = Question(
+        id="q-cbse-1",
+        board="cbse",
+        topic="factors_multiples",
+        grade=6,
+        tier=Tier.MEDIUM,
+        stem="Find the HCF of 12 and 18.",
+        expression="gcd(12, 18)",
+        options=[Option(id="A", text="6"), Option(id="B", text="36")],
+        correct_option_id="A",
+        explanation="The greatest common divisor of 12 and 18 is 6.",
+        standard_code="CBSE6.MATH.01",
+    )
+    assert q_cbse.board == "cbse"
+    assert q_cbse.standard_code == "CBSE6.MATH.01"
+
+    # QuestionTemplate with CBSE board
+    tmpl = QuestionTemplate(
+        board="cbse",
+        stem="Find the LCM of 4 and 6.",
+        expression="lcm(4, 6)",
+        standard_code="CBSE6.MATH.01",
+        topic="factors_multiples",
+        tier=Tier.EASY,
+        question_type=QuestionType.LCM_GCD,
+        claimed_answer="12",
+    )
+    assert tmpl.board == "cbse"
+    assert tmpl.question_type == QuestionType.LCM_GCD
+
+
+def test_curriculum_pack_schema_validation() -> None:
+    """Test CurriculumPack, TopicConfig, and TierRule Pydantic models validate correctly."""
+    tier_easy = TierRule(
+        tier=Tier.EASY,
+        description="Single-digit prime numbers and factor identification",
+        operands_range={"min_val": 2, "max_val": 20},
+        example_expression="factors(12)",
+    )
+    topic = TopicConfig(
+        id="factors_multiples",
+        title="Factors and Multiples",
+        description="Prime numbers, HCF, LCM, and divisibility rules",
+        standard_code="CBSE6.MATH.01",
+        standard_title="Playing with Numbers",
+        verified=True,
+        tier_rules={"easy": tier_easy},
+    )
+    pack = CurriculumPack(
+        board="cbse",
+        board_name="Central Board of Secondary Education (NCERT Ganita Prakash)",
+        grade=6,
+        version="1.0.0",
+        verified=True,
+        topics=[topic],
+    )
+
+    assert pack.board == "cbse"
+    assert pack.grade == 6
+    assert len(pack.topics) == 1
+    assert pack.get_topic("factors_multiples") is not None
+    assert pack.get_topic("non_existent") is None
+    assert pack.get_topic("factors_multiples").title == "Factors and Multiples"
+
+
+def test_cbse_enums_supported() -> None:
+    """Test MathTopic and QuestionType include CBSE Class 6 topics."""
+    assert MathTopic.FACTORS_MULTIPLES.value == "factors_multiples"
+    assert MathTopic.INTEGERS.value == "integers"
+    assert QuestionType.FACTORS_MULTIPLES.value == "factors_multiples"
+    assert QuestionType.LCM_GCD.value == "lcm_gcd"
+    assert QuestionType.INTEGERS.value == "integers"
+
