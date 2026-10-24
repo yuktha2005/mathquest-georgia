@@ -1,0 +1,152 @@
+{
+  "board": "georgia",
+  "board_name": "Georgia Standards of Excellence (MGSE)",
+  "grade": 6,
+  "version": "1.0.0",
+  "verified": true,
+  "topics": [
+    {
+      "id": "fractions",
+      "title": "Fractions: Multiplication & Division",
+      "description": "Compute quotients of fractions and solve multi-step fraction division problems.",
+      "standard_code": "MGSE6.NS.1",
+      "standard_title": "Compute quotients of fractions",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Dividing unit fractions and whole numbers",
+          "operands_range": {
+            "unit_fractions": true,
+            "max_denom": 8
+          },
+          "example_expression": "1/3 / 4"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Fraction divided by fraction with reciprocal inversion",
+          "operands_range": {
+            "min_denom": 2,
+            "max_denom": 12
+          },
+          "example_expression": "3/4 / (1/2)"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Mixed number division and real-world fractional rate problems",
+          "operands_range": {
+            "allow_mixed": true,
+            "max_whole": 6
+          },
+          "example_expression": "2 1/3 / (2/3)"
+        }
+      }
+    },
+    {
+      "id": "decimals",
+      "title": "Decimals: Multi-Digit Algorithms",
+      "description": "Fluently add, subtract, multiply, and divide multi-digit decimals.",
+      "standard_code": "MGSE6.NS.3",
+      "standard_title": "Multi-digit decimal operations",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Multiplying decimals by single-digit integers",
+          "operands_range": {
+            "decimal_places": 1,
+            "max_integer": 9
+          },
+          "example_expression": "2.4 * 3"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Multiplying decimal by decimal (hundredths place)",
+          "operands_range": {
+            "decimal_places": 2
+          },
+          "example_expression": "1.5 * 0.4"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Dividing decimals and multi-step decimal applications",
+          "operands_range": {
+            "decimal_divisor": true
+          },
+          "example_expression": "4.8 / 1.2"
+        }
+      }
+    },
+    {
+      "id": "ratios",
+      "title": "Ratios, Rates & Proportions",
+      "description": "Understand ratio relationships, calculate unit rates, and solve proportional reasoning problems.",
+      "standard_code": "MGSE6.RP.3",
+      "standard_title": "Ratio and rate reasoning",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Finding equivalent ratios by integer scaling",
+          "operands_range": {
+            "min_scale": 2,
+            "max_scale": 6
+          },
+          "example_expression": "3 : 5 = 9 : 15"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Unit rate calculation and table scaling",
+          "operands_range": {
+            "unit_rate": true
+          },
+          "example_expression": "12 / 3"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Multi-step ratio comparisons and percentage conversion",
+          "operands_range": {
+            "percentages": true
+          },
+          "example_expression": "15 / 20 * 100"
+        }
+      }
+    },
+    {
+      "id": "geometry",
+      "title": "Geometry: Area of Polygons",
+      "description": "Find area of right triangles, acute/obtuse triangles, special quadrilaterals, and parallelograms.",
+      "standard_code": "MGSE6.G.1",
+      "standard_title": "Area of triangles, quadrilaterals, and polygons",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Area of right triangles and parallelograms with whole numbers",
+          "operands_range": {
+            "min_side": 2,
+            "max_side": 15
+          },
+          "example_expression": "8 * 5"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Area of non-right triangles (base * height / 2) with decimals/fractions",
+          "operands_range": {
+            "min_dim": 3,
+            "max_dim": 25
+          },
+          "example_expression": "1/2 * 12 * 7"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Trapezoids, parallelograms with slant heights, and decomposing polygons",
+          "operands_range": {
+            "composite": true
+          },
+          "example_expression": "10 * 6"
+        }
+      }
+    }
+  ]
+}
