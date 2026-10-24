@@ -227,7 +227,8 @@ const loadCurrentQuestion = async () => {
       sessionStore.grade,
       sessionStore.topic,
       sessionStore.tier,
-      1
+      1,
+      sessionStore.board
     )
 
     // Handle either single Question or Batch response
@@ -270,6 +271,7 @@ const submitAnswerAction = async () => {
   try {
     const payload = {
       question_id: q.id,
+      board: sessionStore.board,
       selected_option_id: selectedOptionId.value,
       topic: q.topic,
       tier: q.tier,
