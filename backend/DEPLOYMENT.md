@@ -22,7 +22,9 @@ Before deploying, make sure you have the following credentials ready:
 |---|---|---|---|
 | `PYTHON_VERSION` | Yes | `3.11.9` | Pins the Python runtime environment on Render. |
 | `GEMINI_API_KEY` | Yes | `AIzaSy...` | Google GenAI API key from [Google AI Studio](https://aistudio.google.com/). |
-| `GEMINI_MODEL` | No | `gemini-2.5-flash` | The Gemini model for structured output generation. |
+| `GEMINI_MODEL` | Yes | `gemini-2.5-flash` | The primary Gemini model for structured output generation. |
+| `GEMINI_MODEL_ALT` | No | `gemini-2.5-pro` | Alternate model used for model comparison evaluations. |
+| `GEMINI_EMBED_MODEL` | Yes | `text-embedding-004` | Embedding model for standards retrieval and Supabase pgvector. |
 | `FRONTEND_URL` | Yes | `https://mathquest.vercel.app,http://localhost:3000` | Allowed CORS origin(s) (comma-separated). |
 | `SUPABASE_URL` | Optional | `https://your-project.supabase.co` | Supabase Postgres project URL (falls back to local standards if omitted). |
 | `SUPABASE_KEY` | Optional | `your_supabase_anon_key` | Supabase anonymous public API key. |
@@ -80,6 +82,8 @@ If you prefer configuring the service manually without Blueprints:
    PYTHON_VERSION = 3.11.9
    GEMINI_API_KEY = your_gemini_api_key_here
    GEMINI_MODEL = gemini-2.5-flash
+   GEMINI_MODEL_ALT = gemini-2.5-pro
+   GEMINI_EMBED_MODEL = text-embedding-004
    FRONTEND_URL = http://localhost:3000,https://your-frontend.vercel.app
    SUPABASE_URL = https://your-project.supabase.co
    SUPABASE_KEY = your_supabase_anon_key
