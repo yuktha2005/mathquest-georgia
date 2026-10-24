@@ -275,6 +275,72 @@ def _get_curated_explanation(
                 "Step 3: 6.00 / 4 = 1.50. Each peach costs $1.50.",
             ]
 
+    elif topic_clean == "factors_multiples":
+        title = "Factors, Multiples, Primes & HCF/LCM"
+        intro = (
+            "Numbers have secret building blocks called factors! Prime numbers are the pure building blocks "
+            "that cannot be broken down further. Finding common factors (HCF) and common multiples (LCM) "
+            "unlocks powerful problem-solving tricks!"
+        )
+        key_ideas = [
+            "A factor divides evenly into a number with zero remainder (e.g., factors of 12 are 1, 2, 3, 4, 6, 12).",
+            "A prime number has EXACTLY two distinct factors: 1 and itself (note: 1 is neither prime nor composite).",
+            "The Highest Common Factor (HCF or GCD) is the largest factor shared by two numbers.",
+            "The Lowest Common Multiple (LCM) is the smallest positive number that is a multiple of both.",
+        ]
+        common_mistakes = [
+            "Thinking that 1 is a prime number (1 only has one factor, so it is neither prime nor composite).",
+            "Confusing factors (smaller or equal) with multiples (larger or equal).",
+            "Assuming all odd numbers are prime (e.g., 9, 15, and 21 are composite!).",
+        ]
+        ex1_problem = "Find the Lowest Common Multiple (LCM) of 4 and 6."
+        ex1_expr = "12"
+        ex1_steps = [
+            "Step 1: List the multiples of 4: 4, 8, 12, 16, 20...",
+            "Step 2: List the multiples of 6: 6, 12, 18, 24...",
+            "Step 3: Identify the smallest common multiple that appears in both lists: 12.",
+        ]
+        ex2_problem = "A student has 18 blue beads and 24 gold beads. What is the greatest number of identical gift bags they can make without leftovers?"
+        ex2_expr = "6"
+        ex2_steps = [
+            "Step 1: The question asks for the Highest Common Factor (HCF) of 18 and 24.",
+            "Step 2: Factors of 18: 1, 2, 3, 6, 9, 18.",
+            "Step 3: Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24.",
+            "Step 4: The greatest factor common to both lists is 6 bags.",
+        ]
+
+    elif topic_clean == "integers":
+        title = "Exploring Integers & the Number Line"
+        intro = (
+            "Integers are whole numbers that can be positive, zero, or negative! Think of a thermometer: "
+            "above zero is positive (warm), and below zero is negative (freezing). Zero is the calm center."
+        )
+        key_ideas = [
+            "Positive integers lie to the right of zero on a number line; negative integers lie to the left.",
+            "The further left a number is on the number line, the smaller it is (e.g., -5 is smaller than -2).",
+            "Adding a positive number means moving right; adding a negative number means moving left.",
+            "The absolute value |x| represents distance from zero and is always non-negative.",
+        ]
+        common_mistakes = [
+            "Thinking that -10 is greater than -2 because 10 is bigger than 2 (on the negative side, -10 is further left!).",
+            "Applying the multiplication rule ('two negatives make a positive') to addition (e.g., -3 + -4 = -7, NOT +7).",
+        ]
+        ex1_problem = "The morning temperature was -4°C in the mountains. By afternoon, it rose by 7°C. What was the afternoon temperature?"
+        ex1_expr = "-4 + 7"
+        ex1_steps = [
+            "Step 1: Start at -4 on the number line.",
+            "Step 2: Rising temperature means adding positive 7 (move 7 steps to the right).",
+            "Step 3: Moving 4 steps right reaches 0, and 3 more steps reaches +3.",
+            "Step 4: -4 + 7 = 3°C.",
+        ]
+        ex2_problem = "A submarine dives 8 meters below sea level (-8) and then descends another 5 meters (-5). What is its depth?"
+        ex2_expr = "-8 - 5"
+        ex2_steps = [
+            "Step 1: Start at -8 meters.",
+            "Step 2: Descending another 5 meters means subtracting 5 (moving further left into negative).",
+            "Step 3: -8 - 5 = -13 meters.",
+        ]
+
     else:  # geometry
         if grade == 5:
             title = "Perimeter, Area & Volume of Prisms"
