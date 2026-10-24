@@ -411,10 +411,10 @@ def get_topic_explanation(
     standards_ctx = format_standards_for_prompt(standards)
 
     gemini_key = os.getenv("GEMINI_API_KEY")
-    gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    gemini_model = os.getenv("GEMINI_MODEL")
 
     # 3. If Gemini is available, attempt dynamic generation
-    if gemini_key:
+    if gemini_key and gemini_model:
         try:
             from google import genai
             from google.genai import types
