@@ -135,6 +135,10 @@ import confetti from 'canvas-confetti'
 import { useApi, type AnswerResultResponse, type Question } from '~/composables/useApi'
 import { useSessionStore } from '~/stores/session'
 
+definePageMeta({
+  layout: 'focus',
+})
+
 const router = useRouter()
 const { fetchQuestion, submitAnswer, isLoading } = useApi()
 const sessionStore = useSessionStore()
