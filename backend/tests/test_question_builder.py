@@ -15,6 +15,7 @@ from app.schemas import (
     Tier,
 )
 from app.services.infographic import get_topic_infographic
+from app.services.llm import generate_question_template, get_model_name
 from app.services.question_builder import (
     build_question_pipeline,
     build_questions_batch,
@@ -165,21 +166,24 @@ def test_question_builder_fallback_after_max_retries() -> None:
 
 
 def test_every_fallback_entry_matches_evaluate() -> None:
-    """Test all 48 fallback entries strictly evaluate to their correct option's text."""
+    """Test all 60 fallback entries strictly evaluate to their correct option's text."""
     fallback_path = Path(__file__).resolve().parent.parent / "data" / "fallback_bank.json"
     with open(fallback_path, "r", encoding="utf-8") as f:
         items = json.load(f)
 
-    assert len(items) == 48, f"Expected exactly 48 fallback questions, got {len(items)}"
+    assert len(items) == 60, f"Expected exactly 60 fallback questions, got {len(items)}"
 
-    # Check distribution across Grade 5 and 6, 4 topics, and 3 tiers
+    # Check distribution across Grade 5 and 6, boards, and tiers
+    boards = {item.get("board", "georgia") for item in items}
     grades = {item["grade"] for item in items}
     topics = {item["topic"] for item in items}
     tiers = {item["tier"] for item in items}
 
+    assert boards == {"georgia", "cbse"}
     assert grades == {5, 6}
-    assert topics == {"fractions", "decimals", "ratios", "geometry"}
-    assert tiers == {"easy", "medium", "hard"}
+    assert "factors_multiples" in topics
+    assert "integers" in topics
+    assert {"easy", "medium", "hard"}.issubset(tiers)
 
     for item in items:
         # Validate Pydantic schema
@@ -258,3 +262,145 @@ def test_evaluation_api_reads_results_file() -> None:
     assert "pass_rate_percentage" in data
     assert "avg_latency_ms" in data
     assert len(data["samples"]) >= 1
+
+
+def test_get_model_name_strict_env_var(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test get_model_name strictly requires GEMINI_MODEL without hardcoded fallbacks (Rule 2)."""
+    monkeypatch.setenv("GEMINI_MODEL", "gemini-test-flash")
+    assert get_model_name() == "gemini-test-flash"
+
+    monkeypatch.setenv("GEMINI_MODEL_ALT", "gemini-test-pro")
+    assert get_model_name(use_alt=True) == "gemini-test-pro"
+
+    # Missing GEMINI_MODEL must raise ValueError
+    monkeypatch.delenv("GEMINI_MODEL", raising=False)
+    with pytest.raises(ValueError, match="GEMINI_MODEL"):
+        get_model_name()
+
+    # Missing GEMINI_MODEL_ALT must raise ValueError
+    monkeypatch.delenv("GEMINI_MODEL_ALT", raising=False)
+    with pytest.raises(ValueError, match="GEMINI_MODEL_ALT"):
+        get_model_name(use_alt=True)
+
+
+def test_generate_question_template_uses_env_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test generate_question_template requests model configured via GEMINI_MODEL."""
+    monkeypatch.setenv("GEMINI_MODEL", "env-configured-gemini-model")
+
+    mock_client = MagicMock()
+    mock_response = MagicMock()
+    mock_response.text = json.dumps({
+        "stem": "Solve: 2 + 3",
+        "expression": "2 + 3",
+        "standard_code": "MGSE5.OA.1",
+        "topic": "decimals",
+        "tier": "easy",
+        "question_type": "decimal_ops",
+        "operands": ["2", "3"],
+        "claimed_answer": "5",
+    })
+    mock_client.models.generate_content.return_value = mock_response
+
+    template = generate_question_template("test prompt", client=mock_client)
+    assert template.claimed_answer == "5"
+
+    # Verify the model passed to generate_content matches GEMINI_MODEL
+    call_kwargs = mock_client.models.generate_content.call_args.kwargs
+    assert call_kwargs["model"] == "env-configured-gemini-model"
+
+
+def test_cbse_question_builder_with_mocked_llm() -> None:
+    """Test building a CBSE Class 6 question with factors_multiples using mocked LLM."""
+    mock_template = QuestionTemplate(
+        stem="Find the Highest Common Factor (HCF) of 12 and 18.",
+        expression="6",
+        standard_code="CBSE6.TH.2",
+        topic="factors_multiples",
+        tier=Tier.EASY,
+        question_type=QuestionType.FACTORS_MULTIPLES,
+        operands=["12", "18"],
+        claimed_answer="6",
+    )
+    mock_llm = MagicMock(return_value=mock_template)
+
+    question, retries, latency_ms, used_fallback = build_question_pipeline(
+        grade=6,
+        topic="factors_multiples",
+        tier=Tier.EASY,
+        board="cbse",
+        llm_func=mock_llm,
+    )
+
+    assert not used_fallback
+    assert retries == 0
+    assert question.board == "cbse"
+    assert question.topic == "factors_multiples"
+    assert question.grade == 6
+    assert len(question.options) == 4
+
+    # Verify correct option is 6
+    correct_opt = next(opt for opt in question.options if opt.id == question.correct_option_id)
+    assert correct_opt.text == "6"
+    assert correct_opt.misconception_tag is None
+
+    # Verify distractors are generated with misconception tags
+    distractors = [opt for opt in question.options if opt.id != question.correct_option_id]
+    assert len(distractors) == 3
+    for d in distractors:
+        assert d.misconception_tag is not None
+
+
+def test_cbse_fallback_question_retrieval() -> None:
+    """Test retrieving verified fallback questions specifically for CBSE board."""
+    q = get_fallback_question(grade=6, topic="factors_multiples", tier=Tier.EASY, board="cbse")
+    assert q.board == "cbse"
+    assert q.grade == 6
+    assert q.topic == "factors_multiples"
+    assert len(q.options) == 4
+    assert evaluate(q.expression) == evaluate(
+        next(opt.text for opt in q.options if opt.id == q.correct_option_id)
+    )
+
+    q_int = get_fallback_question(grade=6, topic="integers", tier=Tier.MEDIUM, board="cbse")
+    assert q_int.board == "cbse"
+    assert q_int.grade == 6
+    assert q_int.topic == "integers"
+    assert evaluate(q_int.expression) == evaluate(
+        next(opt.text for opt in q_int.options if opt.id == q_int.correct_option_id)
+    )
+
+
+def test_post_api_questions_plural_endpoints() -> None:
+    """Test POST /api/questions and /questions plural route aliases."""
+    mock_template = QuestionTemplate(
+        stem="Maya painted 1/4 and 2/4 of a fence. How much did she paint?",
+        expression="1/4 + 2/4",
+        standard_code="MGSE5.NF.1",
+        topic="fractions",
+        tier=Tier.EASY,
+        question_type=QuestionType.FRACTION_ADD_SUB,
+        operands=["1/4", "2/4"],
+        claimed_answer="3/4",
+    )
+
+    with patch("app.services.question_builder.generate_question_template", return_value=mock_template):
+        # 1. Single question via /api/questions
+        resp1 = client.post(
+            "/api/questions",
+            json={"grade": 5, "topic": "fractions", "tier": "easy", "board": "georgia"},
+        )
+        assert resp1.status_code == 200
+        q1 = Question.model_validate(resp1.json())
+        assert q1.topic == "fractions"
+        assert q1.grade == 5
+
+        # 2. Batch questions via /api/questions/batch
+        resp2 = client.post(
+            "/api/questions/batch",
+            json={"grade": 5, "topic": "fractions", "tier": "easy", "count": 3, "board": "georgia"},
+        )
+        assert resp2.status_code == 200
+        batch = BatchQuestionResponse.model_validate(resp2.json())
+        assert batch.count == 3
+        assert len(batch.questions) == 3
+
