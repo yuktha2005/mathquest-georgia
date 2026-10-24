@@ -109,9 +109,13 @@ def generate_embedding(text: str, api_key: str | None = None) -> list[float]:
     from google import genai
     from google.genai import types
 
+    embed_model = os.getenv("GEMINI_EMBED_MODEL")
+    if not embed_model:
+        raise ValueError("GEMINI_EMBED_MODEL environment variable is required to generate embeddings.")
+
     client = genai.Client(api_key=api_key)
     response = client.models.embed_content(
-        model="text-embedding-004",
+        model=embed_model,
         contents=text,
         config=types.EmbedContentConfig(output_dimensionality=768),
     )
