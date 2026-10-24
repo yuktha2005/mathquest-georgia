@@ -1,7 +1,7 @@
-"""LLM integration service for MathQuest Georgia using google-genai SDK.
+"""LLM integration service for MathQuest using google-genai SDK.
 
-Enforces Rule 4: Zero secrets in code. Reads GEMINI_API_KEY and GEMINI_MODEL
-strictly from environment variables.
+Enforces Rule 2 & 3: Model names and secrets strictly come from environment variables.
+Model names are read from GEMINI_MODEL and GEMINI_MODEL_ALT.
 Uses structured outputs with the QuestionTemplate Pydantic schema.
 """
 
@@ -17,6 +17,22 @@ from app.schemas import QuestionTemplate
 logger = logging.getLogger(__name__)
 
 
+def get_model_name(use_alt: bool = False) -> str:
+    """Retrieve model name strictly from environment variables.
+
+    Raises:
+        ValueError: If GEMINI_MODEL or GEMINI_MODEL_ALT is missing from the environment.
+    """
+    env_var = "GEMINI_MODEL_ALT" if use_alt else "GEMINI_MODEL"
+    model_name = os.getenv(env_var)
+    if not model_name or not model_name.strip():
+        raise ValueError(
+            f"Required environment variable '{env_var}' is not set. "
+            "Model names must be configured strictly via environment variables, not hardcoded."
+        )
+    return model_name.strip()
+
+
 def get_gemini_client() -> genai.Client:
     """Create and return a configured google-genai Client."""
     api_key = os.getenv("GEMINI_API_KEY")
@@ -28,27 +44,32 @@ def get_gemini_client() -> genai.Client:
 def generate_question_template(
     prompt: str,
     client: genai.Client | None = None,
+    model_name: str | None = None,
+    use_alt_model: bool = False,
 ) -> QuestionTemplate:
     """Invoke Gemini API to generate a structured QuestionTemplate.
 
     Args:
         prompt: System and instruction prompt.
         client: Optional pre-configured genai.Client (useful for testing and dependency injection).
+        model_name: Optional explicit model override. If not supplied, read from GEMINI_MODEL or GEMINI_MODEL_ALT.
+        use_alt_model: If True and model_name is not provided, uses GEMINI_MODEL_ALT.
 
     Returns:
         Validated QuestionTemplate instance.
 
     Raises:
+        ValueError: If model name cannot be resolved or API returns empty response.
         Exception: If network error, API failure, or response generation fails.
     """
-    model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    target_model = model_name or get_model_name(use_alt=use_alt_model)
     if client is None:
         client = get_gemini_client()
 
-    logger.info("Invoking Gemini model '%s' for QuestionTemplate generation.", model_name)
+    logger.info("Invoking Gemini model '%s' for QuestionTemplate generation.", target_model)
 
     response = client.models.generate_content(
-        model=model_name,
+        model=target_model,
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
