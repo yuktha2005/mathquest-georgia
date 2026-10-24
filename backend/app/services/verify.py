@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
 from fractions import Fraction
+import math
 import re
 from typing import Literal
 
@@ -359,3 +360,176 @@ def verify_math_expression(expression: str) -> bool:
         return True
     except MathVerificationError:
         return False
+
+
+# ============================================================================
+# Deterministic Geometry Verification Helpers
+# ============================================================================
+
+def _to_fraction(val: int | float | str | Fraction, name: str = "dimension") -> Fraction:
+    """Safely convert numeric dimension inputs to positive exact Fraction."""
+    if isinstance(val, Fraction):
+        res = val
+    elif isinstance(val, (int, str)):
+        try:
+            res = Fraction(str(val).strip())
+        except (ValueError, ZeroDivisionError) as e:
+            raise InvalidExpressionError(f"Invalid numeric input for {name}: '{val}'") from e
+    elif isinstance(val, float):
+        res = Fraction(Decimal(str(val)))
+    else:
+        raise InvalidExpressionError(f"Unsupported type {type(val)} for {name}")
+
+    if res <= 0:
+        raise InvalidExpressionError(f"{name.capitalize()} must be strictly positive, got {val}")
+    return res
+
+
+def rectangle_area(
+    length: int | float | str | Fraction,
+    width: int | float | str | Fraction,
+) -> Fraction:
+    """Calculate exact area of a rectangle: length * width."""
+    return _to_fraction(length, "length") * _to_fraction(width, "width")
+
+
+def rectangle_perimeter(
+    length: int | float | str | Fraction,
+    width: int | float | str | Fraction,
+) -> Fraction:
+    """Calculate exact perimeter of a rectangle: 2 * (length + width)."""
+    return Fraction(2, 1) * (_to_fraction(length, "length") + _to_fraction(width, "width"))
+
+
+def square_area(side: int | float | str | Fraction) -> Fraction:
+    """Calculate exact area of a square: side * side."""
+    s = _to_fraction(side, "side")
+    return s * s
+
+
+def square_perimeter(side: int | float | str | Fraction) -> Fraction:
+    """Calculate exact perimeter of a square: 4 * side."""
+    return Fraction(4, 1) * _to_fraction(side, "side")
+
+
+def triangle_area(
+    base: int | float | str | Fraction,
+    height: int | float | str | Fraction,
+) -> Fraction:
+    """Calculate exact area of a triangle: 1/2 * base * height."""
+    return Fraction(1, 2) * _to_fraction(base, "base") * _to_fraction(height, "height")
+
+
+def triangle_perimeter(
+    side_a: int | float | str | Fraction,
+    side_b: int | float | str | Fraction,
+    side_c: int | float | str | Fraction,
+) -> Fraction:
+    """Calculate exact perimeter of a triangle: a + b + c."""
+    return (
+        _to_fraction(side_a, "side_a")
+        + _to_fraction(side_b, "side_b")
+        + _to_fraction(side_c, "side_c")
+    )
+
+
+def parallelogram_area(
+    base: int | float | str | Fraction,
+    height: int | float | str | Fraction,
+) -> Fraction:
+    """Calculate exact area of a parallelogram: base * height."""
+    return _to_fraction(base, "base") * _to_fraction(height, "height")
+
+
+def parallelogram_perimeter(
+    base: int | float | str | Fraction,
+    side: int | float | str | Fraction,
+) -> Fraction:
+    """Calculate exact perimeter of a parallelogram: 2 * (base + side)."""
+    return Fraction(2, 1) * (_to_fraction(base, "base") + _to_fraction(side, "side"))
+
+
+# ============================================================================
+# Deterministic Number Theory Helpers (CBSE Class 6 Ganita Prakash)
+# ============================================================================
+
+def is_prime(n: int) -> bool:
+    """Check if an integer n is prime.
+
+    Primes are integers greater than 1 with no positive divisors other than 1 and itself.
+    """
+    if not isinstance(n, int):
+        raise InvalidExpressionError(f"Expected integer for primality check, got {type(n)}")
+    if n < 2:
+        return False
+    if n in (2, 3):
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+
+def get_factors(n: int) -> list[int]:
+    """Return all positive factors (divisors) of n in ascending sorted order."""
+    if not isinstance(n, int) or n < 1:
+        raise InvalidExpressionError(f"Factors require a positive integer (>= 1), got {n}")
+    factors: set[int] = set()
+    limit = math.isqrt(n)
+    for i in range(1, limit + 1):
+        if n % i == 0:
+            factors.add(i)
+            factors.add(n // i)
+    return sorted(factors)
+
+
+def get_prime_factors(n: int) -> list[int]:
+    """Return the prime factorization of n as a list of prime factors with multiplicity."""
+    if not isinstance(n, int) or n < 2:
+        raise InvalidExpressionError(f"Prime factorization requires an integer >= 2, got {n}")
+    factors: list[int] = []
+    d = 2
+    temp = n
+    while d * d <= temp:
+        while temp % d == 0:
+            factors.append(d)
+            temp //= d
+        d += 1 if d == 2 else 2
+    if temp > 1:
+        factors.append(temp)
+    return factors
+
+
+def gcd(a: int, b: int) -> int:
+    """Calculate the Greatest Common Divisor (GCD / HCF) of two integers."""
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise InvalidExpressionError(f"GCD requires integer arguments, got {type(a)} and {type(b)}")
+    return math.gcd(a, b)
+
+
+def lcm(a: int, b: int) -> int:
+    """Calculate the Least Common Multiple (LCM) of two integers."""
+    if not isinstance(a, int) or not isinstance(b, int):
+        raise InvalidExpressionError(f"LCM requires integer arguments, got {type(a)} and {type(b)}")
+    if a == 0 or b == 0:
+        return 0
+    return abs(a * b) // math.gcd(a, b)
+
+
+def get_multiples(n: int, count: int = 5) -> list[int]:
+    """Return the first `count` positive multiples of n."""
+    if not isinstance(n, int) or n <= 0:
+        raise InvalidExpressionError(f"Multiples require a positive integer, got {n}")
+    if count <= 0:
+        raise InvalidExpressionError(f"Count of multiples must be positive, got {count}")
+    return [n * i for i in range(1, count + 1)]
+
+
+def is_coprime(a: int, b: int) -> bool:
+    """Return True if a and b are coprime (share no common factors other than 1)."""
+    return gcd(a, b) == 1
+
