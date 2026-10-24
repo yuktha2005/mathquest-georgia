@@ -66,6 +66,55 @@ Every service runs on **100% free-tier services** without requiring paid subscri
 
 ---
 
+## 🔐 Authentication & Demo Access
+
+### Demo Account Credentials (Throwaway Testing Account)
+For fast assessment and review without signup, you can sign in directly with the pre-provisioned demo explorer account or use guest mode:
+
+| Role | Email | Password | Access Level |
+|---|---|---|---|
+| **Demo Student** | `demo@mathquest.org` | `MathQuest2026!` | Full Cloud Sync (Mastery, Badges, History) |
+| **Guest Mode** | *(No credentials required)* | *(Click "Continue as Guest")* | Full local learning, quiz, and results |
+
+### How Authentication Works
+MathQuest implements a dual-tier identity architecture designed specifically for young learners and assessment review:
+
+1. **Frictionless Guest Mode (Default)**:
+   - Students can immediately explore topics, read lessons, view infographics, take 10-question adaptive quizzes, and earn badges without registering an account.
+   - Progress, mastery scores, streaks, and achievements are saved to browser `localStorage`.
+   - Zero personal data is gathered.
+2. **Supabase Auth (Email + Password)**:
+   - When ready to save progress across multiple devices, students sign up with an email and password.
+   - Route protection middleware (`auth.global.ts`) automatically guards internal routes while allowing guest access across all curriculum routes.
+   - Deep-linking redirect: visiting a protected route (e.g. `/progress`) while unauthenticated redirects to `/login?redirect=%2Fprogress` and returns the user to the requested page immediately upon login.
+3. **Guest-to-Cloud Migration**:
+   - On first signup or login, if existing guest progress is detected in `localStorage`, MathQuest prompts: *"Move my guest progress into this account ✨"*, seamlessly upserting guest XP, domain mastery, and earned badges into Supabase.
+4. **Cloud Progress Persistence & Offline Fallback**:
+   - On quiz completion, MathQuest writes records to Supabase `sessions`, `answers`, `mastery`, and `badges`.
+   - If a network error or offline condition occurs, the completed session is safely saved to local storage (`mathquest_pending_cloud_sync_v1`), and a **"Couldn't save, Retry"** banner allows the student to sync whenever connection is restored—guaranteeing zero lost results.
+
+---
+
+## 🛡️ Privacy Notes
+
+- **Zero Student PII to LLMs**: Neither student names, emails, user IDs, nor personal information are ever transmitted in prompts sent to the Google Gemini API. Only mathematical standard codes, grade levels, and numerical constraints are sent.
+- **COPPA & Child Safety Considerations**: MathQuest is engineered for Grade 5 and 6 students (ages 10–12). The platform enforces child-safe language filters, positive reinforcement, and does not require third-party social tracking.
+- **Row-Level Security (RLS)**: Every database table in Supabase (`profiles`, `sessions`, `answers`, `mastery`, `badges`) has Row-Level Security enabled. Students can only select, insert, or modify their own data (`auth.uid() = user_id`).
+- **Client Storage Isolation**: Guest data is strictly isolated within the user's browser `localStorage` and never transmitted to external analytics.
+
+---
+
+## ⚠️ Known Limitations & Technical Constraints
+
+1. **Client-Submitted Scoring**:
+   - While mathematical question answers are validated by the deterministic AST verification engine on the backend (`/api/answer`), the client Nuxt frontend coordinates session round totals. In a high-stakes standardized testing environment, session tallying and answer states would be fully signed and stored server-side.
+2. **No Parental Consent Flow**:
+   - MathQuest is built as a developer assessment prototype and classroom demo. It does not currently implement a formalized verifiable parental consent (VPC) gateway or COPPA email verification workflow before signup.
+3. **Email Confirmation Disabled for Demo**:
+   - For reviewer convenience during testing and assessment evaluation, Supabase email confirmation is disabled by default so accounts can be created and explored immediately without waiting for confirmation emails or spam folder delays.
+
+---
+
 ## 📐 Safe Math Engine & Misconception Taxonomy
 
 ### 1. Deterministic AST Rational Evaluator (`services/verify.py`)
