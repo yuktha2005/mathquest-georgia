@@ -1,0 +1,227 @@
+{
+  "board": "cbse",
+  "board_name": "Central Board of Secondary Education (NCERT Ganita Prakash)",
+  "grade": 6,
+  "version": "1.0.0",
+  "verified": true,
+  "topics": [
+    {
+      "id": "factors_multiples",
+      "title": "Playing with Numbers: Factors & Multiples",
+      "description": "Discover factors, multiples, prime and composite numbers, divisibility tests, and calculate HCF and LCM.",
+      "standard_code": "CBSE6.MATH.03",
+      "standard_title": "Chapter 3: Playing with Numbers (Factors, Multiples, Prime Factorisation, HCF, LCM)",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Identifying factors, multiples, and prime numbers under 30",
+          "operands_range": {
+            "min_n": 2,
+            "max_n": 30
+          },
+          "example_expression": "factors(12)"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Prime factorisation with factor trees and HCF (GCD) of two numbers",
+          "operands_range": {
+            "min_n": 6,
+            "max_n": 60
+          },
+          "example_expression": "gcd(12, 18)"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "LCM and HCF word problems and coprime number identification",
+          "operands_range": {
+            "min_n": 10,
+            "max_n": 100
+          },
+          "example_expression": "lcm(12, 16)"
+        }
+      }
+    },
+    {
+      "id": "fractions",
+      "title": "Fractions: Concepts & Operations",
+      "description": "Understand proper, improper, and mixed fractions, equivalent fractions, and like/unlike addition and subtraction.",
+      "standard_code": "CBSE6.MATH.07",
+      "standard_title": "Chapter 7: Fractions",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Equivalent fractions and like-denominator addition/subtraction",
+          "operands_range": {
+            "max_denom": 10,
+            "like_denominators": true
+          },
+          "example_expression": "2/7 + 3/7"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Unlike-denominator addition and subtraction using LCM of denominators",
+          "operands_range": {
+            "max_denom": 12,
+            "like_denominators": false
+          },
+          "example_expression": "1/3 + 2/5"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Mixed numbers addition and subtraction in real-life contexts",
+          "operands_range": {
+            "allow_mixed": true
+          },
+          "example_expression": "3 1/2 - 1 3/4"
+        }
+      }
+    },
+    {
+      "id": "decimals",
+      "title": "Decimals: Tenths, Hundredths & Measurement",
+      "description": "Represent tenths and hundredths on number lines, convert between fractions and decimals, and perform operations in money and lengths.",
+      "standard_code": "CBSE6.MATH.08",
+      "standard_title": "Chapter 8: Decimals",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Tenths place conversions and simple addition",
+          "operands_range": {
+            "decimal_places": 1
+          },
+          "example_expression": "0.3 + 0.4"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Hundredths place operations in rupee-paise and meter-centimeter conversions",
+          "operands_range": {
+            "decimal_places": 2
+          },
+          "example_expression": "4.25 + 3.75"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Decimal subtraction with borrowing and uneven decimal places",
+          "operands_range": {
+            "decimal_places": 2,
+            "uneven_places": true
+          },
+          "example_expression": "10.0 - 4.65"
+        }
+      }
+    },
+    {
+      "id": "integers",
+      "title": "The Other Side of Zero: Integers",
+      "description": "Explore positive and negative numbers, represent them on the number line, and perform integer addition and subtraction.",
+      "standard_code": "CBSE6.MATH.06",
+      "standard_title": "Chapter 6: Integers (The Other Side of Zero)",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Comparing integers and addition of positive and small negative numbers",
+          "operands_range": {
+            "min_val": -10,
+            "max_val": 10
+          },
+          "example_expression": "5 + (-3)"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Subtraction of negative numbers and combining opposite signs",
+          "operands_range": {
+            "min_val": -25,
+            "max_val": 25
+          },
+          "example_expression": "-8 - (-12)"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Multi-term integer expressions with parentheses",
+          "operands_range": {
+            "min_val": -50,
+            "max_val": 50
+          },
+          "example_expression": "(-15) + 20 - (-5)"
+        }
+      }
+    },
+    {
+      "id": "ratios",
+      "title": "Ratio, Proportion & Unitary Method",
+      "description": "Compare quantities by division, determine whether ratios are in proportion, and apply the unitary method to solve practical problems.",
+      "standard_code": "CBSE6.MATH.12",
+      "standard_title": "Chapter 12: Ratio and Proportion",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Simplifying ratios to lowest terms and finding simple equivalent ratios",
+          "operands_range": {
+            "min_val": 2,
+            "max_val": 20
+          },
+          "example_expression": "4 : 6 = 2 : 3"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Testing proportionality and unitary method with whole numbers",
+          "operands_range": {
+            "min_val": 5,
+            "max_val": 50
+          },
+          "example_expression": "6 : 10 = 15 : 25"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Multi-step unitary method problems involving speed, distance, or cost",
+          "operands_range": {
+            "min_val": 10,
+            "max_val": 100
+          },
+          "example_expression": "24 / 4 * 7"
+        }
+      }
+    },
+    {
+      "id": "geometry",
+      "title": "Mensuration: Perimeter & Area",
+      "description": "Calculate perimeter of regular and irregular figures, and calculate area of squares, rectangles, and parallelograms.",
+      "standard_code": "CBSE6.MATH.10",
+      "standard_title": "Chapter 10: Mensuration (Perimeter and Area)",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Perimeter of rectangles and squares using formulas",
+          "operands_range": {
+            "min_side": 2,
+            "max_side": 15
+          },
+          "example_expression": "2 * (6 + 4)"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Area of rectangles and squares and finding missing side given area",
+          "operands_range": {
+            "min_side": 3,
+            "max_side": 25
+          },
+          "example_expression": "8 * 8"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Area and perimeter of parallelograms and composite grid figures",
+          "operands_range": {
+            "allow_decimals": true
+          },
+          "example_expression": "12 * 5"
+        }
+      }
+    }
+  ]
+}
