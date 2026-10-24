@@ -20,12 +20,14 @@ class Tier(str, Enum):
 
 
 class MathTopic(str, Enum):
-    """Curriculum math domain topics aligned with Georgia Standards of Excellence (MGSE)."""
+    """Curriculum math domain topics aligned with Georgia Standards (MGSE) and CBSE."""
 
     FRACTIONS = "fractions"
     DECIMALS = "decimals"
     RATIOS = "ratios"
     GEOMETRY = "geometry"
+    FACTORS_MULTIPLES = "factors_multiples"
+    INTEGERS = "integers"
 
 
 class Option(BaseModel):
@@ -54,6 +56,13 @@ class Question(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     id: Annotated[str, Field(description="Unique question identifier")]
+    board: Annotated[
+        str,
+        Field(
+            default="georgia",
+            description="Curriculum board identifier, e.g. 'georgia', 'cbse'",
+        ),
+    ] = "georgia"
     topic: Annotated[str, Field(description="Math topic, e.g. 'fractions', 'decimals', 'measurement'")]
     grade: Annotated[int, Field(ge=5, le=6, description="Target grade level (5 or 6)")]
     tier: Annotated[Tier, Field(description="Difficulty tier")]
@@ -64,7 +73,7 @@ class Question(BaseModel):
     explanation: Annotated[str, Field(description="Child-friendly, step-by-step solution walkthrough")]
     standard_code: Annotated[
         str,
-        Field(description="Georgia Standards of Excellence (MGSE) code, e.g. 'MGSE5.NF.1'"),
+        Field(description="Curriculum standard code, e.g. 'MGSE5.NF.1' or 'CBSE6.MATH.01'"),
     ]
 
     @model_validator(mode="after")
@@ -86,6 +95,9 @@ class QuestionType(str, Enum):
     DECIMAL_OPS = "decimal_ops"
     RATIO = "ratio"
     GEOMETRY_AREA_PERIMETER = "geometry_area_perimeter"
+    FACTORS_MULTIPLES = "factors_multiples"
+    LCM_GCD = "lcm_gcd"
+    INTEGERS = "integers"
 
 
 class QuestionTemplate(BaseModel):
@@ -98,11 +110,18 @@ class QuestionTemplate(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    board: Annotated[
+        str,
+        Field(
+            default="georgia",
+            description="Curriculum board identifier, e.g. 'georgia', 'cbse'",
+        ),
+    ] = "georgia"
     stem: Annotated[str, Field(description="The narrative scenario or word problem")]
     expression: Annotated[str, Field(description="Exact mathematical expression to compute/solve")]
     standard_code: Annotated[
         str,
-        Field(description="Georgia Standards of Excellence code (e.g. 'MGSE5.NF.1')"),
+        Field(description="Curriculum standard code (e.g. 'MGSE5.NF.1' or 'CBSE6.MATH.01')"),
     ]
     topic: Annotated[str, Field(description="Math domain topic, e.g. 'fractions'")]
     tier: Annotated[Tier, Field(description="Target difficulty tier")]
@@ -110,7 +129,7 @@ class QuestionTemplate(BaseModel):
         QuestionType,
         Field(
             default=QuestionType.FRACTION_ADD_SUB,
-            description="Type of math problem: fraction_add_sub, fraction_mul_div, decimal_ops, ratio, geometry_area_perimeter",
+            description="Type of math problem: fraction_add_sub, fraction_mul_div, decimal_ops, ratio, geometry_area_perimeter, factors_multiples, lcm_gcd, integers",
         ),
     ]
     operands: Annotated[
@@ -191,8 +210,15 @@ class QuestionRequest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    board: Annotated[
+        str,
+        Field(
+            default="georgia",
+            description="Curriculum board identifier, e.g. 'georgia', 'cbse'",
+        ),
+    ] = "georgia"
     grade: Annotated[int, Field(ge=5, le=6, default=5, description="Grade level: 5 or 6")]
-    topic: Annotated[MathTopic, Field(default=MathTopic.FRACTIONS, description="Topic: fractions, decimals, ratios, geometry")]
+    topic: Annotated[MathTopic, Field(default=MathTopic.FRACTIONS, description="Topic: fractions, decimals, ratios, geometry, factors_multiples, integers")]
     tier: Annotated[Tier, Field(default=Tier.MEDIUM, description="Difficulty tier: easy, medium, hard")]
     count: Annotated[int, Field(ge=1, le=10, default=1, description="Number of questions to generate (1 to 10 for a round)")] = 1
 
@@ -340,9 +366,87 @@ class ScriptResponse(BaseModel):
     topic: Annotated[str, Field(description="Topic identifier")]
     grade: Annotated[int, Field(description="Grade level")]
     title: Annotated[str, Field(description="Overall video presentation title")]
-    standard_code: Annotated[str, Field(description="Georgia MGSE standard code")]
+    standard_code: Annotated[str, Field(description="Curriculum standard code")]
     slides: Annotated[list[Slide], Field(min_length=6, max_length=6, description="Exactly 6 slide objects")]
     cached: Annotated[bool, Field(default=False, description="Whether returned from cache")] = False
 
 
+# ============================================================================
+# Curriculum Pack Models (Extensibility for Multi-Board Support)
+# ============================================================================
 
+class TierRule(BaseModel):
+    """Configuration rule for a difficulty tier within a topic."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tier: Annotated[Tier, Field(description="Difficulty tier (easy, medium, hard)")]
+    description: Annotated[str, Field(description="Pedagogical description of this tier")]
+    operands_range: Annotated[
+        dict[str, Any],
+        Field(default_factory=dict, description="Allowed operand constraints and ranges"),
+    ]
+    example_expression: Annotated[
+        str,
+        Field(default="", description="Representative example expression"),
+    ]
+
+
+class TopicConfig(BaseModel):
+    """Configuration for a curriculum topic within a curriculum pack."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: Annotated[str, Field(description="Unique topic identifier, e.g. 'fractions', 'factors_multiples'")]
+    title: Annotated[str, Field(description="Human-readable title")]
+    description: Annotated[str, Field(description="Summary of the topic scope")]
+    standard_code: Annotated[
+        str,
+        Field(description="Primary aligned standard code, e.g. 'MGSE5.NF.1' or 'CBSE6.MATH.01'"),
+    ]
+    standard_title: Annotated[
+        str,
+        Field(default="", description="Title or summary of the aligned standard"),
+    ]
+    verified: Annotated[
+        bool,
+        Field(default=True, description="Whether the curriculum alignment has been verified"),
+    ]
+    tier_rules: Annotated[
+        dict[str, TierRule],
+        Field(
+            default_factory=dict,
+            description="Rules mapped by tier string ('easy', 'medium', 'hard')",
+        ),
+    ]
+
+
+class CurriculumPack(BaseModel):
+    """Curriculum pack defining a board and grade's learning roadmap and standards."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    board: Annotated[str, Field(description="Board identifier code, e.g. 'georgia', 'cbse'")]
+    board_name: Annotated[
+        str,
+        Field(
+            description="Human-readable board name, e.g. 'Georgia Standards of Excellence (MGSE)'",
+        ),
+    ]
+    grade: Annotated[int, Field(ge=1, le=12, description="Target grade level")]
+    version: Annotated[str, Field(default="1.0.0", description="Pack version string")]
+    verified: Annotated[
+        bool,
+        Field(default=True, description="Overall verification status of standards in pack"),
+    ]
+    topics: Annotated[
+        list[TopicConfig],
+        Field(min_length=1, description="List of topics included in the pack"),
+    ]
+
+    def get_topic(self, topic_id: str) -> TopicConfig | None:
+        """Retrieve topic configuration by ID."""
+        for topic in self.topics:
+            if topic.id == topic_id:
+                return topic
+        return None
