@@ -20,6 +20,7 @@ from app.routers.infographic import router as infographic_router
 from app.routers.evaluation import router as eval_router
 from app.routers.explain import router as explain_router
 from app.routers.script import router as script_router
+from app.routers.curriculum import router as curriculum_router
 
 logger = logging.getLogger(__name__)
 
@@ -120,6 +121,7 @@ app.include_router(infographic_router)
 app.include_router(explain_router)
 app.include_router(script_router)
 app.include_router(eval_router)
+app.include_router(curriculum_router)
 
 
 @app.get("/health", response_model=HealthResponse, tags=["health"])
