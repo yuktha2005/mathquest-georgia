@@ -7,11 +7,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vitest run"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@pinia/nuxt": "^0.9.0",
+    "@supabase/supabase-js": "^2.118.0",
     "canvas-confetti": "^1.9.4",
     "nuxt": "^3.15.4",
     "pinia": "^2.3.1",
@@ -21,6 +23,8 @@
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22.13.4",
-    "typescript": "^5.7.3"
+    "happy-dom": "^21.0.4",
+    "typescript": "^5.7.3",
+    "vitest": "^5.0.5"
   }
 }
