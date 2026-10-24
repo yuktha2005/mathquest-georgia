@@ -191,7 +191,8 @@
         <div
           v-for="t in currentTopics"
           :key="t.id"
-          class="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-game hover:shadow-game-lg transition-all duration-200 flex flex-col justify-between group"
+          @click="goToLearn(t.id)"
+          class="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-game hover:shadow-game-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group cursor-pointer"
         >
           <div>
             <!-- Card Header -->
@@ -239,18 +240,19 @@
 
           <!-- Action Buttons -->
           <div class="grid grid-cols-2 gap-3 pt-2">
-            <NuxtLink
-              :to="`/learn/${sessionStore.grade}/${t.id}`"
+            <button
+              type="button"
+              @click.stop="goToLearn(t.id)"
               :aria-label="`Open study guide and video masterclass for ${t.name}`"
               class="btn-game-white py-3 text-sm font-bold flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
             >
               <span aria-hidden="true">📖</span>
               <span>Learn Guide</span>
-            </NuxtLink>
+            </button>
 
             <button
               type="button"
-              @click="startQuickQuiz(t.id)"
+              @click.stop="startQuickQuiz(t.id)"
               :disabled="isLoading"
               :aria-label="`Start math quest for ${t.name}`"
               :class="[
@@ -288,11 +290,15 @@
         <div
           v-for="b in allBadges"
           :key="b.name"
+          @click="selectedBadge = b"
+          role="button"
+          tabindex="0"
+          :aria-label="`${b.name} badge: ${b.desc}. Status: ${sessionStore.badges.includes(b.name) ? 'Unlocked' : 'Locked'}`"
           :class="[
-            'p-4 rounded-2xl border-2 flex flex-col items-center text-center transition-all',
+            'p-4 rounded-2xl border-2 flex flex-col items-center text-center transition-all cursor-pointer hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-400',
             sessionStore.badges.includes(b.name)
               ? 'bg-amber-50 border-amber-300 shadow-game-amber'
-              : 'bg-slate-50 border-dashed border-slate-300 opacity-60'
+              : 'bg-slate-50 border-dashed border-slate-300 opacity-75 hover:opacity-100'
           ]"
         >
           <span class="text-4xl mb-2" :class="{ 'grayscale opacity-50': !sessionStore.badges.includes(b.name) }">
@@ -319,11 +325,46 @@
         </div>
       </div>
     </div>
+
+    <!-- Badge Inspection Modal -->
+    <div
+      v-if="selectedBadge"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in"
+      @click.self="selectedBadge = null"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="selectedBadge.name"
+    >
+      <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full border-4 border-amber-400 shadow-2xl text-center space-y-4 animate-pop">
+        <div class="w-20 h-20 mx-auto rounded-3xl bg-amber-100 flex items-center justify-center text-5xl shadow-inner">
+          {{ selectedBadge.emoji }}
+        </div>
+        <div>
+          <h3 class="text-2xl font-black text-slate-800">{{ selectedBadge.name }}</h3>
+          <p
+            class="text-xs font-bold uppercase tracking-wider mt-1"
+            :class="sessionStore.badges.includes(selectedBadge.name) ? 'text-amber-700' : 'text-slate-500'"
+          >
+            {{ sessionStore.badges.includes(selectedBadge.name) ? '🎉 Unlocked & Mastered!' : '🔒 Quest Challenge Locked' }}
+          </p>
+        </div>
+        <p class="text-sm text-slate-600 bg-slate-50 p-3 rounded-2xl border border-slate-200 leading-relaxed">
+          {{ selectedBadge.desc }}
+        </p>
+        <button
+          type="button"
+          @click="selectedBadge = null"
+          class="btn-game-amber w-full py-3 rounded-2xl font-bold text-slate-900 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-400"
+        >
+          Awesome, Got It!
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useSessionStore, type BoardType, type GradeLevel, type TopicType } from '~/stores/session'
@@ -331,6 +372,13 @@ import { useSessionStore, type BoardType, type GradeLevel, type TopicType } from
 const router = useRouter()
 const { fetchRoundBatch, isLoading } = useApi()
 const sessionStore = useSessionStore()
+
+const selectedBadge = ref<any>(null)
+
+const goToLearn = (topicId: TopicType) => {
+  sessionStore.setTopic(topicId)
+  router.push(`/learn/${sessionStore.grade}/${topicId}`)
+}
 
 const selectBoard = (b: BoardType) => {
   sessionStore.setBoard(b)
@@ -527,10 +575,13 @@ const startQuickQuiz = async (topicId: TopicType) => {
   sessionStore.setTopic(topicId)
   try {
     const res = await fetchRoundBatch(sessionStore.grade, topicId, sessionStore.tier, 10, sessionStore.board)
-    sessionStore.startRound(res.questions)
-    router.push('/quiz')
+    if (res && res.questions && res.questions.length > 0) {
+      sessionStore.startRound(res.questions)
+    }
   } catch (err) {
-    console.error('Failed to load questions:', err)
+    console.warn('Network issue during question loading; continuing with session fallback:', err)
+  } finally {
+    router.push('/quiz')
   }
 }
 </script>
