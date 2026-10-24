@@ -19,6 +19,8 @@ def build_topic_prompt(topic: str, grade: int = 5) -> str:
         "decimals": "decimals, tenths and hundredths place value, money coins, number line with decimal steps",
         "ratios": "ratios and proportions, visual comparison blocks, unit rates, fruit comparison diagrams",
         "geometry": "geometry shapes, rectangles and triangles, area and perimeter formulas, coordinate grid",
+        "factors_multiples": "prime numbers, factor trees, multiples, lowest common multiple LCM, highest common factor HCF Venn diagram",
+        "integers": "positive and negative integers, integer number line with zero at center, thermometer elevation steps",
     }
     details = topic_descriptors.get(topic_clean, f"{topic_clean} concepts")
     return (
