@@ -56,9 +56,9 @@ NUXT_PUBLIC_API_BASE=
 ## 🗺️ Implementation Roadmap
 
 - [x] **Phase 0**: Project rules, `.gitignore`, `.env.example` templates, `README.md`, folder structure.
-- [ ] **Phase 1**: Core schemas, `verify.py` safe parser & arithmetic, `misconceptions.py` generator + test suite.
-- [ ] **Phase 2**: Curriculum pack schema, loader, Georgia G5/G6 & CBSE G6 packs, `docs/UNVERIFIED_CONTENT.md`.
-- [ ] **Phase 3**: `llm.py`, `question_builder.py`, `fallback_bank.json`, `/api/questions`, Render deployment instructions.
+- [x] **Phase 1**: Core schemas, `verify.py` safe parser & arithmetic, `misconceptions.py` generator + test suite.
+- [x] **Phase 2**: Curriculum pack schema, loader, Georgia G5/G6 & CBSE G6 packs, `docs/UNVERIFIED_CONTENT.md`.
+- [x] **Phase 3**: `llm.py`, `question_builder.py`, `fallback_bank.json`, `/api/questions`, Render deployment instructions.
 - [ ] **Phase 4**: `adaptive.py`, `/api/answer` progression engine, mastery & badge tests.
 - [ ] **Phase 5**: Nuxt 3 multi-board scaffold, board/grade/topic navigation, quiz & results flow, Vercel deployment guide.
 - [ ] **Phase 6**: Explanations, video scripts, infographics, RAG retrieval, Web Speech narration, SVG diagrams, hint ladder.
