@@ -21,13 +21,17 @@ import time
 import uuid
 
 from app.schemas import Option, Question, QuestionTemplate, QuestionType, Tier
+from app.services.curriculum import curriculum_service
 from app.services.llm import generate_question_template
 from app.services.misconceptions import (
     MisconceptionDistractor,
     get_decimal_distractors,
+    get_factors_multiples_distractors,
     get_fraction_add_sub_distractors,
     get_fraction_mult_div_distractors,
     get_geometry_distractors,
+    get_lcm_gcd_distractors,
+    get_parallelogram_distractors,
     get_ratio_distractors,
 )
 from app.services.verify import (
@@ -214,19 +218,59 @@ def _generate_distractors_for_template(
 
     # 5. Geometry Area / Perimeter
     elif q_type == QuestionType.GEOMETRY_AREA_PERIMETER or template.topic.lower() == "geometry":
-        shape = "triangle" if ("triangle" in template.stem.lower() or "/ 2" in expression or "1/2" in expression) else "rectangle"
-        metric = "perimeter" if "perimeter" in template.stem.lower() else "area"
+        stem_lower = template.stem.lower()
+        if "parallelogram" in stem_lower:
+            shape = "parallelogram"
+        elif "square" in stem_lower:
+            shape = "square"
+        elif "triangle" in stem_lower or "/ 2" in expression or "1/2" in expression:
+            shape = "triangle"
+        else:
+            shape = "rectangle"
+
+        metric = "perimeter" if "perimeter" in stem_lower else "area"
         if len(operands) >= 2:
             try:
                 dim1, dim2 = float(operands[0]), float(operands[1])
                 return get_geometry_distractors(shape, dim1, dim2, metric)
             except Exception:
                 pass
+        elif len(operands) == 1 and shape == "square":
+            try:
+                dim1 = float(operands[0])
+                return get_geometry_distractors(shape, dim1, dim1, metric)
+            except Exception:
+                pass
 
         nums = [float(n) for n in re.findall(r"\b[\d.]+\b", expression)]
         if len(nums) >= 2:
             return get_geometry_distractors(shape, nums[0], nums[1], metric)
+        elif len(nums) == 1 and shape == "square":
+            return get_geometry_distractors(shape, nums[0], nums[0], metric)
         return get_geometry_distractors("rectangle", 5.0, 4.0, "area")
+
+    # 6. Factors and Multiples (CBSE)
+    elif q_type == QuestionType.FACTORS_MULTIPLES or template.topic.lower() == "factors_multiples":
+        target_type = "prime_factors" if "prime" in template.stem.lower() else ("multiples" if "multiple" in template.stem.lower() else "factors")
+        n_val = 12
+        if operands:
+            try:
+                n_val = int(operands[0])
+            except Exception:
+                pass
+        else:
+            found_nums = [int(n) for n in re.findall(r"\b\d+\b", expression)]
+            if found_nums:
+                n_val = found_nums[0]
+        return get_factors_multiples_distractors(n=n_val, correct_answer=true_str, target_type=target_type)
+
+    # 7. LCM and GCD / HCF (CBSE)
+    elif q_type == QuestionType.LCM_GCD or "lcm" in template.stem.lower() or "gcd" in template.stem.lower() or "hcf" in template.stem.lower():
+        target_type = "lcm" if "lcm" in template.stem.lower() or "lcm" in expression.lower() else "gcd"
+        nums = [int(n) for n in re.findall(r"\b\d+\b", expression)]
+        if len(nums) >= 2:
+            return get_lcm_gcd_distractors(a=nums[0], b=nums[1], target_type=target_type)
+        return get_lcm_gcd_distractors(a=12, b=18, target_type=target_type)
 
     return get_fraction_add_sub_distractors(true_val, Fraction(1, 2), "+")
 
@@ -247,6 +291,7 @@ def build_question_pipeline(
     grade: int,
     topic: str,
     tier: Tier | str,
+    board: str = "georgia",
     llm_func=generate_question_template,
 ) -> tuple[Question, int, float, bool]:
     """Execute the full question building pipeline with repair retries and fallback.
@@ -257,6 +302,10 @@ def build_question_pipeline(
     start_time = time.perf_counter()
     tier_obj = tier if isinstance(tier, Tier) else Tier(str(tier).lower())
     from app.services.rag import format_standards_for_prompt, retrieve_standards
+
+    # Look up curriculum pack topic config for standard alignment
+    topic_cfg = curriculum_service.get_topic_config(board, grade, topic)
+    fallback_standard = topic_cfg.standard_code if topic_cfg else (f"MGSE{grade}.NF.1" if topic == "fractions" else f"MGSE{grade}.OA.1")
 
     prompt_template = load_prompt_template()
     standards = retrieve_standards(query=topic, topic=topic, grade=grade, limit=2)
@@ -318,6 +367,20 @@ def build_question_pipeline(
         )
         elapsed_ms = (time.perf_counter() - start_time) * 1000
         fallback_q = get_fallback_question(grade, topic, tier_obj)
+        if fallback_q.board != board or fallback_q.grade != grade:
+            fallback_q = Question(
+                id=fallback_q.id,
+                board=board,
+                topic=fallback_q.topic,
+                grade=grade,
+                tier=fallback_q.tier,
+                stem=fallback_q.stem,
+                expression=fallback_q.expression,
+                options=fallback_q.options,
+                correct_option_id=fallback_q.correct_option_id,
+                explanation=fallback_q.explanation,
+                standard_code=fallback_standard,
+            )
         return fallback_q, max_retries, elapsed_ms, True
 
     # Step 4: Build Options and Distractors (Rule 3)
@@ -358,6 +421,7 @@ def build_question_pipeline(
 
         question = Question(
             id=question_id,
+            board=board,
             topic=template.topic,
             grade=grade,
             tier=template.tier,
@@ -366,7 +430,7 @@ def build_question_pipeline(
             options=options,
             correct_option_id=correct_option_id,
             explanation=explanation,
-            standard_code=template.standard_code,
+            standard_code=template.standard_code or fallback_standard,
         )
         register_question(question)
         elapsed_ms = (time.perf_counter() - start_time) * 1000
@@ -376,6 +440,20 @@ def build_question_pipeline(
         logger.error("Option generation failed: %s. Using fallback.", exc)
         elapsed_ms = (time.perf_counter() - start_time) * 1000
         fallback_q = get_fallback_question(grade, topic, tier_obj)
+        if fallback_q.board != board or fallback_q.grade != grade:
+            fallback_q = Question(
+                id=fallback_q.id,
+                board=board,
+                topic=fallback_q.topic,
+                grade=grade,
+                tier=fallback_q.tier,
+                stem=fallback_q.stem,
+                expression=fallback_q.expression,
+                options=fallback_q.options,
+                correct_option_id=fallback_q.correct_option_id,
+                explanation=fallback_q.explanation,
+                standard_code=fallback_standard,
+            )
         return fallback_q, max_retries, elapsed_ms, True
 
 
@@ -384,6 +462,7 @@ def build_questions_batch(
     topic: str,
     tier: Tier | str,
     count: int = 10,
+    board: str = "georgia",
     llm_func=generate_question_template,
 ) -> tuple[list[Question], int, float]:
     """Generate a batch of verified questions (e.g. 10 for a full round).
@@ -395,7 +474,13 @@ def build_questions_batch(
     total_retries = 0
 
     for _ in range(count):
-        q, retries, _, _ = build_question_pipeline(grade, topic, tier, llm_func=llm_func)
+        q, retries, _, _ = build_question_pipeline(
+            grade=grade,
+            topic=topic,
+            tier=tier,
+            board=board,
+            llm_func=llm_func,
+        )
         questions.append(q)
         total_retries += retries
 
