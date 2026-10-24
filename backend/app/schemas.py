@@ -159,6 +159,13 @@ class AnswerSubmission(BaseModel):
         float | None,
         Field(default=None, ge=0.0, le=3600.0, description="Optional time spent answering in seconds"),
     ] = None
+    board: Annotated[
+        str,
+        Field(
+            default="georgia",
+            description="Curriculum board identifier, e.g. 'georgia', 'cbse'",
+        ),
+    ] = "georgia"
     topic: Annotated[str | None, Field(default=None, description="Topic of the question")] = None
     tier: Annotated[Tier, Field(default=Tier.MEDIUM, description="Current difficulty tier")] = Tier.MEDIUM
     hints_used: Annotated[int, Field(default=0, ge=0, le=3, description="Number of hints used on this problem (0-3)")] = 0
@@ -201,6 +208,7 @@ class AnswerResult(BaseModel):
     new_mastery: Annotated[float, Field(default=50.0, ge=0, le=100, description="Updated topic mastery score (0-100)")] = 50.0
     new_badges: list[str] = Field(default_factory=list, description="Newly unlocked badges")
     streak: Annotated[int, Field(default=0, ge=0, description="Updated consecutive correct answer streak")] = 0
+    board: Annotated[str, Field(default="georgia", description="Curriculum board identifier")] = "georgia"
 
 
 
