@@ -41,7 +41,7 @@
           <span class="text-2xl sm:text-3xl group-hover:scale-110 transition-transform" aria-hidden="true">🎮</span>
           <div class="leading-none">
             <span class="text-indigo-700 font-extrabold">MathQuest</span>
-            <span class="text-amber-600 text-sm sm:text-lg block sm:inline sm:ml-1 font-bold">Georgia</span>
+            <span class="text-amber-600 text-sm sm:text-lg block sm:inline sm:ml-1 font-bold">{{ sessionStore.board === 'cbse' ? 'CBSE' : 'Georgia' }}</span>
           </div>
         </NuxtLink>
 
@@ -115,7 +115,9 @@
     <footer class="bg-white border-t-2 border-slate-200 py-6 text-center text-xs text-slate-600" role="contentinfo">
       <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-1.5 text-slate-700 font-semibold flex-wrap justify-center">
-          <span>Georgia Standards of Excellence (MGSE)</span>
+          <span>Georgia Standards (MGSE)</span>
+          <span aria-hidden="true">•</span>
+          <span>CBSE Class 6 (NCERT)</span>
           <span aria-hidden="true">•</span>
           <span>Grades 5 & 6</span>
         </div>
