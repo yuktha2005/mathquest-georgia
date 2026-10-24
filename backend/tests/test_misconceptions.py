@@ -7,9 +7,12 @@ import pytest
 from app.services.misconceptions import (
     MisconceptionDistractor,
     get_decimal_distractors,
+    get_factors_multiples_distractors,
     get_fraction_add_sub_distractors,
     get_fraction_mult_div_distractors,
     get_geometry_distractors,
+    get_lcm_gcd_distractors,
+    get_parallelogram_distractors,
     get_ratio_distractors,
 )
 from app.services.verify import format_answer
@@ -238,3 +241,147 @@ def test_geometry_triangle_area_forgot_to_halve() -> None:
     forgot_halve_d = next(d for d in distractors if d.misconception_tag == "forgot_to_halve_triangle")
     assert forgot_halve_d.text == "24"
     assert "A triangle is half of a rectangle" in forgot_halve_d.feedback
+
+
+# ============================================================================
+# 6. Additional Geometry Tests: Square & Parallelogram
+# ============================================================================
+
+def test_geometry_square_area_misconceptions() -> None:
+    """Test square area distractors: side 5 -> correct 25, perimeter distractor 20."""
+    distractors = get_geometry_distractors(
+        shape="square",
+        dim1=5.0,
+        target_metric="area",
+    )
+    assert_distractor_invariants(distractors, "25")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "confused_area_perimeter" in tags
+    assert "doubled_side" in tags
+
+    confused_d = next(d for d in distractors if d.misconception_tag == "confused_area_perimeter")
+    assert confused_d.text == "20"  # 4 * 5
+
+
+def test_geometry_square_perimeter_misconceptions() -> None:
+    """Test square perimeter distractors: side 4 -> correct 16."""
+    distractors = get_geometry_distractors(
+        shape="square",
+        dim1=4.0,
+        target_metric="perimeter",
+    )
+    # Correct perimeter is 16, area is also 16, so finalize_distractors ensures non-equal distractors
+    assert_distractor_invariants(distractors, "16")
+
+    # With side=6: perimeter=24, area=36
+    distractors_6 = get_geometry_distractors(shape="square", dim1=6.0, target_metric="perimeter")
+    assert_distractor_invariants(distractors_6, "24")
+    tags_6 = {d.misconception_tag for d in distractors_6}
+    assert "confused_area_perimeter" in tags_6
+    confused_d = next(d for d in distractors_6 if d.misconception_tag == "confused_area_perimeter")
+    assert confused_d.text == "36"
+
+
+def test_geometry_parallelogram_area_misconceptions() -> None:
+    """Test parallelogram area: base 8, height 5 -> correct 40, triangle halving error 20."""
+    distractors = get_geometry_distractors(
+        shape="parallelogram",
+        dim1=8.0,
+        dim2=5.0,
+        target_metric="area",
+    )
+    assert_distractor_invariants(distractors, "40")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "halved_like_triangle" in tags
+    halved_d = next(d for d in distractors if d.misconception_tag == "halved_like_triangle")
+    assert halved_d.text == "20"
+
+
+def test_geometry_parallelogram_perimeter_misconceptions() -> None:
+    """Test parallelogram perimeter: base 10, side 4 -> correct 28."""
+    distractors = get_parallelogram_distractors(
+        base=10.0,
+        height=3.0,
+        side=4.0,
+        target_metric="perimeter",
+    )
+    assert_distractor_invariants(distractors, "28")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "confused_area_perimeter" in tags or "forgot_other_sides" in tags
+
+
+# ============================================================================
+# 7. Number Theory: Factors & Multiples Tests (CBSE Class 6)
+# ============================================================================
+
+def test_factors_misconceptions() -> None:
+    """Test factor questions: n=12, correct=6 -> distractor includes multiple 24."""
+    distractors = get_factors_multiples_distractors(n=12, correct_answer=6, target_type="factors")
+    assert_distractor_invariants(distractors, "6")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "confused_factor_multiple" in tags
+    multiple_d = next(d for d in distractors if d.misconception_tag == "confused_factor_multiple")
+    assert multiple_d.text == "24"
+
+
+def test_multiples_misconceptions() -> None:
+    """Test multiple questions: n=6, correct=18 -> distractor includes factor 2."""
+    distractors = get_factors_multiples_distractors(n=6, correct_answer=18, target_type="multiples")
+    assert_distractor_invariants(distractors, "18")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "confused_factor_multiple" in tags
+    factor_d = next(d for d in distractors if d.misconception_tag == "confused_factor_multiple")
+    assert factor_d.text == "2"
+
+
+def test_prime_factors_misconceptions() -> None:
+    """Test prime factor questions: n=12, correct=3 -> distractor includes composite factor 4 and non-prime 1."""
+    distractors = get_factors_multiples_distractors(n=12, correct_answer=3, target_type="prime_factors")
+    assert_distractor_invariants(distractors, "3")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "included_composite_factor" in tags
+    assert "one_is_not_prime" in tags
+
+
+# ============================================================================
+# 8. Number Theory: LCM & GCD / HCF Tests (CBSE Class 6)
+# ============================================================================
+
+def test_lcm_misconceptions() -> None:
+    """Test LCM: a=4, b=6 -> correct 12, GCD error 2, multiplication error 24."""
+    distractors = get_lcm_gcd_distractors(a=4, b=6, target_type="lcm")
+    assert_distractor_invariants(distractors, "12")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "confused_lcm_gcd" in tags
+    assert "multiplied_numbers_instead_of_lcm" in tags
+
+    gcd_d = next(d for d in distractors if d.misconception_tag == "confused_lcm_gcd")
+    assert gcd_d.text == "2"
+
+    mult_d = next(d for d in distractors if d.misconception_tag == "multiplied_numbers_instead_of_lcm")
+    assert mult_d.text == "24"
+
+
+def test_gcd_and_hcf_misconceptions() -> None:
+    """Test GCD / HCF: a=12, b=18 -> correct 6, LCM error 36, non-greatest factor 2."""
+    distractors = get_lcm_gcd_distractors(a=12, b=18, target_type="gcd")
+    assert_distractor_invariants(distractors, "6")
+
+    tags = {d.misconception_tag for d in distractors}
+    assert "confused_lcm_gcd" in tags
+    assert "chose_common_factor_not_greatest" in tags
+
+    lcm_d = next(d for d in distractors if d.misconception_tag == "confused_lcm_gcd")
+    assert lcm_d.text == "36"
+
+    # Also test HCF alias
+    hcf_distractors = get_lcm_gcd_distractors(a=12, b=18, target_type="hcf")
+    assert_distractor_invariants(hcf_distractors, "6")
+
