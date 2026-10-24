@@ -31,14 +31,15 @@ def test_post_api_script_returns_6_slides():
 
 
 def test_post_api_script_all_topics():
-    """Verify script generation across all 4 topics for Grade 6."""
-    topics = ["fractions", "decimals", "ratios", "geometry"]
+    """Verify script generation across all 6 topics for Grade 6."""
+    topics = ["fractions", "decimals", "ratios", "geometry", "factors_multiples", "integers"]
     for t in topics:
         res = client.post("/api/script", json={"grade": 6, "topic": t})
         assert res.status_code == 200
         d = res.json()
         assert len(d["slides"]) == 6
         assert d["topic"] == t
+
 
 
 def test_post_api_script_caching():
