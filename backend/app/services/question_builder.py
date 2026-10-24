@@ -95,28 +95,49 @@ def get_fallback_question(
     grade: int,
     topic: str,
     tier: Tier | str,
+    board: str = "georgia",
 ) -> Question:
-    """Return a verified question from data/fallback_bank.json matching topic and tier."""
+    """Return a verified question from data/fallback_bank.json matching topic, tier, and board."""
     items = load_fallback_bank()
     tier_str = tier.value if isinstance(tier, Tier) else str(tier).lower()
     topic_str = topic.lower()
+    board_str = board.lower()
 
-    # Filter by topic and tier
+    # 1. Filter by board, topic, and tier
     matching = [
         item for item in items
-        if item.get("topic", "").lower() == topic_str and item.get("tier", "").lower() == tier_str
+        if item.get("board", "georgia").lower() == board_str
+        and item.get("topic", "").lower() == topic_str
+        and item.get("tier", "").lower() == tier_str
     ]
 
-    # If no exact match, filter by topic only
+    # 2. Filter by topic and tier (cross-board fallback)
+    if not matching:
+        matching = [
+            item for item in items
+            if item.get("topic", "").lower() == topic_str
+            and item.get("tier", "").lower() == tier_str
+        ]
+
+    # 3. Filter by board and topic
+    if not matching:
+        matching = [
+            item for item in items
+            if item.get("board", "georgia").lower() == board_str
+            and item.get("topic", "").lower() == topic_str
+        ]
+
+    # 4. Filter by topic only
     if not matching:
         matching = [item for item in items if item.get("topic", "").lower() == topic_str]
 
-    # If still none, use entire bank
+    # 5. If still none, use entire bank
     pool = matching if matching else items
     chosen_dict = random.choice(pool).copy()
 
     # Assign a unique session ID while retaining question integrity
     chosen_dict["id"] = f"{chosen_dict['id']}-{uuid.uuid4().hex[:6]}"
+    chosen_dict["board"] = board_str
     q = Question.model_validate(chosen_dict)
     return register_question(q)
 
@@ -318,6 +339,13 @@ def build_question_pipeline(
         standards_context=standards_ctx,
     )
 
+    if board.lower() == "cbse":
+        base_prompt = (
+            f"CURRICULUM BOARD: CBSE Class {grade} (NCERT Ganita Prakash)\n"
+            f"TARGET TOPIC: {topic} (Standard: {fallback_standard})\n\n"
+            f"{base_prompt}"
+        )
+
     current_prompt = base_prompt
     retries = 0
     max_retries = 2
@@ -366,7 +394,7 @@ def build_question_pipeline(
             max_retries + 1,
         )
         elapsed_ms = (time.perf_counter() - start_time) * 1000
-        fallback_q = get_fallback_question(grade, topic, tier_obj)
+        fallback_q = get_fallback_question(grade, topic, tier_obj, board=board)
         if fallback_q.board != board or fallback_q.grade != grade:
             fallback_q = Question(
                 id=fallback_q.id,
@@ -439,7 +467,7 @@ def build_question_pipeline(
     except Exception as exc:
         logger.error("Option generation failed: %s. Using fallback.", exc)
         elapsed_ms = (time.perf_counter() - start_time) * 1000
-        fallback_q = get_fallback_question(grade, topic, tier_obj)
+        fallback_q = get_fallback_question(grade, topic, tier_obj, board=board)
         if fallback_q.board != board or fallback_q.grade != grade:
             fallback_q = Question(
                 id=fallback_q.id,
