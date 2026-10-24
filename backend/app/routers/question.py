@@ -35,12 +35,14 @@ def create_question(request: Request, payload: QuestionRequest) -> Question | Ba
             topic=payload.topic,
             tier=payload.tier,
             count=payload.count,
+            board=payload.board,
         )
         logger.info(
-            "POST /api/question (batch %d) completed in %.2fms | total retries: %d | topic: %s | tier: %s",
+            "POST /api/question (batch %d) completed in %.2fms | total retries: %d | board: %s | topic: %s | tier: %s",
             len(questions),
             latency_ms,
             total_retries,
+            payload.board,
             payload.topic,
             payload.tier.value,
         )
@@ -55,13 +57,15 @@ def create_question(request: Request, payload: QuestionRequest) -> Question | Ba
         grade=payload.grade,
         topic=payload.topic,
         tier=payload.tier,
+        board=payload.board,
     )
 
     logger.info(
-        "POST /api/question completed in %.2fms | retries: %d | fallback: %s | topic: %s | tier: %s | id: %s",
+        "POST /api/question completed in %.2fms | retries: %d | fallback: %s | board: %s | topic: %s | tier: %s | id: %s",
         latency_ms,
         retries,
         used_fallback,
+        payload.board,
         payload.topic,
         payload.tier.value,
         question.id,
@@ -80,12 +84,14 @@ def create_question_batch(request: Request, payload: QuestionRequest) -> BatchQu
         topic=payload.topic,
         tier=payload.tier,
         count=count,
+        board=payload.board,
     )
     logger.info(
-        "POST /api/question/batch (%d questions) completed in %.2fms | total retries: %d",
+        "POST /api/question/batch (%d questions) completed in %.2fms | total retries: %d | board: %s",
         len(questions),
         latency_ms,
         total_retries,
+        payload.board,
     )
     return BatchQuestionResponse(
         questions=questions,
