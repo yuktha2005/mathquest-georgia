@@ -83,8 +83,12 @@ def calculate_flesch_kincaid_grade(text: str) -> float:
 
 
 def check_standard_code(code: str, topic: str, grade: int) -> bool:
-    """Check if standard_code matches an authentic Georgia MGSE code for grade & topic."""
-    if not code or not code.startswith("MGSE"):
+    """Check if standard_code matches an authentic Georgia MGSE code or CBSE code for grade & topic."""
+    if not code:
+        return False
+    if code.startswith("CBSE"):
+        return f"CBSE{grade}" in code
+    if not code.startswith("MGSE"):
         return False
     # Validate grade digit in code
     grade_match = re.search(r"MGSE(\d)\.([A-Z0-9]+)", code)
@@ -97,9 +101,12 @@ def check_standard_code(code: str, topic: str, grade: int) -> bool:
         "decimals": ["NBT", "NS"],
         "ratios": ["RP", "OA", "NF"],
         "geometry": ["G", "MD"],
+        "factors_multiples": ["MATH", "NS"],
+        "integers": ["MATH", "NS"],
     }
     prefixes = valid_prefixes.get(topic.lower(), [])
     return any(domain_code.startswith(p) for p in prefixes)
+
 
 
 def load_prompt_by_version(version: str) -> str:
