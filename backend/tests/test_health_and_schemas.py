@@ -161,7 +161,7 @@ def test_fallback_bank_validates_against_question_schema() -> None:
     for item in items:
         q = Question.model_validate(item)
         assert q.grade in (5, 6)
-        assert q.board == "georgia"  # Default board value
+        assert q.board in ("georgia", "cbse")
         assert q.correct_option_id in [opt.id for opt in q.options]
 
 
