@@ -17,6 +17,10 @@ services:
         value: 3.11.9
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
+      - key: GEMINI_MODEL_ALT
+        value: gemini-2.5-pro
+      - key: GEMINI_EMBED_MODEL
+        value: text-embedding-004
       - key: GEMINI_API_KEY
         sync: false
       - key: FRONTEND_URL
