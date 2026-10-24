@@ -351,7 +351,7 @@ const grade = computed<GradeLevel>(() => {
 
 const topic = computed<TopicType>(() => {
   const t = String(route.params.topic).toLowerCase()
-  if (['fractions', 'decimals', 'ratios', 'geometry'].includes(t)) {
+  if (['fractions', 'decimals', 'ratios', 'geometry', 'factors_multiples', 'integers'].includes(t)) {
     return t as TopicType
   }
   return 'fractions'
@@ -413,6 +413,16 @@ const metaData = {
       grade.value === 5
         ? 'Understand area, perimeter, and calculate volume of rectangular prisms (V = l × w × h).'
         : 'Find the area of triangles, special quadrilaterals, and composite polygons.',
+  },
+  factors_multiples: {
+    title: 'Factors & Multiples Outpost',
+    emoji: '🔢',
+    subtitle: 'Master prime factorization, lowest common multiple (LCM), and highest common factor (HCF/GCD).',
+  },
+  integers: {
+    title: 'Integers Frontier',
+    emoji: '🏔️',
+    subtitle: 'Explore negative numbers, absolute values, number lines, and integer arithmetic.',
   },
 }
 
@@ -530,7 +540,7 @@ const startQuest = async () => {
   sessionStore.setTopic(topic.value)
 
   try {
-    const res = await fetchRoundBatch(grade.value, topic.value, sessionStore.tier, 10)
+    const res = await fetchRoundBatch(grade.value, topic.value, sessionStore.tier, 10, sessionStore.board)
     sessionStore.startRound(res.questions)
     router.push('/quiz')
   } catch (err) {
