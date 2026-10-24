@@ -40,10 +40,43 @@ MISCONCEPTION_FEEDBACK_MAP: dict[str, str] = {
     # Ratios
     "added_instead_of_scaled": "Ratios scale by multiplying or dividing, not by adding or subtracting the same number.",
     "inverted_ratio": "Watch the order of terms in your ratio! The first quantity must match the first number.",
+    # Factors & Multiples (CBSE)
+    "added_numbers": "Factors and multiples are found through multiplication and division, not addition!",
+    "composite_not_prime": "Be careful! That number is composite because it has more than two factors. A prime number has only 1 and itself.",
+    "composite_factor": "Remember that prime factors must only be divisible by 1 and themselves.",
+    "other_prime_factor": "That is a prime factor, but check if there is a smaller one that fits the question!",
+    "missed_one_factor": "Count all factors carefully by listing factor pairs from smallest to largest.",
+    "counted_composite": "Make sure you only count prime factors, not composite ones.",
+    "largest_factor": "Check whether the question asked for the smallest prime factor, the HCF, or the count of factors.",
+    "common_factor_not_greatest": "That is a common factor, but check if there is a larger (highest) common factor!",
+    "small_factor": "Look for larger common factors that divide both numbers evenly.",
+    "hcf_instead_of_lcm": "LCM is the smallest multiple shared by both numbers, not the highest common factor (HCF)!",
+    "lcm_confusion": "Make sure to find the HCF (highest factor that divides both), not the LCM!",
+    "product_without_dividing_gcd": "To find the LCM, divide the product of the two numbers by their greatest common divisor (GCD).",
+    "multiple_of_15_not_12": "Check that your multiple is divisible by BOTH numbers, not just one of them.",
+    # Integers (CBSE)
+    "wrong_sign_add": "When adding a positive to a negative, move right on the number line toward the positive numbers.",
+    "ignored_negative": "Pay attention to the negative sign! Negative numbers decrease the total value.",
+    "sign_flip": "Check the sign of the number with the larger absolute value to determine the result's sign.",
+    "subtracted_magnitudes": "When subtracting a positive from a negative (like -7 - 4), you move further left into the negatives (-11).",
+    "wrong_sign": "Remember: a negative minus a positive results in an even smaller negative number.",
+    "sign_error": "Watch your signs! Adding a negative number is equivalent to subtracting.",
+    "added_magnitudes": "Don't just add the numbers together; take their positive and negative signs into account.",
+    "added_positives": "Remember that the negative sign changes the calculation from simple positive addition.",
+    "treated_double_negative_as_minus": "Subtracting a negative number turns into addition! -(-x) is equal to +x.",
+    "all_positive": "Take negative values into account rather than treating all numbers as positive.",
+    "order_of_operations_confusion": "Work from left to right when evaluating addition and subtraction of integers.",
+    "added_all_magnitudes": "Follow the positive and negative signs on each integer rather than adding all values together.",
+    "added_before_multiply": "Remember order of operations (PEMDAS / BODMAS): multiply before adding or subtracting!",
+    "wrong_operations": "Check whether each step involves multiplication or addition.",
     # Geometry
     "confused_area_perimeter": "Area measures the space inside (length × width), while perimeter measures the distance around the outside.",
     "forgot_to_halve_triangle": "Remember the triangle area formula: Area = (base × height) ÷ 2! Don't forget to divide by 2.",
     "double_counted": "Make sure you did not accidentally double your final measurement.",
+    "halved_both_dimensions": "Only divide by 2 once when finding triangle area (base × height ÷ 2), not both dimensions.",
+    "added_dimensions": "To find area, multiply the dimensions together; don't just add them!",
+    "square_confused_perimeter_with_area": "For a square, Area is side × side (s²), while Perimeter is 4 × side.",
+    "parallelogram_used_side_instead_of_height": "For a parallelogram, Area = base × perpendicular height, not the slant side length!",
 }
 
 DEFAULT_MISCONCEPTION_FEEDBACK = (
@@ -206,11 +239,51 @@ def badges(session_stats: dict) -> list[str]:
     if fraction_mastery >= 80 or fractions_correct >= 5:
         unlocked.append("Fraction Master")
 
-    # 4. Comeback Kid
+    # 4. Decimal Dynamo
+    decimal_mastery = session_stats.get("decimal_mastery", 0)
+    if isinstance(topic_mastery, dict):
+        decimal_mastery = max(decimal_mastery, topic_mastery.get("decimals", 0))
+    decimals_correct = session_stats.get("decimals_correct", 0)
+    if decimal_mastery >= 80 or decimals_correct >= 5:
+        unlocked.append("Decimal Dynamo")
+
+    # 5. Ratio Ranger
+    ratio_mastery = session_stats.get("ratio_mastery", 0)
+    if isinstance(topic_mastery, dict):
+        ratio_mastery = max(ratio_mastery, topic_mastery.get("ratios", 0))
+    ratios_correct = session_stats.get("ratios_correct", 0)
+    if ratio_mastery >= 80 or ratios_correct >= 5:
+        unlocked.append("Ratio Ranger")
+
+    # 6. Geometry Giant
+    geometry_mastery = session_stats.get("geometry_mastery", 0)
+    if isinstance(topic_mastery, dict):
+        geometry_mastery = max(geometry_mastery, topic_mastery.get("geometry", 0))
+    geometry_correct = session_stats.get("geometry_correct", 0)
+    if geometry_mastery >= 80 or geometry_correct >= 5:
+        unlocked.append("Geometry Giant")
+
+    # 7. CBSE Champion
+    cbse_mastery = session_stats.get("cbse_mastery", 0)
+    if isinstance(topic_mastery, dict):
+        cbse_mastery = max(
+            cbse_mastery,
+            topic_mastery.get("factors_multiples", 0),
+            topic_mastery.get("integers", 0),
+        )
+    cbse_correct = session_stats.get("cbse_correct", 0)
+    if cbse_mastery >= 80 or cbse_correct >= 5:
+        unlocked.append("CBSE Champion")
+
+    # 8. Tenacious Thinker (solved a HARD question)
+    if session_stats.get("solved_hard", False) is True:
+        unlocked.append("Tenacious Thinker")
+
+    # 9. Comeback Kid
     if session_stats.get("comeback", False) is True:
         unlocked.append("Comeback Kid")
 
-    # 5. Perfect Round
+    # 10. Perfect Round
     round_total = session_stats.get("round_total", 0)
     round_correct = session_stats.get("round_correct", 0)
     round_wrong = session_stats.get("round_wrong", 0)
@@ -311,11 +384,34 @@ def evaluate_submission(submission: AnswerSubmission) -> AnswerResult:
     if len(submission.history) >= 1 and submission.history[-1] is False and is_correct:
         stats["comeback"] = True
 
-    # Fractions tracking
-    if topic.lower() == "fractions":
+    # Topic, tier, and board tracking for badges
+    topic_str = topic.lower()
+    board_str = (getattr(submission, "board", None) or (question.board if question else "georgia")).lower()
+
+    if is_correct and tier == Tier.HARD:
+        stats["solved_hard"] = True
+
+    if topic_str == "fractions":
         stats["fraction_mastery"] = new_mastery
         if is_correct:
             stats["fractions_correct"] = stats.get("fractions_correct", 0) + 1
+    elif topic_str == "decimals":
+        stats["decimal_mastery"] = new_mastery
+        if is_correct:
+            stats["decimals_correct"] = stats.get("decimals_correct", 0) + 1
+    elif topic_str == "ratios":
+        stats["ratio_mastery"] = new_mastery
+        if is_correct:
+            stats["ratios_correct"] = stats.get("ratios_correct", 0) + 1
+    elif topic_str == "geometry":
+        stats["geometry_mastery"] = new_mastery
+        if is_correct:
+            stats["geometry_correct"] = stats.get("geometry_correct", 0) + 1
+
+    if board_str == "cbse" or topic_str in ("factors_multiples", "integers"):
+        stats["cbse_mastery"] = max(stats.get("cbse_mastery", 0.0), new_mastery)
+        if is_correct:
+            stats["cbse_correct"] = stats.get("cbse_correct", 0) + 1
 
     already_earned = list(stats.get("earned_badges", []))
     newly_earned = get_new_badges(stats, already_earned)
@@ -333,4 +429,5 @@ def evaluate_submission(submission: AnswerSubmission) -> AnswerResult:
         new_mastery=new_mastery,
         new_badges=newly_earned,
         streak=new_streak,
+        board=board_str,
     )
