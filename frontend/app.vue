@@ -141,7 +141,7 @@ const isDyslexic = ref(false)
 
 const toggleDyslexiaFont = () => {
   isDyslexic.value = !isDyslexic.value
-  if (process.client) {
+  if (import.meta.client) {
     if (isDyslexic.value) {
       document.documentElement.classList.add('dyslexia-font')
       localStorage.setItem('mathquest_dyslexia_font', 'true')
@@ -156,7 +156,7 @@ onMounted(async () => {
   sessionStore.loadFromStorage()
 
   // Load dyslexia font preference
-  if (process.client) {
+  if (import.meta.client) {
     const savedDyslexia = localStorage.getItem('mathquest_dyslexia_font')
     if (savedDyslexia === 'true') {
       isDyslexic.value = true
