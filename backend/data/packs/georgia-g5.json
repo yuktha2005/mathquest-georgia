@@ -1,0 +1,159 @@
+{
+  "board": "georgia",
+  "board_name": "Georgia Standards of Excellence (MGSE)",
+  "grade": 5,
+  "version": "1.0.0",
+  "verified": true,
+  "topics": [
+    {
+      "id": "fractions",
+      "title": "Fractions: Addition & Subtraction",
+      "description": "Add and subtract fractions with like and unlike denominators, including mixed numbers and word problems.",
+      "standard_code": "MGSE5.NF.1",
+      "standard_title": "Add and subtract fractions with unlike denominators",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Like denominators up to 12, simple fraction addition and subtraction",
+          "operands_range": {
+            "min_denom": 2,
+            "max_denom": 12,
+            "like_denominators": true
+          },
+          "example_expression": "1/4 + 2/4"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Unlike denominators with small common multiples (halves, thirds, fourths, sixths)",
+          "operands_range": {
+            "min_denom": 2,
+            "max_denom": 12,
+            "like_denominators": false
+          },
+          "example_expression": "1/2 + 1/3"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Mixed numbers and subtraction with regrouping",
+          "operands_range": {
+            "allow_mixed": true,
+            "max_whole": 5,
+            "min_denom": 3,
+            "max_denom": 12
+          },
+          "example_expression": "2 1/3 - 1 1/2"
+        }
+      }
+    },
+    {
+      "id": "decimals",
+      "title": "Decimals: Place Value & Operations",
+      "description": "Add, subtract, and multiply decimals to hundredths using place value reasoning.",
+      "standard_code": "MGSE5.NBT.7",
+      "standard_title": "Operations with decimals to hundredths",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Tenths place addition and subtraction without regrouping",
+          "operands_range": {
+            "decimal_places": 1,
+            "allow_regrouping": false
+          },
+          "example_expression": "1.2 + 2.5"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Tenths and hundredths addition and subtraction with regrouping",
+          "operands_range": {
+            "decimal_places": 2,
+            "allow_regrouping": true
+          },
+          "example_expression": "2.75 + 1.48"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Decimal subtraction with trailing placeholder zeros and mixed digits",
+          "operands_range": {
+            "decimal_places": 2,
+            "requires_placeholder_zero": true
+          },
+          "example_expression": "5.0 - 2.35"
+        }
+      }
+    },
+    {
+      "id": "ratios",
+      "title": "Scaling & Multiplicative Reasoning",
+      "description": "Compare quantities multiplicatively and understand scaling factors.",
+      "standard_code": "MGSE5.NF.5",
+      "standard_title": "Interpreting multiplication as scaling",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Whole number scaling by factors of 2, 3, or 5",
+          "operands_range": {
+            "min_scale": 2,
+            "max_scale": 5
+          },
+          "example_expression": "2 : 3 = 4 : 6"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Two-digit ratio terms with integer scaling factors",
+          "operands_range": {
+            "min_scale": 3,
+            "max_scale": 8
+          },
+          "example_expression": "3 : 4 = 15 : 20"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Scaling fractions and unit rates",
+          "operands_range": {
+            "fraction_scale": true
+          },
+          "example_expression": "4 : 6 = 10 : 15"
+        }
+      }
+    },
+    {
+      "id": "geometry",
+      "title": "Geometry: Area, Perimeter & Volume",
+      "description": "Calculate area and perimeter of 2D shapes and volume of rectangular prisms.",
+      "standard_code": "MGSE5.MD.5",
+      "standard_title": "Relate volume to multiplication and addition",
+      "verified": true,
+      "tier_rules": {
+        "easy": {
+          "tier": "easy",
+          "description": "Rectangle and square perimeter and area with whole number sides",
+          "operands_range": {
+            "min_side": 2,
+            "max_side": 15
+          },
+          "example_expression": "5 * 4"
+        },
+        "medium": {
+          "tier": "medium",
+          "description": "Triangle and rectangle area with fractional or decimal dimensions",
+          "operands_range": {
+            "min_dim": 2,
+            "max_dim": 20
+          },
+          "example_expression": "1/2 * 6 * 4"
+        },
+        "hard": {
+          "tier": "hard",
+          "description": "Composite shapes, missing dimensions, and perimeter vs area distinction",
+          "operands_range": {
+            "allow_decimals": true
+          },
+          "example_expression": "2 * (6.5 + 4.5)"
+        }
+      }
+    }
+  ]
+}
