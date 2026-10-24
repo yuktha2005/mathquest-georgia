@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import type { AnswerResultResponse, Question } from '~/composables/useApi'
 
 export type GradeLevel = 5 | 6
-export type TopicType = 'fractions' | 'decimals' | 'ratios' | 'geometry'
+export type BoardType = 'georgia' | 'cbse' | string
+export type TopicType = 'fractions' | 'decimals' | 'ratios' | 'geometry' | 'factors_multiples' | 'integers' | string
 export type TierType = 'easy' | 'medium' | 'hard'
 
 export interface RoundAnswerRecord {
@@ -16,6 +17,7 @@ export interface RoundAnswerRecord {
 }
 
 export interface SessionState {
+  board: BoardType
   grade: GradeLevel
   topic: TopicType
   tier: TierType
@@ -23,7 +25,7 @@ export interface SessionState {
   streak: number
   bestStreak: number
   history: boolean[]
-  mastery: Record<TopicType, number>
+  mastery: Record<string, number>
   badges: string[]
   roundQuestions: Question[]
   currentIndex: number
@@ -31,10 +33,11 @@ export interface SessionState {
   lastResult: AnswerResultResponse | null
 }
 
-const STORAGE_KEY = 'mathquest_georgia_session_v1'
+const STORAGE_KEY = 'mathquest_multi_curriculum_session_v2'
 
 export const useSessionStore = defineStore('session', {
   state: (): SessionState => ({
+    board: 'georgia',
     grade: 5,
     topic: 'fractions',
     tier: 'medium',
@@ -47,6 +50,8 @@ export const useSessionStore = defineStore('session', {
       decimals: 50.0,
       ratios: 50.0,
       geometry: 50.0,
+      factors_multiples: 50.0,
+      integers: 50.0,
     },
     badges: [],
     roundQuestions: [],
@@ -74,9 +79,30 @@ export const useSessionStore = defineStore('session', {
     currentTopicMastery: (state): number => {
       return state.mastery[state.topic] || 50.0
     },
+    boardTitle: (state): string => {
+      if (state.board === 'cbse') {
+        return 'CBSE Class 6 (NCERT Ganita Prakash)'
+      }
+      return `Georgia Standards of Excellence (MGSE) Grade ${state.grade}`
+    },
   },
 
   actions: {
+    setBoard(board: BoardType) {
+      this.board = board
+      if (board === 'cbse') {
+        this.grade = 6
+        if (!['factors_multiples', 'fractions', 'decimals', 'integers', 'ratios', 'geometry'].includes(this.topic)) {
+          this.topic = 'factors_multiples'
+        }
+      } else {
+        if (!['fractions', 'decimals', 'ratios', 'geometry'].includes(this.topic)) {
+          this.topic = 'fractions'
+        }
+      }
+      this.saveToStorage()
+    },
+
     setGrade(grade: GradeLevel) {
       this.grade = grade
       this.saveToStorage()
@@ -161,6 +187,8 @@ export const useSessionStore = defineStore('session', {
         decimals: 50.0,
         ratios: 50.0,
         geometry: 50.0,
+        factors_multiples: 50.0,
+        integers: 50.0,
       }
       this.badges = []
       this.roundQuestions = []
@@ -174,6 +202,7 @@ export const useSessionStore = defineStore('session', {
       if (import.meta.client) {
         try {
           const serialized = JSON.stringify({
+            board: this.board,
             grade: this.grade,
             topic: this.topic,
             tier: this.tier,
@@ -200,6 +229,7 @@ export const useSessionStore = defineStore('session', {
           const raw = localStorage.getItem(STORAGE_KEY)
           if (raw) {
             const data = JSON.parse(raw)
+            if (data.board) this.board = data.board
             if (data.grade) this.grade = data.grade
             if (data.topic) this.topic = data.topic
             if (data.tier) this.tier = data.tier
