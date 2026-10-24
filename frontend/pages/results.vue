@@ -240,8 +240,9 @@ const tierEmoji = computed(() => {
 
 const performanceMessage = computed(() => {
   const acc = sessionStore.roundAccuracyPercent
+  const champTitle = sessionStore.board === 'cbse' ? 'CBSE Math Champion!' : 'Georgia Math Champion!'
   if (acc === 100) {
-    return '🌟 Perfection! You conquered all 10 questions with zero errors! You are a Georgia Math Champion!'
+    return `🌟 Perfection! You conquered all 10 questions with zero errors! You are a ${champTitle}`
   }
   if (acc >= 80) {
     return '🚀 Outstanding Adventure! Your mathematical reasoning was razor sharp throughout this quest!'
@@ -260,6 +261,16 @@ const getBadgeEmoji = (badgeName: string): string => {
       return '🔥'
     case 'Fraction Master':
       return '🍕'
+    case 'Decimal Dynamo':
+      return '🎯'
+    case 'Ratio Ranger':
+      return '⚖️'
+    case 'Geometry Giant':
+      return '📐'
+    case 'CBSE Champion':
+      return '🇮🇳'
+    case 'Tenacious Thinker':
+      return '🧠'
     case 'Comeback Kid':
       return '⚡'
     case 'Perfect Round':
