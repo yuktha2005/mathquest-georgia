@@ -130,9 +130,14 @@ def retrieve_standards(
                     from google import genai
                     from google.genai import types
 
+                    embed_model = os.getenv("GEMINI_EMBED_MODEL")
+                    if not embed_model:
+                        logger.warning("GEMINI_EMBED_MODEL not set; using local markdown standards fallback.")
+                        return _local_standards_fallback(topic=topic, grade=grade, limit=limit)
+
                     client = genai.Client(api_key=gemini_api_key)
                     embed_res = client.models.embed_content(
-                        model="text-embedding-004",
+                        model=embed_model,
                         contents=search_query,
                         config=types.EmbedContentConfig(output_dimensionality=768),
                     )
