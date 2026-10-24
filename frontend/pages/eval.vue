@@ -2,13 +2,23 @@
   <div class="max-w-6xl mx-auto space-y-8 animate-pop pb-16">
     <!-- Header Navigation -->
     <div class="flex items-center justify-between flex-wrap gap-4">
-      <NuxtLink
-        to="/"
-        class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-indigo-600 transition bg-white px-4 py-2 rounded-2xl border-2 border-slate-200 shadow-sm"
-      >
-        <span class="text-lg">⬅️</span>
-        <span>Back to Quest Map</span>
-      </NuxtLink>
+      <div class="flex items-center gap-2">
+        <NuxtLink
+          to="/"
+          class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-indigo-600 transition bg-white px-4 py-2 rounded-2xl border-2 border-slate-200 shadow-sm"
+        >
+          <span class="text-lg">⬅️</span>
+          <span>Quest Map</span>
+        </NuxtLink>
+
+        <NuxtLink
+          to="/dashboard"
+          class="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-indigo-600 transition bg-white px-4 py-2 rounded-2xl border-2 border-slate-200 shadow-sm"
+        >
+          <span class="text-lg">🏠</span>
+          <span>Dashboard</span>
+        </NuxtLink>
+      </div>
 
       <div class="flex items-center gap-2">
         <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-xs flex items-center gap-1.5">
