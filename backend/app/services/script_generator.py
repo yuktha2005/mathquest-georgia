@@ -518,9 +518,9 @@ def get_topic_script(grade: int, topic: str) -> ScriptResponse:
 
     # 3. Dynamic generation with Gemini if available
     gemini_key = os.getenv("GEMINI_API_KEY")
-    gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    gemini_model = os.getenv("GEMINI_MODEL")
 
-    if gemini_key:
+    if gemini_key and gemini_model:
         try:
             from google import genai
             from google.genai import types
