@@ -374,3 +374,133 @@ def test_api_answer_fallback_question_lookup() -> None:
     assert data["is_correct"] is True
     assert data["points"] > 0
     assert data["correct_option_id"] == fallback_q.correct_option_id
+
+
+def test_cbse_misconception_feedback_diagnostics() -> None:
+    """Test that CBSE and geometry misconception tags produce specific diagnostic feedback."""
+    tags_to_test = [
+        "composite_not_prime",
+        "hcf_instead_of_lcm",
+        "wrong_sign_add",
+        "treated_double_negative_as_minus",
+        "square_confused_perimeter_with_area",
+        "parallelogram_used_side_instead_of_height",
+    ]
+    for tag in tags_to_test:
+        assert tag in MISCONCEPTION_FEEDBACK_MAP, f"Tag '{tag}' must have mapped diagnostic feedback"
+        feedback = MISCONCEPTION_FEEDBACK_MAP[tag]
+        assert len(feedback) > 10, f"Feedback for '{tag}' must be informative"
+
+
+def test_new_curriculum_badges_evaluation() -> None:
+    """Test evaluation and unlocking of Decimal Dynamo, Ratio Ranger, Geometry Giant, CBSE Champion, and Tenacious Thinker."""
+    # Decimal Dynamo
+    assert "Decimal Dynamo" in badges({"decimal_mastery": 85})
+    assert "Decimal Dynamo" in badges({"decimals_correct": 5})
+    assert "Decimal Dynamo" not in badges({"decimal_mastery": 50, "decimals_correct": 3})
+
+    # Ratio Ranger
+    assert "Ratio Ranger" in badges({"ratio_mastery": 80})
+    assert "Ratio Ranger" in badges({"ratios_correct": 5})
+    assert "Ratio Ranger" not in badges({"ratio_mastery": 70, "ratios_correct": 2})
+
+    # Geometry Giant
+    assert "Geometry Giant" in badges({"geometry_mastery": 90})
+    assert "Geometry Giant" in badges({"geometry_correct": 5})
+    assert "Geometry Giant" not in badges({"geometry_mastery": 60, "geometry_correct": 1})
+
+    # CBSE Champion
+    assert "CBSE Champion" in badges({"cbse_mastery": 82})
+    assert "CBSE Champion" in badges({"cbse_correct": 5})
+    assert "CBSE Champion" not in badges({"cbse_mastery": 40, "cbse_correct": 2})
+
+    # Tenacious Thinker
+    assert "Tenacious Thinker" in badges({"solved_hard": True})
+    assert "Tenacious Thinker" not in badges({"solved_hard": False})
+
+
+def test_api_answer_cbse_board_submission() -> None:
+    """Test submitting answer for CBSE question verifies board propagation and diagnostic feedback."""
+    test_cbse_q = Question(
+        id="test-cbse-adaptive-q1",
+        board="cbse",
+        topic="factors_multiples",
+        grade=6,
+        tier=Tier.EASY,
+        stem="Find the smallest prime factor of 12.",
+        expression="2",
+        options=[
+            Option(id="A", text="2"),
+            Option(id="B", text="4", misconception_tag="composite_not_prime"),
+            Option(id="C", text="6", misconception_tag="composite_factor"),
+            Option(id="D", text="3", misconception_tag="other_prime_factor"),
+        ],
+        correct_option_id="A",
+        explanation="The factors of 12 are 1, 2, 3, 4, 6, 12. The smallest prime factor is 2.",
+        standard_code="CBSE6.TH.1",
+    )
+    register_question(test_cbse_q)
+
+    # 1. Correct answer with board="cbse"
+    payload_correct = {
+        "question_id": "test-cbse-adaptive-q1",
+        "board": "cbse",
+        "selected_option_id": "A",
+        "current_mastery": 50.0,
+    }
+    resp1 = client.post("/api/answer", json=payload_correct)
+    assert resp1.status_code == 200
+    res1 = AnswerResult.model_validate(resp1.json())
+    assert res1.is_correct is True
+    assert res1.board == "cbse"
+
+    # 2. Incorrect answer choosing composite_not_prime
+    payload_wrong = {
+        "question_id": "test-cbse-adaptive-q1",
+        "board": "cbse",
+        "selected_option_id": "B",
+        "current_mastery": 50.0,
+    }
+    resp2 = client.post("/api/answer", json=payload_wrong)
+    assert resp2.status_code == 200
+    res2 = AnswerResult.model_validate(resp2.json())
+    assert res2.is_correct is False
+    assert res2.misconception_tag == "composite_not_prime"
+    assert "composite" in res2.misconception_feedback.lower()
+
+
+def test_api_answer_hard_tier_unlocks_tenacious_thinker() -> None:
+    """Test correctly answering a HARD tier problem awards Tenacious Thinker badge."""
+    test_hard_q = Question(
+        id="test-hard-q1",
+        board="georgia",
+        topic="fractions",
+        grade=6,
+        tier=Tier.HARD,
+        stem="Divide 3/4 by 2/3.",
+        expression="(3/4) / (2/3)",
+        options=[
+            Option(id="A", text="9/8"),
+            Option(id="B", text="1/2", misconception_tag="multiplied_instead_of_inverting"),
+            Option(id="C", text="8/9", misconception_tag="flipped_wrong_fraction"),
+            Option(id="D", text="6/12", misconception_tag="forgot_to_simplify_mult"),
+        ],
+        correct_option_id="A",
+        explanation="3/4 * 3/2 = 9/8.",
+        standard_code="MGSE6.NS.1",
+    )
+    register_question(test_hard_q)
+
+    payload = {
+        "question_id": "test-hard-q1",
+        "selected_option_id": "A",
+        "tier": "hard",
+        "current_mastery": 65.0,
+        "session_stats": {"total_answered": 4, "earned_badges": ["First Steps"]},
+    }
+    response = client.post("/api/answer", json=payload)
+    assert response.status_code == 200
+    res = AnswerResult.model_validate(response.json())
+    assert res.is_correct is True
+    assert "Tenacious Thinker" in res.new_badges
+
