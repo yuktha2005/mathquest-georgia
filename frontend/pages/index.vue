@@ -16,6 +16,15 @@
         <p class="text-white/90 text-sm sm:text-lg">
           Master curriculum-aligned math with smart adaptive feedback, earn XP points, and unlock heroic badges.
         </p>
+        <div class="pt-2 flex items-center gap-3">
+          <NuxtLink
+            to="/dashboard"
+            class="px-4 py-2 rounded-xl bg-white text-indigo-900 font-extrabold text-xs sm:text-sm hover:bg-slate-100 transition shadow inline-flex items-center gap-1.5"
+          >
+            <span>🏠</span>
+            <span>My Student Dashboard</span>
+          </NuxtLink>
+        </div>
       </div>
     </div>
 
