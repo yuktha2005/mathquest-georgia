@@ -1,5 +1,33 @@
 <template>
   <div class="max-w-4xl mx-auto space-y-8 animate-pop">
+    <!-- Unsaved Cloud Sync Notice -->
+    <div
+      v-if="hasUnsavedProgress"
+      class="bg-rose-50 border-2 border-rose-300 rounded-3xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+      role="alert"
+    >
+      <div class="flex items-center gap-3">
+        <span class="text-3xl shrink-0" aria-hidden="true">⚠️</span>
+        <div>
+          <h2 class="font-extrabold text-rose-900 text-sm sm:text-base">
+            Couldn't save, Retry
+          </h2>
+          <p class="text-xs text-rose-700 mt-0.5">
+            {{ syncError || "Network issue prevented saving to cloud. Your quiz data is safely stored on this device." }}
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        @click="handleRetrySync"
+        :disabled="isSyncing"
+        class="px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm text-white bg-rose-600 hover:bg-rose-700 active:scale-95 transition shadow disabled:opacity-50 flex items-center gap-2 shrink-0 cursor-pointer"
+      >
+        <span v-if="isSyncing" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+        <span>{{ isSyncing ? 'Saving...' : 'Retry Save 🔄' }}</span>
+      </button>
+    </div>
+
     <!-- Victory Hero Banner -->
     <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 rounded-3xl p-8 sm:p-12 text-white shadow-game-amber text-center relative overflow-hidden">
       <!-- Decorative background icon -->
@@ -207,10 +235,20 @@
       <NuxtLink
         to="/"
         aria-label="Return to territory map"
-        class="w-full sm:w-auto btn-game-white px-8 py-4 text-base sm:text-lg font-black shadow-game flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+        class="w-full sm:w-auto btn-game-white px-6 py-4 text-base font-black shadow-game flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
       >
         <span aria-hidden="true">🗺️</span>
-        <span>Choose Territory Map</span>
+        <span>Territory Map</span>
+      </NuxtLink>
+
+      <!-- Go to Dashboard -->
+      <NuxtLink
+        to="/dashboard"
+        aria-label="Go to student dashboard"
+        class="w-full sm:w-auto btn-game-white px-6 py-4 text-base font-black shadow-game flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+      >
+        <span aria-hidden="true">🏠</span>
+        <span>Dashboard</span>
       </NuxtLink>
     </div>
   </div>
@@ -221,11 +259,20 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import confetti from 'canvas-confetti'
 import { useSessionStore } from '~/stores/session'
+import { useProgressSync } from '~/composables/useProgressSync'
 
 const router = useRouter()
 const sessionStore = useSessionStore()
+const {
+  persistCompletedRound,
+  retryPendingSync,
+  hasUnsavedProgress,
+  syncError,
+  isSyncing,
+} = useProgressSync()
 
 const showAllDetails = ref(false)
+const hasPersisted = ref(false)
 
 const roundPointsEarned = computed(() => {
   return sessionStore.roundRecords.reduce((sum, r) => sum + r.pointsEarned, 0)
@@ -280,8 +327,14 @@ const getBadgeEmoji = (badgeName: string): string => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   sessionStore.loadFromStorage()
+
+  // Persist completed round if records exist
+  if (sessionStore.roundRecords.length > 0 && !hasPersisted.value) {
+    hasPersisted.value = true
+    await persistCompletedRound()
+  }
 
   // Fireworks celebration
   confetti({
@@ -290,6 +343,10 @@ onMounted(() => {
     origin: { y: 0.6 },
   })
 })
+
+const handleRetrySync = async () => {
+  await retryPendingSync()
+}
 
 const playAgain = () => {
   sessionStore.roundRecords = []
