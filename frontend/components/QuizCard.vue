@@ -227,8 +227,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useMathVisuals } from '~/composables/useMathVisuals'
+import { useAccessibility } from '~/composables/useAccessibility'
 import FractionBar from '~/components/FractionBar.vue'
 import NumberLine from '~/components/NumberLine.vue'
 import ShapeDiagram from '~/components/ShapeDiagram.vue'
@@ -331,9 +332,20 @@ const stopSpeaking = () => {
   isSpeaking.value = false
 }
 
-// Stop speaking when question changes or unmounts
+const { isReadAloud } = useAccessibility()
+
+// Auto read-aloud if enabled when question changes or mounts
 watch(() => props.stem, () => {
   stopSpeaking()
+  if (isReadAloud.value) {
+    toggleReadAloud()
+  }
+})
+
+onMounted(() => {
+  if (isReadAloud.value) {
+    toggleReadAloud()
+  }
 })
 
 onBeforeUnmount(() => {
