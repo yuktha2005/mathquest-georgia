@@ -1,254 +1,406 @@
 # MathQuest 🎮📐
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-mathquest--georgia.vercel.app-6366F1?style=for-the-badge&logo=vercel&logoColor=white)](https://mathquest-georgia.vercel.app/signup)
+[![GitHub Repository](https://img.shields.io/badge/GitHub_Repo-yuktha2005%2Fmathquest--georgia-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yuktha2005/mathquest-georgia)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Nuxt 3](https://img.shields.io/badge/Nuxt-3.15+-00DC82.svg?logo=nuxtdotjs&logoColor=white)](https://nuxt.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://python.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4+-06B6D4.svg?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A gamified, curriculum-aware, adaptive math learning platform for **Grades 5 and 6**, designed for multi-board extensibility. Built as both a submission for **Developer Assessment Task 1** and a production-grade foundation for client handoff.
+A gamified, curriculum-aware, adaptive math learning platform for **Grades 5 and 6**, engineered for multi-board extensibility. Built as a submission for **Developer Assessment Task 1** and a production-grade foundation for classroom learning.
 
 ---
 
-## 🌟 Core Principle
+## 👤 Candidate Details
+
+- **Full Name**: Yuktha S
+- **Register Number**: `921023243027`
+- **College Name & Department**: Nadar Saraswathi College of Engineering and Technology / AI&DS
+- **Year of Study / Expected Graduation**: Final Year (2023–2027)
+- **Mobile Number**: `6369771791`
+- **Email Address**: `yukthaa2005@gmail.com`
+- **Task Chosen**: Task 1 - Gamified Math Learning Platform for Grades 5 and 6
+- **Live Demo URL**: [https://mathquest-georgia.vercel.app/signup](https://mathquest-georgia.vercel.app/signup)
+- **GitHub Repository**: [https://github.com/yuktha2005/mathquest-georgia](https://github.com/yuktha2005/mathquest-georgia)
+
+---
+
+## 🌟 Core Architectural Principle
 
 > **"The LLM writes, code verifies, the engine adapts."**
 
-Large Language Models (LLMs) cannot be trusted as an authority on mathematical truth. In MathQuest:
-- The LLM's role is restricted to proposing engaging narrative contexts, word problems, and LaTeX expressions.
+Large Language Models (LLMs) cannot be treated as an authority on mathematical truth. In MathQuest:
+- The LLM's role is strictly restricted to proposing engaging narrative scenarios, word problems, and LaTeX expressions.
 - **Deterministic Python** validates mathematical correctness using an abstract syntax tree (AST) parser and exact rational arithmetic (`fractions.Fraction`).
 - Zero `eval()` or `exec()` anywhere in the codebase.
-- Distractors are not random numbers; each distractor is diagnostically crafted to diagnose a specific cognitive misconception.
-- Real verification, hallucination, and repair rates are systematically measured and reported.
+- Distractors are not random offsets; each distractor diagnostically pinpoints a documented cognitive misconception.
+- Real verification, hallucination, and repair rates are systematically measured and reported on an interactive `/eval` dashboard.
 
 ---
 
-## 🏛️ Supported Curricula
+## 🏛️ Supported Curricula & Multi-Board Extensibility
 
-MathQuest ships with full curriculum packs for two distinct educational systems:
+MathQuest ships with pre-configured curriculum packs for two major educational systems:
 
 ### 1. Georgia Standards of Excellence (MGSE) — Grades 5 & 6
 - **Grade 5**:
-  - `fractions` (`MGSE5.NF.1`, `MGSE5.NF.2`, `MGSE5.NF.4`, `MGSE5.NF.7`): Adding, subtracting, and multiplying fractions with unlike denominators; fraction division word problems.
-  - `decimals` (`MGSE5.NBT.7`): Add, subtract, multiply, and divide decimals to hundredths.
-  - `geometry` (`MGSE5.G.1`, `MGSE5.G.2`): Coordinate graphing, 2D shape attributes, perimeter and area.
+  - `fractions` (`MGSE5.NF.1`, `MGSE5.NF.2`, `MGSE5.NF.4`, `MGSE5.NF.7`): Unlike denominator addition/subtraction, mixed numbers, fraction division word problems.
+  - `decimals` (`MGSE5.NBT.7`): Decimal computation to hundredths using place value strategies.
+  - `ratios` (`MGSE5.NF.5`): Multiplication as scaling and coordinate pattern relationships.
+  - `geometry` (`MGSE5.MD.5`, `MGSE5.G.1`): 2D shape attributes, coordinate grids, area, and perimeter.
 - **Grade 6**:
-  - `ratios` (`MGSE6.RP.1`, `MGSE6.RP.2`, `MGSE6.RP.3`): Unit rates, ratio tables, percentage problems.
   - `fractions` (`MGSE6.NS.1`): Interpreting and computing quotients of fractions.
-  - `geometry` (`MGSE6.G.1`): Area of right triangles, other triangles, special quadrilaterals, polygons.
+  - `decimals` (`MGSE6.NS.3`): Multi-digit decimal operations with standard algorithms.
+  - `ratios` (`MGSE6.RP.1`, `MGSE6.RP.2`, `MGSE6.RP.3`): Unit rates, ratio tables, and percentage problems.
+  - `geometry` (`MGSE6.G.1`): Decomposing polygons, area of triangles and special quadrilaterals.
 
 ### 2. CBSE Class 6 (*NCERT Ganita Prakash*)
-- `factors_multiples` (`NCERT-6-MAT-CH05`): Prime vs composite numbers, tests of divisibility, prime factorisation, HCF, LCM.
-- `fractions` (`NCERT-6-MAT-CH07`): Proper, improper, mixed fractions, fraction equivalence, addition/subtraction.
-- `decimals` (`NCERT-6-MAT-CH08`): Tenths and hundredths place value, decimal money and metric measurement problems.
-- `integers` (`NCERT-6-MAT-CH06`): Positive and negative integers, representation on number line, ordering and arithmetic.
-- `ratios` (`NCERT-6-MAT-CH12`): Ratio concepts, proportions, and unitary method.
-- `geometry` (`NCERT-6-MAT-CH10`): Perimeter of regular polygons, area of rectangles and composite figures.
+- `factors_multiples` (`CBSE6.MATH.03`): Prime vs composite, divisibility rules, HCF, and LCM.
+- `fractions` (`CBSE6.MATH.07`): Proper, improper, mixed fractions, equivalence, and arithmetic.
+- `decimals` (`CBSE6.MATH.08`): Tenths, hundredths, place value, and practical metric units.
+- `integers` (`CBSE6.MATH.06`): Number line representation, ordering, and directed arithmetic.
+- `ratios` (`CBSE6.MATH.12`): Ratio concepts, proportions, and the unitary method.
+- `geometry` (`CBSE6.MATH.10`): Perimeter of regular polygons, area of rectangles and composite figures.
 
-### 🚀 Extensibility: Adding a New Board in 3 Steps (Zero Code Changes)
-To add a new state or national curriculum (e.g., Texas TEKS, UK National Curriculum):
-1. Create a JSON pack at `backend/data/packs/<board>-g<grade>.json` following the schema in `backend/app/schemas.py`.
-2. Add pedagogical standards markdown summaries in `backend/data/standards/<board>/`.
-3. Done! The backend auto-loads the pack, and the frontend dynamically renders the board tabs, grades, and topic cards.
-
----
-
-## 🛠️ Technology Stack & Zero-Cost Architecture
-
-Every service runs on **100% free-tier services** without requiring paid subscriptions or credit card holds:
-
-- **Frontend (`/frontend`)**: [Nuxt 3](https://nuxt.com), [Vue 3](https://vuejs.org), [Pinia](https://pinia.vuejs.org), [Tailwind CSS](https://tailwindcss.com). Deployed on [Vercel](https://vercel.com).
-- **Backend (`/backend`)**: [FastAPI](https://fastapi.tiangolo.com), [Pydantic v2](https://docs.pydantic.dev), [SlowAPI](https://github.com/laurentS/slowapi) rate limiting. Deployed on [Render](https://render.com).
-- **LLM Engine**: Google Gemini via the official `google-genai` SDK. Model names are **strictly enforced via environment variables** (`GEMINI_MODEL`, `GEMINI_MODEL_ALT`, `GEMINI_EMBED_MODEL`).
-- **Database & RAG**: [Supabase](https://supabase.com) PostgreSQL with `pgvector` for semantic standards retrieval, backed by an **automatic local markdown file fallback** if Supabase is offline or unconfigured.
-- **Offline Fallback Bank**: 60 pre-verified, deterministic questions in `backend/data/fallback_bank.json` guaranteeing 100% platform availability if LLM quotas are exhausted.
+### 🚀 Zero-Code Expansion
+Adding any new curriculum (e.g. Texas TEKS, California CCSS, UK National Curriculum):
+1. Add a JSON pack file at `backend/data/packs/<board>-g<grade>.json`.
+2. Add pedagogical standard markdown files in `backend/data/standards/<board>/`.
+3. The platform automatically renders the new board, grades, and topic cards dynamically with zero code modifications.
 
 ---
 
-## 🔐 Authentication & Demo Access
+## 🛠️ Technologies & Frameworks Used
 
-### Demo Account Credentials (Throwaway Testing Account)
-For fast assessment and review without signup, you can sign in directly with the pre-provisioned demo explorer account or use guest mode:
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Frontend Framework** | [Nuxt 3](https://nuxt.com) (v3.21+) & [Vue 3](https://vuejs.org) | Modern full-stack SSR/SPA framework with file-based routing |
+| **Language (Frontend)** | [TypeScript 5](https://www.typescriptlang.org) | End-to-end type safety for props, emits, and API payloads |
+| **Styling** | [Tailwind CSS 3](https://tailwindcss.com) | Responsive utility styling, custom warm-neutral gamified themes |
+| **State Management** | [Pinia](https://pinia.vuejs.org) | Centralized reactive stores for auth, sessions, streaks, and progress |
+| **Backend Framework** | [FastAPI](https://fastapi.tiangolo.com) (v0.115+) | High-performance Python async web framework with automatic OpenAPI docs |
+| **Data Validation** | [Pydantic v2](https://docs.pydantic.dev) | Strict schema validation, mathematical model serialization |
+| **Safe Math Parser** | Python `ast` + `fractions.Fraction` | Deterministic rational math evaluator (zero floating-point inaccuracies) |
+| **Rate Limiting** | [SlowAPI](https://github.com/laurentS/slowapi) | Tiered client request throttling (e.g., 20 questions/min per IP) |
+| **Database & Cloud Auth**| [Supabase](https://supabase.com) (PostgreSQL) | Auth (email/password), Row-Level Security (RLS), `pgvector` standards |
+| **Hosting (Frontend)** | [Vercel](https://vercel.com) | Edge-network serverless deployment with instant previews |
+| **Hosting (Backend)** | [Render](https://render.com) | Containerized FastAPI cloud service with automatic TLS/SSL |
+| **Testing** | [Vitest](https://vitest.dev) & [Pytest](https://pytest.org) | Automated unit, store, integration, and security test suites |
 
-| Role | Email | Password | Access Level |
+---
+
+## 🤖 AI Models, APIs, & Services Used
+
+All services operate on **100% free-tier services** with zero paid API requirements:
+
+1. **Google Gemini API (`google-genai` SDK)**:
+   - **`GEMINI_MODEL` (`gemini-2.5-flash`)**: Primary model utilized for structured question generation, pedagogical lesson explanations, and narrative video scripts.
+   - **`GEMINI_MODEL_ALT` (`gemini-2.5-pro`)**: Comparative alternate model for automated benchmark evaluations.
+   - **`GEMINI_EMBED_MODEL` (`text-embedding-004`)**: Generates 768-dimensional embeddings for curriculum standards stored in Supabase pgvector for RAG retrieval.
+2. **Supabase PostgreSQL & Auth**:
+   - Cloud database storing student `profiles`, practice `sessions`, individual `answers`, topic `mastery`, and `badges`.
+   - Client access enforced via PostgreSQL **Row-Level Security (RLS)** (`auth.uid() = user_id`).
+3. **Web Speech API (`window.speechSynthesis`)**:
+   - In-browser accessibility narration providing read-aloud support for early readers and dyslexic students without third-party audio API latency.
+4. **Offline Curated Fallback Bank**:
+   - `backend/data/fallback_bank.json` contains 60 pre-verified, deterministic questions across all grades and topics, ensuring complete platform availability during offline states or API quota exhaustion.
+
+---
+
+## 🔑 Required Environment Variables (No Secret Values)
+
+### Backend Environment Variables (`backend/.env`)
+
+| Variable Name | Required | Default / Example Value | Description |
 |---|---|---|---|
-| **Demo Student** | `demo@mathquest.org` | `MathQuest2026!` | Full Cloud Sync (Mastery, Badges, History) |
-| **Guest Mode** | *(No credentials required)* | *(Click "Continue as Guest")* | Full local learning, quiz, and results |
+| `GEMINI_API_KEY` | Yes | *(Your Google AI Studio API Key)* | API key for Google Gemini model inference |
+| `GEMINI_MODEL` | Yes | `gemini-2.5-flash` | Enforced primary Gemini model identifier |
+| `GEMINI_MODEL_ALT` | No | `gemini-2.5-pro` | Alternate model for comparative benchmarking |
+| `GEMINI_EMBED_MODEL` | Yes | `text-embedding-004` | Embedding model for standards retrieval |
+| `FRONTEND_URL` | Yes | `https://mathquest-georgia.vercel.app,http://localhost:3000` | Allowed CORS origins (comma-separated) |
+| `SUPABASE_URL` | Optional | `https://<your-project>.supabase.co` | Supabase project URL (falls back to local storage if omitted) |
+| `SUPABASE_KEY` | Optional | *(Your Supabase anon key)* | Supabase public anonymous API key |
+| `PYTHON_VERSION` | Yes | `3.11.9` | Runtime Python version on Render cloud |
+| `PORT` | No | `8000` | Server listening port (injected automatically on Render) |
+| `EVAL_SAMPLE_SIZE` | No | `3` | Sample size for evaluation benchmark sweeps |
 
-### How Authentication Works
-MathQuest implements a dual-tier identity architecture designed specifically for young learners and assessment review:
+### Frontend Environment Variables (`frontend/.env`)
 
-1. **Frictionless Guest Mode (Default)**:
-   - Students can immediately explore topics, read lessons, view infographics, take 10-question adaptive quizzes, and earn badges without registering an account.
-   - Progress, mastery scores, streaks, and achievements are saved to browser `localStorage`.
-   - Zero personal data is gathered.
-2. **Supabase Auth (Email + Password)**:
-   - When ready to save progress across multiple devices, students sign up with an email and password.
-   - Route protection middleware (`auth.global.ts`) automatically guards internal routes while allowing guest access across all curriculum routes.
-   - Deep-linking redirect: visiting a protected route (e.g. `/progress`) while unauthenticated redirects to `/login?redirect=%2Fprogress` and returns the user to the requested page immediately upon login.
-3. **Guest-to-Cloud Migration**:
-   - On first signup or login, if existing guest progress is detected in `localStorage`, MathQuest prompts: *"Move my guest progress into this account ✨"*, seamlessly upserting guest XP, domain mastery, and earned badges into Supabase.
-4. **Cloud Progress Persistence & Offline Fallback**:
-   - On quiz completion, MathQuest writes records to Supabase `sessions`, `answers`, `mastery`, and `badges`.
-   - If a network error or offline condition occurs, the completed session is safely saved to local storage (`mathquest_pending_cloud_sync_v1`), and a **"Couldn't save, Retry"** banner allows the student to sync whenever connection is restored—guaranteeing zero lost results.
+| Variable Name | Required | Default / Example Value | Description |
+|---|---|---|---|
+| `NUXT_PUBLIC_API_BASE` | Yes | `https://mathquest-georgia-backend.onrender.com` or `http://localhost:8000` | Target URL of the running FastAPI backend |
+| `NUXT_PUBLIC_SUPABASE_URL` | Optional | `https://<your-project>.supabase.co` | Supabase project URL for cloud auth & sync |
+| `NUXT_PUBLIC_SUPABASE_KEY` | Optional | *(Your Supabase anon key)* | Supabase public anonymous API key |
 
----
-
-## 🛡️ Privacy Notes
-
-- **Zero Student PII to LLMs**: Neither student names, emails, user IDs, nor personal information are ever transmitted in prompts sent to the Google Gemini API. Only mathematical standard codes, grade levels, and numerical constraints are sent.
-- **COPPA & Child Safety Considerations**: MathQuest is engineered for Grade 5 and 6 students (ages 10–12). The platform enforces child-safe language filters, positive reinforcement, and does not require third-party social tracking.
-- **Row-Level Security (RLS)**: Every database table in Supabase (`profiles`, `sessions`, `answers`, `mastery`, `badges`) has Row-Level Security enabled. Students can only select, insert, or modify their own data (`auth.uid() = user_id`).
-- **Client Storage Isolation**: Guest data is strictly isolated within the user's browser `localStorage` and never transmitted to external analytics.
+> [!NOTE]
+> MathQuest is architected with complete offline resilience: if Supabase credentials are not provided, the platform automatically utilizes browser `localStorage` and local JSON curriculum packs without degradation of learning features.
 
 ---
 
-## ⚠️ Known Limitations & Technical Constraints
+## 📁 Repository & Folder Structure
 
-1. **Client-Submitted Scoring**:
-   - While mathematical question answers are validated by the deterministic AST verification engine on the backend (`/api/answer`), the client Nuxt frontend coordinates session round totals. In a high-stakes standardized testing environment, session tallying and answer states would be fully signed and stored server-side.
-2. **No Parental Consent Flow**:
-   - MathQuest is built as a developer assessment prototype and classroom demo. It does not currently implement a formalized verifiable parental consent (VPC) gateway or COPPA email verification workflow before signup.
-3. **Email Confirmation Disabled for Demo**:
-   - For reviewer convenience during testing and assessment evaluation, Supabase email confirmation is disabled by default so accounts can be created and explored immediately without waiting for confirmation emails or spam folder delays.
-
----
-
-## 📐 Safe Math Engine & Misconception Taxonomy
-
-### 1. Deterministic AST Rational Evaluator (`services/verify.py`)
-- Zero reliance on `eval()` or `exec()`.
-- Converts all expressions to exact `fractions.Fraction` objects (no IEEE 754 floating-point errors).
-- Recursively parses operators: `+`, `-`, `*`, `/`, `^`, parentheses, and mixed numbers ($2\frac{3}{4}$).
-- Arithmetic geometry and number theory helpers (`is_prime`, `get_factors`, `gcd`, `lcm`, `coprime`).
-
-### 2. Diagnostic Distractors (`services/misconceptions.py`)
-Every multiple-choice option targets a real mathematical misconception:
-- **Added Denominators**: $\frac{1}{3} + \frac{1}{4} = \frac{2}{7}$.
-- **Inverted Dividend**: $\frac{2}{3} \div \frac{4}{5} = \frac{3}{2} \times \frac{4}{5}$.
-- **Ignored Place Value**: $0.4 + 0.05 = 0.90$.
-- **Perimeter vs. Area**: Reporting $2(l+w)$ when asked for $l \times w$.
-- **Factors vs. Multiples**: Confusing factors of 12 with multiples of 12.
-
-When a student selects an incorrect distractor, the adaptive engine (`services/adaptive.py`) delivers instant, targeted diagnostic feedback explaining the exact cognitive mistake.
-
----
-
-## 🏆 Gamification & Adaptive Engine
-
-- **Adaptive Tiers**:
-  - `easy` (Warmup): Single-step, friendly whole numbers and simple fractions.
-  - `medium` (Core): Standard curriculum grade-level word problems.
-  - `hard` (Challenge): Multi-step problems with mixed operations.
-  - *Tier Promotion*: 2 consecutive correct answers promote to the next tier.
-  - *Tier Demotion*: 1 incorrect answer steps down to reinforce fundamentals.
-- **Mastery Scoring**: Dynamically tracked from 0% to 100% per topic.
-- **Hint Ladder**: 3-tier Socratic hint system (Conceptual hint $\to$ Strategic hint $\to$ Step-by-step formula hint).
-- **Trophy Shelf**: 10 curriculum-aligned unlockable badges persisted in client `localStorage`:
-  - `First Quest`: Answer your first question correctly.
-  - `Fraction Wizard`: Master fractions.
-  - `Decimal Dynamo`: Master decimals.
-  - `Ratio Ranger`: Master ratios.
-  - `Geometry Giant`: Master geometry.
-  - `CBSE Champion`: Complete a CBSE topic.
-  - `Streak Master`: Achieve a 5-in-a-row correct streak.
-  - `Perfect Score`: Complete a quiz session with 100% accuracy.
-  - `Speedy Solver`: Solve a problem in under 10 seconds.
-  - `Tenacious Thinker`: Promote from Easy to Hard in a single session.
-
----
-
-## ♿ Accessibility & Child Safety (a11y)
-
-- **Dyslexia-Friendly Mode**: Toggle switch (`Aa` button) enabling the [Lexend](https://fonts.google.com/specimen/Lexend) font family, designed specifically to reduce visual stress for young readers.
-- **Read-Aloud Narration**: Web Speech API (`window.speechSynthesis`) integration for question narration.
-- **Keyboard Navigation**: Fully accessible tab stops with high-contrast `:focus-visible` outline rings.
-- **Child-Safe Language**: Positive reinforcement, encouragement prompts, zero PII collection, and zero student data transmitted to external LLMs.
-
----
-
-## 📊 Benchmarking & Empirical Verification (`/eval`)
-
-We benchmarked real LLM output validity across topics, grades, and models using `backend/eval/run_eval.py`:
-
-```bash
-# Run benchmark with 40 questions across all boards and topics
-backend/.venv/Scripts/python.exe backend/eval/run_eval.py -N 10 --mock
+```
+mathquest-georgia/
+├── candidate_details.txt        # Assessment candidate and submission metadata
+├── README.md                   # Complete setup, architecture, and testing documentation
+├── AGENTS.md                   # Multi-curriculum rules and architectural constraints
+├── render.yaml                 # Render cloud blueprint deployment specification
+├── .gitignore                  # Git ignore rules for node_modules, venvs, and caches
+│
+├── backend/                    # FastAPI Backend Service
+│   ├── .env.example            # Backend environment template (names only, no secrets)
+│   ├── requirements.txt        # Python dependency manifest (FastAPI, pydantic, google-genai)
+│   ├── .python-version         # Python version lock (3.11.9)
+│   ├── app/
+│   │   ├── main.py             # FastAPI entrypoint, CORS, rate limits, and routers
+│   │   ├── schemas.py          # Pydantic v2 domain schemas (Question, Answer, Mastery)
+│   │   └── services/
+│   │       ├── adaptive.py     # Progression engine (promotion, demotion, mastery calculation)
+│   │       ├── curriculum.py   # Pack loader, topic validator, and syllabus registry
+│   │       ├── explain.py      # Socratic step-by-step explanations and hint generator
+│   │       ├── llm.py          # Official google-genai SDK wrapper and repair handler
+│   │       ├── misconceptions.py# Cognitive distractor engine (diagnoses specific student errors)
+│   │       ├── question_builder.py# Question generation pipeline with AST verification
+│   │       ├── rag.py          # Standards retrieval (pgvector with local markdown fallback)
+│   │       ├── script.py       # Narrative video lesson script synthesizer
+│   │       └── verify.py       # Deterministic AST rational evaluator (fractions.Fraction)
+│   ├── data/
+│   │   ├── fallback_bank.json  # 60 pre-verified questions for offline/quota guarantee
+│   │   ├── explanations_cache.json # High-performance cached pedagogical explanations
+│   │   ├── scripts_cache.json  # Cached video lesson scripts
+│   │   ├── standards_manifest.json # Structured curriculum standards mapping
+│   │   ├── packs/              # Modular curriculum JSON packs
+│   │   │   ├── georgia-g5.json # Georgia GSE Grade 5 curriculum pack
+│   │   │   ├── georgia-g6.json # Georgia GSE Grade 6 curriculum pack
+│   │   │   └── cbse-g6.json    # CBSE Class 6 NCERT Ganita Prakash curriculum pack
+│   │   └── standards/          # Original pedagogical standard summaries (Markdown)
+│   │       ├── georgia/        # MGSE standards (fractions, decimals, ratios, geometry)
+│   │       └── cbse/           # CBSE standards (factors, integers, fractions, etc.)
+│   ├── eval/                   # Empirical Evaluation Harness
+│   │   ├── run_eval.py         # Benchmark runner (accuracy, repair rates, fallback rates)
+│   │   ├── prompts/            # Ground-truth evaluation prompt templates
+│   │   └── results/            # Saved evaluation benchmark JSON outputs
+│   ├── migrations/             # Database migrations
+│   │   └── 001_create_standards_pgvector.sql # pgvector schema for standards RAG
+│   ├── scripts/
+│   │   └── ingest_standards.py # CLI utility to embed & ingest standards into pgvector
+│   └── tests/                  # 153 Comprehensive Backend Unit & Security Tests
+│       ├── test_adaptive.py
+│       ├── test_api_security_and_validation.py
+│       ├── test_curriculum.py
+│       ├── test_evaluation_benchmark.py
+│       ├── test_explain_and_rag.py
+│       ├── test_health_and_schemas.py
+│       ├── test_misconceptions.py
+│       ├── test_question_builder.py
+│       ├── test_script.py
+│       └── test_verify.py
+│
+├── frontend/                   # Nuxt 3 / Vue 3 Frontend Web Application
+│   ├── .env.example            # Frontend environment template
+│   ├── package.json            # Node.js dependencies and run scripts
+│   ├── nuxt.config.ts          # Nuxt configuration, runtimeConfig, and meta tags
+│   ├── tailwind.config.ts      # Gamified palette, animations, and typography tokens
+│   ├── tsconfig.json           # TypeScript configuration
+│   ├── vitest.config.ts        # Vitest test runner configuration
+│   ├── app.vue                 # Nuxt root component
+│   ├── error.vue               # Custom 404 & error recovery page
+│   ├── assets/css/main.css     # Global CSS rules, typography imports, and dyslexia styles
+│   ├── components/             # Reusable UI Components
+│   │   ├── Card.vue            # Interactive card container with hover transitions
+│   │   ├── FeedbackPanel.vue   # Diagnostic feedback display with procedure & hints
+│   │   ├── HintLadder.vue      # 3-tier progressive hint ladder
+│   │   ├── Infographic.vue     # Educational SVG data visualizations
+│   │   ├── MockVideoPlayer.vue # Interactive video lesson player with speech playback
+│   │   ├── NavBar.vue          # Top navigational toolbar with board & grade selectors
+│   │   ├── ProgressCircle.vue  # SVG circular mastery ring indicator
+│   │   ├── QuestionCard.vue    # Question presentation card with multiple choice options
+│   │   ├── ShapeDiagram.vue    # Clean SVG geometry diagram generator
+│   │   ├── StatsCard.vue       # Metrics summary card (XP, Streak, Accuracy)
+│   │   └── XPBar.vue           # Dynamic level progression & XP progress bar
+│   ├── composables/            # Nuxt Composables & Utilities
+│   │   ├── useAccessibility.ts # Dyslexia font toggle and speech narration composable
+│   │   ├── useApi.ts           # HTTP client with timeout handling & cold-start notice
+│   │   ├── useAuth.ts          # Auth helper wrapping the Pinia auth store
+│   │   ├── useProgressSync.ts  # Cloud-to-local sync and offline queue manager
+│   │   └── useSupabase.ts      # Supabase client singleton provider
+│   ├── layouts/
+│   │   ├── default.vue         # Main layout with responsive header, nav, and footer
+│   │   └── focus.vue           # Distraction-free quiz layout for practice sessions
+│   ├── middleware/
+│   │   └── auth.global.ts      # Global route protection, guest routing, and onboarding guard
+│   ├── pages/                  # Application Routes
+│   │   ├── index.vue           # Territory Map (board selector, grade toggle, topic cards)
+│   │   ├── login.vue           # Sign-in page with demo account shortcuts & guest access
+│   │   ├── signup.vue          # Account registration page
+│   │   ├── onboarding.vue      # First-time profile setup (nickname, grade, board)
+│   │   ├── forgot.vue          # Password recovery page
+│   │   ├── dashboard.vue       # Student command center (XP, streak, daily goal, topics)
+│   │   ├── quiz.vue            # 10-question adaptive quiz player with live feedback
+│   │   ├── results.vue         # Post-quiz celebration, question review, and XP tally
+│   │   ├── progress.vue        # Mastery breakdown, accuracy chart, and session history
+│   │   ├── profile.vue         # Settings, board preference, and data management
+│   │   ├── eval.vue            # Interactive benchmark metrics dashboard
+│   │   ├── learn/[grade]/[topic].vue # Pedagogical lesson page, infographic, and video script
+│   │   └── [...slug].vue       # Catch-all custom 404 page
+│   ├── stores/                 # Pinia State Management
+│   │   ├── auth.ts             # User profile, cloud session, and local storage account store
+│   │   └── session.ts          # Quiz round state, current grade/board, and earned badges
+│   └── tests/                  # 20 Automated Frontend Unit & Store Tests
+│       ├── auth.store.spec.ts  # Pinia auth store tests
+│       ├── middleware.spec.ts  # Route guard and deep-linking redirect tests
+│       ├── session.spec.ts     # Quiz scoring and badge unlock tests
+│       └── smoke.playwright.spec.ts # Playwright E2E smoke test suite
+│
+└── supabase/                   # Supabase Database Migrations
+    └── migrations/
+        └── 001_app_schema.sql  # Full schema: profiles, sessions, answers, mastery, badges & RLS
 ```
 
-- Empirical evaluation metrics are displayed interactively on the frontend `/eval` route.
-- Tracks: Total Questions, Initial Correctness %, Repair Rate %, Final Verified %, Fallback Engagement %, and Average Latency.
-
 ---
 
-## 🚀 Quick Start & Local Setup
+## 🚀 Setup & Execution Instructions
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+ and npm
-- Git
+### Local Development Setup
 
-### 1. Backend Setup
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/yuktha2005/mathquest-georgia.git
+cd mathquest-georgia
+```
+
+#### 2. Backend Setup
 ```bash
 cd backend
+
+# Create and activate Python virtual environment
 python -m venv .venv
 
-# Windows
+# Windows (PowerShell)
 .venv\Scripts\activate
 # Linux/macOS
 source .venv/bin/activate
 
+# Install dependencies
 pip install -r requirements.txt
+
+# Configure environment variables
 cp .env.example .env
-# Edit .env and supply GEMINI_API_KEY, GEMINI_MODEL, etc.
+# Open .env and insert your GEMINI_API_KEY and GEMINI_MODEL=gemini-2.5-flash
 
-# Run tests
-pytest -v
+# Run the backend test suite (153 tests)
+pytest
 
-# Start development server
+# Launch the FastAPI development server
 uvicorn app.main:app --reload --port 8000
 ```
+*Backend Swagger UI will be available at `http://127.0.0.1:8000/docs`.*
 
-### 2. Frontend Setup
+#### 3. Frontend Setup
 ```bash
-cd frontend
-npm install
-cp .env.example .env
-# NUXT_PUBLIC_API_BASE=http://localhost:8000
+cd ../frontend
 
-# Start Nuxt 3 dev server
+# Install Node dependencies
+npm install
+
+# Configure environment variables
+cp .env.example .env
+# Set NUXT_PUBLIC_API_BASE=http://localhost:8000
+
+# Run the frontend test suite (20 tests)
+npm test
+
+# Launch the Nuxt 3 development server
 npm run dev
-# App will be available at http://localhost:3000
+```
+*Frontend application will be accessible at `http://localhost:3000`.*
+
+---
+
+## 🧪 Instructions for Testing the Main Features
+
+### 1. Automated Test Execution
+
+Run both test suites to verify system integrity:
+
+```bash
+# 1. Run all 153 backend tests (AST verification, misconceptions, adaptive engine, API security)
+cd backend
+.venv\Scripts\pytest
+
+# 2. Run all 20 frontend unit & store tests (Pinia stores, route middleware, scoring)
+cd ../frontend
+npm test
+
+# 3. (Optional) Run LLM benchmark verification harness with mock generator
+cd ../backend
+python eval/run_eval.py -N 10 --mock
 ```
 
 ---
 
-## 🚢 Deployment Documentation
+### 2. Manual Step-by-Step Feature Test Scripts
 
-- [Render Backend Deployment Guide](docs/RENDER_DEPLOYMENT.md): Complete setup for FastAPI on Render free tier, health checks, and environment configurations.
-- [Vercel Frontend Deployment Guide](docs/VERCEL_DEPLOYMENT.md): Nuxt 3 serverless and static edge deployment instructions.
-- [Curriculum Verification Audit](docs/UNVERIFIED_CONTENT.md): Cross-referenced standard codes and official GaDOE / NCERT source mappings.
-- [Engineering Interview Notes](docs/INTERVIEW_NOTES.md): Deep dive into architectural decisions, threat models, and technical trade-offs.
-- [Product & Technical Roadmap](docs/ROADMAP.md): Post-assessment vision, Grade 7–8 expansion, LMS integration, and teacher analytics.
+For quick assessment without signing up, use the pre-provisioned demo explorer account or frictionless Guest Mode:
+- **Demo Account**: `demo@mathquest.org` / `MathQuest2026!`
+- **Guest Mode**: Click **"Continue as Guest 🎒"** on the login or signup page.
+
+#### Feature Journey 1: Frictionless Guest Learning & Adaptive Quiz
+1. Navigate to `http://localhost:3000/login` (or the live URL) and click **"Continue as Guest 🎒"**.
+2. Notice the top banner displays `Playing in Guest Mode` with no personal information requested.
+3. On the **Territory Map**, switch between **Georgia GSE (MGSE)** and **CBSE Class 6 (NCERT)**.
+4. Click on **"🍰 Unlike Fractions"** (Grade 5).
+5. Inspect the pedagogical lesson: read the step-by-step breakdown, view the SVG infographic, and click the **Play Lesson Narration** button to test Web Speech audio.
+6. Click **"Practice Now ⚔️"** to enter the distraction-free Focus Quiz.
+7. Select an answer and click **"Confirm Answer"**. Observe instant deterministic AST verification.
+8. Expand the **Hint Ladder** (Clue 1, 2, 3) to test progressive pedagogical hints.
+9. Complete all 10 questions and click **"Complete Quest & View Results 🏆"**.
+10. Verify confetti celebration, earned XP, accuracy rating, and unlocked badges on `/results`.
+
+#### Feature Journey 2: User Registration, Onboarding Personalization, & Dashboard
+1. Open a new incognito window and visit `/signup`.
+2. Enter an email address and a password ($\ge 6$ characters). Click **"Start My Adventure 🌟"**.
+3. You will be automatically directed to `/onboarding`.
+4. Enter an adventurer nickname (e.g. `Speedy Solver`), select **Grade 6**, and select **Georgia Standards (GSE)**.
+5. Click **"Launch My Adventure! 🚀"**.
+6. Verify seamless redirection to `/dashboard`.
+7. Verify that the personalized greeting reads: **"Welcome back, Speedy Solver!"** with **Grade 6 • Georgia GSE** pre-selected.
+
+#### Feature Journey 3: Diagnostic Misconception Detection
+1. Start a quiz in **Unlike Fractions** (`MGSE5.NF.1`).
+2. Given a problem such as $\frac{1}{3} + \frac{1}{4}$, select the distractor $\frac{2}{7}$ (the classic "added denominators" error).
+3. Confirm the answer.
+4. Observe the red diagnostic feedback banner: rather than simply saying "Incorrect", it specifically diagnoses:
+   > *"Denominators represent total parts in a whole—find a common denominator first!"*
+5. Answer the next 2 questions correctly and observe adaptive tier promotion from **Easy** to **Medium**.
+
+#### Feature Journey 4: Accessibility & Dyslexia Mode
+1. In the top navbar, click the **"Aa Dyslexia Font"** toggle button.
+2. Observe all headings and body typography immediately transition to the [Lexend](https://fonts.google.com/specimen/Lexend) font family, engineered to reduce visual crowding.
+3. Use the `Tab` and `Shift+Tab` keys to navigate throughout the page; observe high-contrast focus rings on all interactive elements.
+
+#### Feature Journey 5: Deep-Linking & Protected Route Middleware
+1. In a fresh private window, directly enter the protected URL `/progress`.
+2. Notice the route middleware automatically intercepts and redirects to `/signup?redirect=%2Fprogress`.
+3. Click **"Sign In here"** and submit the demo credentials.
+4. Verify that upon login, you are immediately routed to `/progress` (the originally requested deep link).
 
 ---
 
-## 🗺️ Completed Implementation Roadmap
+## ⚠️ Known Limitations & Incomplete Features
 
-- [x] **Phase 0**: Project rules, `.gitignore`, `.env.example` templates, `README.md`, folder scaffolding.
-- [x] **Phase 1**: Core schemas, `verify.py` safe parser & rational arithmetic, `misconceptions.py` generator, 130 tests.
-- [x] **Phase 2**: Curriculum pack schema, loader, Georgia G5/G6 & CBSE G6 packs, `docs/UNVERIFIED_CONTENT.md`.
-- [x] **Phase 3**: `llm.py`, `question_builder.py`, `fallback_bank.json`, `/api/questions`, Render deployment guide.
-- [x] **Phase 4**: `adaptive.py`, `/api/answer` progression engine, mastery scoring & 10 trophy badges.
-- [x] **Phase 5**: Nuxt 3 multi-board scaffold, board/grade/topic navigation, quiz & results flow, Vercel guide.
-- [x] **Phase 6**: Explanations, video lesson scripts, infographics, RAG standards retrieval, Web Speech narration, SVG diagrams, hint ladder.
-- [x] **Phase 7**: Evaluation benchmark harness (`run_eval.py`), comparative metrics, `/eval` interactive dashboard.
-- [x] **Phase 8**: Production hardening (slowapi rate limiting, error handlers, a11y, mobile responsiveness, CI workflow).
-- [x] **Phase 9**: Final documentation (`INTERVIEW_NOTES.md`, `ROADMAP.md`), comprehensive audit (PASS/PARTIAL/FAIL).
+1. **Client-Orchestrated Quiz Sessions**:
+   - While every individual math problem and distractor diagnosis is verified deterministically on the backend (`/api/answer`), the frontend coordinates 10-question session tallies. In a formal standardized testing environment, total quiz state would be signed server-side.
+2. **Classroom Parental Consent Gateway**:
+   - MathQuest is built as a developer assessment prototype and classroom demo. It does not currently implement a formalized verifiable parental consent (VPC) gateway or COPPA email verification workflow before signup.
+3. **Render Free-Tier Inactivity Sleep**:
+   - The backend is deployed on Render's free tier, which puts containers to sleep after 15 minutes of inactivity. When asleep, the first incoming request can take ~50 seconds to wake up. An animated in-app wake-up banner informs the user while the server starts.
+4. **Browser-Dependent Text-to-Speech**:
+   - Narration relies on the browser's native Web Speech API (`window.speechSynthesis`). Voice accent and quality depend on the host operating system's installed speech synthesis voices.
 
 ---
 
 ## 📄 License
 
-MIT License. Designed and engineered for the MathQuest developer assessment and client delivery.
+MIT License. Developed and engineered for the MathQuest developer assessment.

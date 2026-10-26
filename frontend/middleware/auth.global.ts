@@ -14,8 +14,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const publicRoutes = ['/login', '/signup', '/forgot', '/eval']
   const isPublicRoute = publicRoutes.includes(to.path)
 
-  // 1. If signed-in user tries to visit /login or /signup, redirect them to dashboard
-  if (authStore.isAuthenticated) {
+  // 1. If user has access (signed-in account or active guest mode)
+  if (authStore.hasAccess) {
     if (to.path === '/login' || to.path === '/signup') {
       const redirectTarget = (to.query.redirect as string) || '/dashboard'
       return navigateTo(redirectTarget)

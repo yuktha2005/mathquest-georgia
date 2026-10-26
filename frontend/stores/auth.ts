@@ -199,6 +199,7 @@ export const useAuthStore = defineStore('auth', {
             this.isGuest = false
             if (import.meta.client) {
               localStorage.removeItem(GUEST_STORAGE_KEY)
+              localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(data.user))
             }
             await this.fetchProfile(data.user.id)
             try {
@@ -355,6 +356,18 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem('mathquest_guest_backup_before_auth', existingSession)
               }
               localStorage.removeItem(GUEST_STORAGE_KEY)
+              localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(data.user))
+              const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+              accounts[email.trim().toLowerCase()] = {
+                id: data.user.id,
+                email: email.trim(),
+                password: password,
+                displayName: email.trim().split('@')[0],
+                grade: 5,
+                board: 'georgia',
+                totalScore: 0,
+              }
+              localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts))
             }
             return true
           }
@@ -415,78 +428,95 @@ export const useAuthStore = defineStore('auth', {
 
     /**
      * Save the first-time setup onboarding data to Supabase profiles.
+     * Always updates local profile & session first so the student is never blocked,
+     * then gracefully syncs with Supabase cloud if connected.
      */
     async saveSetupProfile(data: { displayName: string; grade: 5 | 6; board: string }): Promise<boolean> {
-      if (!this.user) {
-        // If guest, apply to local session
-        const sessionStore = useSessionStore()
-        sessionStore.setGrade(data.grade)
-        sessionStore.setBoard(data.board)
-        this.needsSetup = false
-        return true
-      }
-
+      const sanitizedName = data.displayName.trim() || 'Math Hero'
       this.isLoading = true
-      const supabase = useSupabase()
-
-      if (!supabase || this.user.id.startsWith('local_')) {
-        this.profile = {
-          ...(this.profile || { id: this.user.id, user_id: this.user.id, email: this.user.email, total_score: 0 }),
-          display_name: data.displayName.trim() || 'Student',
-          grade: data.grade,
-          curriculum_board: data.board,
-        }
-        if (import.meta.client) {
-          const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
-          const normalizedEmail = (this.user.email || '').trim().toLowerCase()
-          if (accounts[normalizedEmail]) {
-            accounts[normalizedEmail].displayName = data.displayName.trim() || 'Student'
-            accounts[normalizedEmail].grade = data.grade
-            accounts[normalizedEmail].board = data.board
-            localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts))
-          }
-        }
-        this.needsSetup = false
-        const sessionStore = useSessionStore()
-        sessionStore.setGrade(data.grade)
-        sessionStore.setBoard(data.board)
-        this.isLoading = false
-        return true
-      }
 
       try {
-        const payload = {
-          id: this.user.id,
-          user_id: this.user.id,
-          email: this.user.email,
-          display_name: data.displayName.trim() || 'Student',
-          grade: data.grade,
-          curriculum_board: data.board,
-          updated_at: new Date().toISOString(),
-        }
-
-        const { error } = await supabase
-          .from('profiles')
-          .upsert(payload, { onConflict: 'id' })
-
-        if (error) {
-          console.error('[MathQuest Auth] Error updating profile:', error)
-          throw new Error(error.message)
-        }
-
-        this.profile = {
-          ...(this.profile || { id: this.user.id, user_id: this.user.id, email: this.user.email, total_score: 0 }),
-          display_name: data.displayName.trim() || 'Student',
-          grade: data.grade,
-          curriculum_board: data.board,
-        }
-
-        this.needsSetup = false
-
-        // Sync with session store
+        // 1. Sync sessionStore and active Pinia state
         const sessionStore = useSessionStore()
         sessionStore.setGrade(data.grade)
         sessionStore.setBoard(data.board)
+
+        const userId = this.user?.id || 'local_' + Date.now()
+        const userEmail = this.user?.email || null
+
+        this.profile = {
+          id: userId,
+          user_id: userId,
+          email: userEmail,
+          display_name: sanitizedName,
+          grade: data.grade,
+          curriculum_board: data.board,
+          total_score: this.profile?.total_score || 0,
+        }
+
+        // 2. Mark setup as completed so middleware permits navigation
+        this.needsSetup = false
+
+        // 3. Persist to localStorage so the user can continue smoothly
+        if (import.meta.client) {
+          try {
+            const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+            const emailKey = (userEmail || '').trim().toLowerCase()
+            if (emailKey && accounts[emailKey]) {
+              accounts[emailKey].displayName = sanitizedName
+              accounts[emailKey].grade = data.grade
+              accounts[emailKey].board = data.board
+              localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts))
+            }
+            if (this.user) {
+              localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(this.user))
+            }
+          } catch (storageErr) {
+            console.warn('[MathQuest Auth] Failed updating local storage account:', storageErr)
+          }
+        }
+
+        // 4. Remote Supabase profile sync (resilient to RLS, missing table, or offline)
+        const supabase = useSupabase()
+        if (supabase && this.user && !this.user.id.startsWith('local_')) {
+          try {
+            const payload = {
+              id: this.user.id,
+              user_id: this.user.id,
+              email: this.user.email,
+              display_name: sanitizedName,
+              grade: data.grade,
+              curriculum_board: data.board,
+              updated_at: new Date().toISOString(),
+            }
+
+            // Attempt upsert first
+            const { error: upsertErr } = await supabase
+              .from('profiles')
+              .upsert(payload, { onConflict: 'id' })
+
+            if (upsertErr) {
+              console.warn('[MathQuest Auth] Profile upsert notice, trying update fallback:', upsertErr.message)
+              // If upsert hit RLS or conflict, attempt direct update
+              const { error: updateErr } = await supabase
+                .from('profiles')
+                .update({
+                  display_name: sanitizedName,
+                  grade: data.grade,
+                  curriculum_board: data.board,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq('id', this.user.id)
+
+              if (updateErr) {
+                console.warn('[MathQuest Auth] Remote profile sync notice (local state maintained):', updateErr.message)
+              }
+            }
+          } catch (cloudErr: any) {
+            console.warn('[MathQuest Auth] Cloud profile sync caught exception (local setup kept):', cloudErr)
+          }
+        }
+
         return true
       } finally {
         this.isLoading = false

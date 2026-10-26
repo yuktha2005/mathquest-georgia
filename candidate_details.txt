@@ -1,0 +1,9 @@
+Full name : Yuktha S
+Register number : 921023243027
+College name and department : Nadar saraswathi college of engineering and technology / AI&DS
+Year of study / expected graduation year : Final Year (2023-2027)
+Mobile number : 6369771791
+Email address : yukthaa2005@gmail.com
+Task chosen : Task 1 - Gamified Math Learning Platform for Grades 5 and 6
+Live demo URL : https://mathquest-georgia.vercel.app/signup
+GitHub repository URL : https://github.com/yuktha2005/mathquest-georgia

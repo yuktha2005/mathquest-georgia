@@ -10,8 +10,8 @@ function evaluateAuthRoute(
   const publicRoutes = ['/login', '/signup', '/forgot', '/eval']
   const isPublicRoute = publicRoutes.includes(to.path)
 
-  // 1. If signed in, prevent visiting login/signup
-  if (authStore.isAuthenticated) {
+  // 1. If user has access (signed-in account or active guest mode)
+  if (authStore.hasAccess) {
     if (to.path === '/login' || to.path === '/signup') {
       const redirectTarget = (to.query?.redirect as string) || '/dashboard'
       return { action: 'redirect', to: redirectTarget }
@@ -120,5 +120,14 @@ describe('Route Middleware (auth.global.ts)', () => {
     const decision = evaluateAuthRoute(auth, { path: '/dashboard' })
     expect(decision.action).toBe('redirect')
     expect(decision.to).toBe('/onboarding')
+  })
+
+  it('allows active guest mode access to internal routes (/dashboard, /learn)', () => {
+    const auth = useAuthStore()
+    auth.continueAsGuest()
+    expect(auth.hasAccess).toBe(true)
+
+    const decision = evaluateAuthRoute(auth, { path: '/dashboard' })
+    expect(decision.action).toBe('allow')
   })
 })

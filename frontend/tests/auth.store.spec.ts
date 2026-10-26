@@ -64,6 +64,25 @@ describe('Auth Store (useAuthStore)', () => {
     expect(auth.needsSetup).toBe(false)
   })
 
+  it('saveSetupProfile updates user profile, grade, board, and displayName for authenticated user', async () => {
+    const auth = useAuthStore()
+    auth.user = { id: 'test-user-xyz', email: 'solver@mathquest.org' } as any
+    auth.needsSetup = true
+
+    const result = await auth.saveSetupProfile({
+      displayName: 'Lightning Solver',
+      grade: 6,
+      board: 'georgia',
+    })
+
+    expect(result).toBe(true)
+    expect(auth.needsSetup).toBe(false)
+    expect(auth.profile?.display_name).toBe('Lightning Solver')
+    expect(auth.profile?.grade).toBe(6)
+    expect(auth.profile?.curriculum_board).toBe('georgia')
+    expect(localStorage.getItem('mathquest_local_session')).toBeTruthy()
+  })
+
   it('handles signIn error and sets authError', async () => {
     const auth = useAuthStore()
     await expect(auth.signIn('invalid@mathquest.org', 'short')).rejects.toThrow()

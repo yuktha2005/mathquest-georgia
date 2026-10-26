@@ -16,6 +16,24 @@
 
       <!-- Setup Card -->
       <div class="bg-white rounded-3xl border-2 border-slate-200 shadow-xl p-6 sm:p-8">
+        <!-- Error / Warning Banner -->
+        <transition
+          enter-active-class="transition duration-200 ease-out"
+          enter-from-class="-translate-y-2 opacity-0"
+          enter-to-class="translate-y-0 opacity-100"
+        >
+          <div
+            v-if="errorMessage"
+            role="alert"
+            class="mb-5 p-3.5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 text-xs sm:text-sm font-semibold flex items-start gap-2.5"
+          >
+            <span class="text-lg leading-none" aria-hidden="true">⚠️</span>
+            <div class="flex-1">
+              <span>{{ errorMessage }}</span>
+            </div>
+          </div>
+        </transition>
+
         <form @submit.prevent="handleFinishSetup" class="space-y-6">
           <!-- Step 1: Display Name -->
           <div>
@@ -165,30 +183,33 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '~/stores/auth'
 
-const router = useRouter()
 const authStore = useAuthStore()
 
 const displayName = ref(authStore.displayName !== 'Math Adventurer' && authStore.displayName !== 'Student' ? authStore.displayName : '')
 const selectedGrade = ref<5 | 6>(authStore.userGrade || 5)
 const selectedBoard = ref<'georgia' | 'cbse'>((authStore.userBoard as 'georgia' | 'cbse') || 'georgia')
 const isLoading = ref(false)
+const errorMessage = ref('')
 
 async function handleFinishSetup() {
   isLoading.value = true
+  errorMessage.value = ''
+
   try {
     await authStore.saveSetupProfile({
       displayName: displayName.value.trim() || 'Math Hero',
       grade: selectedGrade.value,
       board: selectedBoard.value,
     })
-    await router.push('/dashboard')
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed to save profile setup:', err)
+    errorMessage.value = err?.message || 'Notice saving remote profile; proceeding with local setup.'
   } finally {
     isLoading.value = false
+    // Always navigate to /dashboard so student is never stuck on onboarding
+    await navigateTo('/dashboard')
   }
 }
 </script>
