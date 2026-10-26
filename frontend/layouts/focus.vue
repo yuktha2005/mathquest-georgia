@@ -1,7 +1,7 @@
 <template>
-  <div :class="['min-h-screen flex flex-col bg-slate-50 selection:bg-indigo-500 selection:text-white', isDyslexic ? 'dyslexia-font' : 'font-fredoka']">
+  <div :class="['min-h-screen flex flex-col bg-warm-50 text-warm-900 selection:bg-primary-600 selection:text-white', isDyslexic ? 'dyslexia-font' : 'font-fredoka']">
     <!-- Global Nuxt Loading Progress Bar -->
-    <NuxtLoadingIndicator color="#4f46e5" :height="3" />
+    <NuxtLoadingIndicator color="#4338ca" :height="3" />
 
     <!-- Cold Start Wake-Up Banner -->
     <transition
@@ -16,7 +16,7 @@
         v-if="isServerWakingUp"
         role="status"
         aria-live="polite"
-        class="bg-amber-400 text-slate-900 px-4 py-2 text-center font-bold text-xs sm:text-sm border-b-4 border-amber-500 shadow-md flex items-center justify-center gap-2 z-50 sticky top-0"
+        class="bg-accent-400 text-warm-900 px-4 py-2.5 text-center font-bold text-xs sm:text-sm border-b-4 border-accent-600 shadow-md flex items-center justify-center gap-2 z-50 sticky top-0"
       >
         <span class="animate-bounce" aria-hidden="true">🚀</span>
         <span>{{ wakeUpNotice || 'Waking up the MathQuest adventure server... Hang tight!' }}</span>
@@ -24,13 +24,13 @@
     </transition>
 
     <!-- Minimalist Focus Header -->
-    <header class="bg-white border-b-2 border-slate-200 sticky top-0 z-30 shadow-sm" role="banner">
+    <header class="bg-white border-b-2 border-warm-200 sticky top-0 z-30 shadow-warm-sm" role="banner">
       <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         <!-- Back / Exit Button with Confirmation -->
         <button
           type="button"
           @click="showExitModal = true"
-          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-extrabold text-xs sm:text-sm border-2 border-slate-300 transition focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-400"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-warm-100 hover:bg-warm-200 active:scale-95 text-warm-800 font-extrabold text-xs sm:text-sm border-2 border-warm-300 transition focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-400 min-h-[44px]"
           aria-label="Exit current activity"
         >
           <span aria-hidden="true">←</span>
@@ -38,11 +38,11 @@
         </button>
 
         <!-- Centered Activity Title -->
-        <div class="text-center font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-1.5">
-          <span class="text-indigo-600">🎮 MathQuest</span>
-          <span class="text-slate-400 font-normal">|</span>
-          <span class="text-amber-600 font-bold capitalize">{{ sessionStore.topic }}</span>
-          <span class="hidden sm:inline text-xs text-slate-500 font-semibold">(Grade {{ sessionStore.grade }})</span>
+        <div class="text-center font-extrabold text-warm-900 text-sm sm:text-base flex items-center gap-1.5">
+          <span class="text-primary-700">🎮 MathQuest</span>
+          <span class="text-warm-400 font-normal">|</span>
+          <span class="text-accent-700 font-bold capitalize">{{ sessionStore.topic }}</span>
+          <span class="hidden sm:inline text-xs text-warm-500 font-semibold">(Grade {{ sessionStore.grade }})</span>
         </div>
 
         <!-- Right Quick Stats (Streak & Dyslexia Toggle) -->

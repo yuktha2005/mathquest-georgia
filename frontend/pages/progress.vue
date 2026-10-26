@@ -1,20 +1,20 @@
 <template>
   <div class="space-y-6 sm:space-y-8 animate-pop">
-    <!-- Hero Banner -->
-    <div class="bg-gradient-to-r from-indigo-700 via-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <!-- Hero Banner (Warm neutral / rich primary, no purple-to-pink gradient) -->
+    <div class="bg-primary-900 rounded-3xl p-6 sm:p-8 text-white shadow-warm-lg border-2 border-primary-950 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
       <div>
         <div class="flex items-center gap-2 mb-2">
-          <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-white backdrop-blur-sm">
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-accent-300 border border-white/20">
             Diagnostic Analytics
           </span>
-          <span class="text-xs text-indigo-200 font-bold">
+          <span class="text-xs text-warm-200 font-bold">
             Grade {{ sessionStore.grade }} • {{ sessionStore.boardTitle }}
           </span>
         </div>
-        <h1 class="text-2xl sm:text-4xl font-black tracking-tight">
+        <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-white">
           Mastery & Learning Progress 📊
         </h1>
-        <p class="text-indigo-100 text-xs sm:text-sm mt-1 max-w-xl">
+        <p class="text-warm-100 text-xs sm:text-sm mt-1 max-w-xl">
           Track your mathematical growth across curriculum domains, monitor question accuracy trends, and analyze misconception patterns.
         </p>
       </div>

@@ -533,3 +533,99 @@ def is_coprime(a: int, b: int) -> bool:
     """Return True if a and b are coprime (share no common factors other than 1)."""
     return gcd(a, b) == 1
 
+
+def verify_options_distinct(
+    options: list[Any],
+    claimed_answer: str | Fraction | None = None,
+) -> tuple[bool, str]:
+    """Verify that all multiple-choice options evaluate to pairwise-distinct Fraction values.
+
+    Also checks that if claimed_answer is provided, exactly one option matches its Fraction value.
+    """
+    if len(options) < 2:
+        return False, f"At least 2 options required, got {len(options)}"
+
+    parsed_values: dict[Fraction, str] = {}
+    matches_target = 0
+    target_frac = evaluate(str(claimed_answer)) if claimed_answer is not None else None
+
+    for opt in options:
+        opt_text = opt.text if hasattr(opt, "text") else (opt["text"] if isinstance(opt, dict) else str(opt))
+        try:
+            val = evaluate(opt_text)
+        except Exception as exc:
+            return False, f"Option text '{opt_text}' failed evaluation: {exc}"
+
+        if val in parsed_values:
+            return False, f"Duplicate option value: '{opt_text}' has the same Fraction value ({val}) as '{parsed_values[val]}'"
+        parsed_values[val] = opt_text
+
+        if target_frac is not None and val == target_frac:
+            matches_target += 1
+
+    if target_frac is not None and matches_target != 1:
+        return False, f"Expected exactly 1 option to match claimed answer {target_frac}, found {matches_target}"
+
+    return True, "Options are pairwise distinct and valid"
+
+
+def verify_stem_expression_consistency(stem: str, expression: str) -> tuple[bool, str]:
+    """Verify that expression operands appear in the stem and operation matches narrative context."""
+    stem_lower = stem.lower()
+
+    # 1. Check numbers/operands
+    expr_numbers = re.findall(r"\b\d+(?:/\d+|\.\d+)?\b", expression)
+    formula_constants = {"0", "1", "2", "3", "4"}
+
+    for num in expr_numbers:
+        if num in stem:
+            continue
+        if num in formula_constants:
+            continue
+        try:
+            f = Fraction(num)
+            if f.denominator > 1 and abs(f.numerator) > f.denominator:
+                whole = abs(f.numerator) // f.denominator
+                rem = abs(f.numerator) % f.denominator
+                mixed = f"{whole} {rem}/{f.denominator}"
+                if mixed in stem:
+                    continue
+        except Exception:
+            pass
+        if "." in num and num.rstrip("0").rstrip(".") in stem:
+            continue
+
+        return False, f"Operand '{num}' from expression '{expression}' not found in stem: '{stem}'"
+
+    # 2. Check operation words
+    if "+" in expression:
+        keywords = [
+            "total", "together", "sum", "add", "plus", "in all", "combined",
+            "both", "and", "increase", "more", "mixture", "perimeter", "grew",
+            "rose", "rise", "simplify", "evaluate", "calculate", "expression"
+        ]
+        if not any(k in stem_lower for k in keywords):
+            return False, f"Expression has '+' but stem lacks addition keywords: '{stem}'"
+
+    # Only treat '-' as subtraction if preceded by operand (binary minus)
+    if re.search(r"[\d\)]\s*-\s*[\d\(]", expression):
+        keywords = [
+            "left", "remain", "difference", "less", "minus", "subtract", "more than",
+            "decrease", "drop", "change", "grew from", "take", "used", "shorter",
+            "taller", "heavier", "lighter", "colder", "warmer", "below", "debt",
+            "how many more", "simplify", "evaluate", "calculate", "expression", "hcf", "gcd"
+        ]
+        if not any(k in stem_lower for k in keywords):
+            return False, f"Expression has '-' but stem lacks subtraction keywords: '{stem}'"
+
+    if "*" in expression:
+        keywords = [
+            "each", "times", "product", "of", "area", "multipl", "every", "rate",
+            "scale", "perimeter", "ratio", "lcm", "hcf", "gcd", "simplify", "evaluate", "calculate", "expression"
+        ]
+        if not any(k in stem_lower for k in keywords):
+            return False, f"Expression has '*' but stem lacks multiplication keywords: '{stem}'"
+
+    return True, "Consistent"
+
+

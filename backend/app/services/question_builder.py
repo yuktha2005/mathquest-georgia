@@ -38,6 +38,8 @@ from app.services.verify import (
     MathVerificationError,
     evaluate,
     format_answer,
+    verify_options_distinct,
+    verify_stem_expression_consistency,
 )
 
 logger = logging.getLogger(__name__)
@@ -96,6 +98,7 @@ def get_fallback_question(
     topic: str,
     tier: Tier | str,
     board: str = "georgia",
+    exclude_ids: list[str] | set[str] | None = None,
 ) -> Question:
     """Return a verified question from data/fallback_bank.json matching topic, tier, and board."""
     items = load_fallback_bank()
@@ -133,6 +136,18 @@ def get_fallback_question(
 
     # 5. If still none, use entire bank
     pool = matching if matching else items
+
+    # Filter out exclude_ids if available to ensure different questions
+    if exclude_ids:
+        exclude_set = set(exclude_ids)
+        unseen = [
+            item for item in pool
+            if item.get("id") not in exclude_set
+            and not any(str(eid).startswith(item.get("id", "")) for eid in exclude_set)
+        ]
+        if unseen:
+            pool = unseen
+
     chosen_dict = random.choice(pool).copy()
 
     # Assign a unique session ID while retaining question integrity
@@ -313,13 +328,15 @@ def build_question_pipeline(
     topic: str,
     tier: Tier | str,
     board: str = "georgia",
-    llm_func=generate_question_template,
+    llm_func=None,
+    exclude_ids: list[str] | set[str] | None = None,
 ) -> tuple[Question, int, float, bool]:
     """Execute the full question building pipeline with repair retries and fallback.
 
     Returns:
         tuple: (Question, retries_used, latency_ms, used_fallback)
     """
+    actual_llm_func = llm_func or generate_question_template
     start_time = time.perf_counter()
     tier_obj = tier if isinstance(tier, Tier) else Tier(str(tier).lower())
     from app.services.rag import format_standards_for_prompt, retrieve_standards
@@ -354,7 +371,7 @@ def build_question_pipeline(
     # Step 1 & 2: Prompt LLM and validate with up to 2 repair retries
     for attempt in range(max_retries + 1):
         try:
-            template = llm_func(current_prompt)
+            template = actual_llm_func(current_prompt)
             # Step 3: Verify the mathematical expression (Rule 1)
             true_val = evaluate(template.expression)
 
@@ -394,7 +411,7 @@ def build_question_pipeline(
             max_retries + 1,
         )
         elapsed_ms = (time.perf_counter() - start_time) * 1000
-        fallback_q = get_fallback_question(grade, topic, tier_obj, board=board)
+        fallback_q = get_fallback_question(grade, topic, tier_obj, board=board, exclude_ids=exclude_ids)
         if fallback_q.board != board or fallback_q.grade != grade:
             fallback_q = Question(
                 id=fallback_q.id,
@@ -408,6 +425,7 @@ def build_question_pipeline(
                 correct_option_id=fallback_q.correct_option_id,
                 explanation=fallback_q.explanation,
                 standard_code=fallback_standard,
+                source="fallback",
             )
         return fallback_q, max_retries, elapsed_ms, True
 
@@ -415,16 +433,69 @@ def build_question_pipeline(
     try:
         true_val = evaluate(template.expression)
         true_str = format_answer(true_val, style="fraction" if true_val.denominator > 1 else "decimal")
-        distractors = _generate_distractors_for_template(template, true_val)
+        distractor_candidates = _generate_distractors_for_template(template, true_val)
 
-        # Assemble the 4 choices: 1 correct + 3 distractors
+        accepted_distractors: list[dict] = []
+        seen_values: set[Fraction] = {true_val}
+        seen_texts: set[str] = {true_str}
+
+        for d in distractor_candidates:
+            try:
+                d_val = evaluate(d.text)
+            except Exception:
+                continue
+            if d_val in seen_values or d.text in seen_texts:
+                continue
+            seen_values.add(d_val)
+            seen_texts.add(d.text)
+            accepted_distractors.append({
+                "text": d.text,
+                "misconception_tag": d.misconception_tag,
+                "is_correct": False,
+            })
+            if len(accepted_distractors) == 3:
+                break
+
+        # Generate deterministic offset distractors if fewer than 3 were valid and distinct
+        if len(accepted_distractors) < 3:
+            denom = true_val.denominator if true_val.denominator > 1 else 2
+            offsets = [
+                Fraction(1, 1),
+                Fraction(-1, 1),
+                Fraction(1, denom),
+                Fraction(-1, denom),
+                Fraction(2, 1),
+                Fraction(-2, 1),
+                Fraction(1, 4),
+                Fraction(3, 4),
+            ]
+            for off in offsets:
+                if len(accepted_distractors) >= 3:
+                    break
+                cand_val = true_val + off
+                if cand_val <= 0 and true_val > 0:
+                    cand_val = true_val + abs(off) * 2
+                if cand_val not in seen_values:
+                    cand_style = "fraction" if cand_val.denominator > 1 else "decimal"
+                    cand_str = format_answer(cand_val, style=cand_style)
+                    if cand_str not in seen_texts:
+                        seen_values.add(cand_val)
+                        seen_texts.add(cand_str)
+                        accepted_distractors.append({
+                            "text": cand_str,
+                            "misconception_tag": "calculation_offset",
+                            "is_correct": False,
+                        })
+
         choices: list[dict] = [
             {"text": true_str, "misconception_tag": None, "is_correct": True}
         ]
-        for d in distractors[:3]:
-            choices.append(
-                {"text": d.text, "misconception_tag": d.misconception_tag, "is_correct": False}
-            )
+        choices.extend(accepted_distractors[:3])
+
+        # Validate that all 4 choices are pairwise distinct and exactly 1 matches true_val
+        is_distinct, distinct_err = verify_options_distinct(choices, claimed_answer=true_val)
+        if not is_distinct:
+            raise MathVerificationError(f"Options deduplication verification failed: {distinct_err}")
 
         random.shuffle(choices)
 
@@ -459,6 +530,7 @@ def build_question_pipeline(
             correct_option_id=correct_option_id,
             explanation=explanation,
             standard_code=template.standard_code or fallback_standard,
+            source="llm",
         )
         register_question(question)
         elapsed_ms = (time.perf_counter() - start_time) * 1000
@@ -467,7 +539,7 @@ def build_question_pipeline(
     except Exception as exc:
         logger.error("Option generation failed: %s. Using fallback.", exc)
         elapsed_ms = (time.perf_counter() - start_time) * 1000
-        fallback_q = get_fallback_question(grade, topic, tier_obj, board=board)
+        fallback_q = get_fallback_question(grade, topic, tier_obj, board=board, exclude_ids=exclude_ids)
         if fallback_q.board != board or fallback_q.grade != grade:
             fallback_q = Question(
                 id=fallback_q.id,
@@ -481,6 +553,7 @@ def build_question_pipeline(
                 correct_option_id=fallback_q.correct_option_id,
                 explanation=fallback_q.explanation,
                 standard_code=fallback_standard,
+                source="fallback",
             )
         return fallback_q, max_retries, elapsed_ms, True
 
@@ -491,15 +564,19 @@ def build_questions_batch(
     tier: Tier | str,
     count: int = 10,
     board: str = "georgia",
-    llm_func=generate_question_template,
+    llm_func=None,
+    exclude_ids: list[str] | set[str] | None = None,
 ) -> tuple[list[Question], int, float]:
     """Generate a batch of verified questions (e.g. 10 for a full round).
 
-    Applies the same verification, repair retry, and fallback safety per question.
+    Applies the same verification, repair retry, and fallback safety per question,
+    ensuring all questions within the batch are unique.
     """
+    actual_llm_func = llm_func or generate_question_template
     start_time = time.perf_counter()
     questions: list[Question] = []
     total_retries = 0
+    seen_ids = set(exclude_ids or [])
 
     for _ in range(count):
         q, retries, _, _ = build_question_pipeline(
@@ -507,9 +584,11 @@ def build_questions_batch(
             topic=topic,
             tier=tier,
             board=board,
-            llm_func=llm_func,
+            llm_func=actual_llm_func,
+            exclude_ids=seen_ids,
         )
         questions.append(q)
+        seen_ids.add(q.id)
         total_retries += retries
 
     elapsed_ms = (time.perf_counter() - start_time) * 1000

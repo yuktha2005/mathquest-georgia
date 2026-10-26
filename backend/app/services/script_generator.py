@@ -25,7 +25,10 @@ from app.services.rag import retrieve_standards
 
 logger = logging.getLogger(__name__)
 
-CACHE_FILE = Path(__file__).resolve().parent.parent.parent / "data" / "scripts_cache.json"
+DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
+RUNTIME_CACHE_DIR = DATA_DIR / "cache"
+CACHE_FILE = RUNTIME_CACHE_DIR / "scripts_cache.json"
+SEED_CACHE_FILE = DATA_DIR / "scripts_cache.json"
 
 
 class _LLMSlide(BaseModel):
@@ -45,21 +48,22 @@ class _LLMScriptSchema(BaseModel):
 
 
 def _load_cache() -> dict[str, dict]:
-    """Load cached video scripts."""
-    if not CACHE_FILE.exists():
+    """Load cached video scripts from runtime cache or seed fallback."""
+    target_path = CACHE_FILE if CACHE_FILE.exists() else SEED_CACHE_FILE
+    if not target_path.exists():
         return {}
     try:
-        with open(CACHE_FILE, "r", encoding="utf-8") as f:
+        with open(target_path, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as exc:
-        logger.warning("Could not read scripts cache: %s", exc)
+        logger.warning("Could not read scripts cache from %s: %s", target_path, exc)
         return {}
 
 
 def _save_cache(cache: dict[str, dict]) -> None:
-    """Save to scripts cache."""
+    """Save to runtime scripts cache directory."""
     try:
-        CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        RUNTIME_CACHE_DIR.mkdir(parents=True, exist_ok=True)
         with open(CACHE_FILE, "w", encoding="utf-8") as f:
             json.dump(cache, f, indent=2)
     except Exception as exc:

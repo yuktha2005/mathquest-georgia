@@ -1,28 +1,35 @@
 <template>
   <div class="space-y-8 animate-pop">
-    <!-- Hero Banner -->
-    <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 rounded-3xl p-6 sm:p-10 text-white shadow-game-purple relative overflow-hidden">
-      <div class="absolute -right-6 -bottom-8 opacity-20 text-9xl select-none pointer-events-none">
+    <!-- Hero Banner (Warm neutral / rich primary, no purple-to-pink gradient) -->
+    <div class="bg-primary-900 rounded-3xl p-6 sm:p-10 text-white shadow-warm-lg border-2 border-primary-950 relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-8 opacity-10 text-9xl select-none pointer-events-none">
         📐
       </div>
-      <div class="max-w-2xl relative z-10 space-y-3">
-        <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider">
+      <div class="max-w-2xl relative z-10 space-y-4">
+        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider text-accent-300">
           <span>{{ sessionStore.board === 'cbse' ? '🇮🇳' : '🇬🇪' }}</span>
           <span>{{ sessionStore.boardTitle }}</span>
         </div>
-        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
-          Choose Your Math Quest!
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+          Master Math with Confidence
         </h1>
-        <p class="text-white/90 text-sm sm:text-lg">
-          Master curriculum-aligned math with smart adaptive feedback, earn XP points, and unlock heroic badges.
+        <p class="text-warm-100 text-base sm:text-lg leading-relaxed">
+          Curriculum-aligned math for Grades 5 & 6. Solve engaging adaptive quests with instant mathematical verification, step-by-step clues, and diagnostic feedback.
         </p>
-        <div class="pt-2 flex items-center gap-3">
+        <div class="pt-2 flex flex-wrap items-center gap-3">
+          <a
+            href="#topics-grid"
+            class="px-6 py-3.5 rounded-2xl bg-accent-500 hover:bg-accent-600 active:scale-95 text-warm-900 font-extrabold text-sm sm:text-base transition shadow-game-amber inline-flex items-center gap-2 border-b-2 border-accent-700 min-h-[44px]"
+          >
+            <span>⚔️</span>
+            <span>Start Math Adventure</span>
+          </a>
           <NuxtLink
             to="/dashboard"
-            class="px-4 py-2 rounded-xl bg-white text-indigo-900 font-extrabold text-xs sm:text-sm hover:bg-slate-100 transition shadow inline-flex items-center gap-1.5"
+            class="px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 text-white font-extrabold text-sm sm:text-base border border-white/25 transition inline-flex items-center gap-2 min-h-[44px]"
           >
             <span>🏠</span>
-            <span>My Student Dashboard</span>
+            <span>Student Dashboard</span>
           </NuxtLink>
         </div>
       </div>
@@ -30,7 +37,7 @@
 
     <!-- Curriculum Board Selection -->
     <div class="space-y-3">
-      <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+      <h2 class="text-lg font-bold text-warm-900 flex items-center gap-2">
         <span aria-hidden="true">🏛️</span>
         <span>Select Curriculum Board</span>
       </h2>
@@ -43,28 +50,28 @@
           aria-label="Georgia Standards of Excellence (MGSE), Grades 5 & 6"
           @click="selectBoard('georgia')"
           :class="[
-            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-400 focus-visible:ring-offset-2',
+            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-400 focus-visible:ring-offset-2 min-h-[44px]',
             sessionStore.board === 'georgia'
-              ? 'bg-indigo-50 border-indigo-600 shadow-game-blue translate-y-0'
-              : 'bg-white border-slate-300 hover:border-slate-400 shadow-sm opacity-90 hover:opacity-100'
+              ? 'bg-primary-50 border-primary-600 shadow-game-blue translate-y-0'
+              : 'bg-white border-warm-200 hover:border-warm-300 shadow-sm opacity-90 hover:opacity-100'
           ]"
         >
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-2xl" aria-hidden="true">🇬🇪</span>
-              <span class="text-xl font-black text-slate-900">Georgia GSE (MGSE)</span>
+              <span class="text-xl font-black text-warm-900">Georgia GSE (MGSE)</span>
               <span
                 v-if="sessionStore.board === 'georgia'"
-                class="bg-indigo-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
+                class="bg-primary-700 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
               >
                 Active
               </span>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">
+            <p class="text-xs sm:text-sm text-warm-700">
               Primary Assessment Curriculum for Grades 5 and 6 (NF, NBT, RP, G, MD).
             </p>
           </div>
-          <span class="text-3xl text-indigo-600 font-bold ml-2" aria-hidden="true">➜</span>
+          <span class="text-2xl text-primary-700 font-bold ml-2" aria-hidden="true">➜</span>
         </button>
 
         <!-- CBSE NCERT Ganita Prakash -->
@@ -75,35 +82,35 @@
           aria-label="CBSE Class 6 NCERT Ganita Prakash"
           @click="selectBoard('cbse')"
           :class="[
-            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2',
+            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-400 focus-visible:ring-offset-2 min-h-[44px]',
             sessionStore.board === 'cbse'
-              ? 'bg-purple-50 border-purple-600 shadow-game-purple translate-y-0'
-              : 'bg-white border-slate-300 hover:border-slate-400 shadow-sm opacity-90 hover:opacity-100'
+              ? 'bg-primary-50 border-primary-600 shadow-game-blue translate-y-0'
+              : 'bg-white border-warm-200 hover:border-warm-300 shadow-sm opacity-90 hover:opacity-100'
           ]"
         >
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-2xl" aria-hidden="true">🇮🇳</span>
-              <span class="text-xl font-black text-slate-900">CBSE Class 6 (NCERT)</span>
+              <span class="text-xl font-black text-warm-900">CBSE Class 6 (NCERT)</span>
               <span
                 v-if="sessionStore.board === 'cbse'"
-                class="bg-purple-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
+                class="bg-primary-700 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
               >
                 Active
               </span>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">
+            <p class="text-xs sm:text-sm text-warm-700">
               NCERT Ganita Prakash Class 6: Factors, Integers, Fractions, Decimals, Ratios.
             </p>
           </div>
-          <span class="text-3xl text-purple-600 font-bold ml-2" aria-hidden="true">➜</span>
+          <span class="text-2xl text-primary-700 font-bold ml-2" aria-hidden="true">➜</span>
         </button>
       </div>
     </div>
 
     <!-- Grade Selection Tabs -->
     <div class="space-y-3">
-      <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+      <h2 class="text-lg font-bold text-warm-900 flex items-center gap-2">
         <span aria-hidden="true">🎒</span>
         <span>Select Your Grade Level</span>
       </h2>
@@ -124,28 +131,28 @@
           aria-label="Grade 5 Quest: Unlike denominators, decimal place values, line plots, and 2D area"
           @click="selectGrade(5)"
           :class="[
-            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-400 focus-visible:ring-offset-2',
+            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-400 focus-visible:ring-offset-2 min-h-[44px]',
             sessionStore.grade === 5
-              ? 'bg-indigo-50 border-indigo-600 shadow-game-blue translate-y-0'
-              : 'bg-white border-slate-300 hover:border-slate-400 shadow-sm opacity-90 hover:opacity-100'
+              ? 'bg-primary-50 border-primary-600 shadow-game-blue translate-y-0'
+              : 'bg-white border-warm-200 hover:border-warm-300 shadow-sm opacity-90 hover:opacity-100'
           ]"
         >
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-2xl" aria-hidden="true">🌱</span>
-              <span class="text-2xl font-black text-slate-900">Grade 5 Quest</span>
+              <span class="text-2xl font-black text-warm-900">Grade 5 Quest</span>
               <span
                 v-if="sessionStore.grade === 5"
-                class="bg-indigo-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
+                class="bg-primary-700 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
               >
                 Active
               </span>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">
+            <p class="text-xs sm:text-sm text-warm-700">
               Unlike denominators, decimal place values, line plots, and 2D area.
             </p>
           </div>
-          <span class="text-3xl text-indigo-600 font-bold ml-2" aria-hidden="true">➜</span>
+          <span class="text-2xl text-primary-700 font-bold ml-2" aria-hidden="true">➜</span>
         </button>
 
         <!-- Grade 6 Tab -->
@@ -156,44 +163,44 @@
           :aria-label="sessionStore.board === 'cbse' ? 'CBSE Class 6 Quest (NCERT Ganita Prakash)' : 'Grade 6 Quest (MGSE)'"
           @click="selectGrade(6)"
           :class="[
-            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2',
+            'p-5 rounded-3xl border-4 text-left transition-all duration-200 cursor-pointer flex items-center justify-between focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-400 focus-visible:ring-offset-2 min-h-[44px]',
             sessionStore.grade === 6
-              ? 'bg-purple-50 border-purple-600 shadow-game-purple translate-y-0'
-              : 'bg-white border-slate-300 hover:border-slate-400 shadow-sm opacity-90 hover:opacity-100'
+              ? 'bg-primary-50 border-primary-600 shadow-game-blue translate-y-0'
+              : 'bg-white border-warm-200 hover:border-warm-300 shadow-sm opacity-90 hover:opacity-100'
           ]"
         >
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="text-2xl" aria-hidden="true">🚀</span>
-              <span class="text-2xl font-black text-slate-900">
+              <span class="text-2xl font-black text-warm-900">
                 {{ sessionStore.board === 'cbse' ? 'Class 6 Quest (NCERT Ganita Prakash)' : 'Grade 6 Quest' }}
               </span>
               <span
                 v-if="sessionStore.grade === 6"
-                class="bg-purple-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
+                class="bg-primary-700 text-white text-xs px-2.5 py-0.5 rounded-full font-bold ml-1"
               >
                 Active
               </span>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700">
+            <p class="text-xs sm:text-sm text-warm-700">
               {{ sessionStore.board === 'cbse'
                 ? 'Prime factorization, LCM/HCF, negative integers, rational fractions, decimals, and geometry.'
                 : 'Ratios, unit rates, fraction division, integers, and surface area.' }}
             </p>
           </div>
-          <span class="text-3xl text-purple-600 font-bold ml-2" aria-hidden="true">➜</span>
+          <span class="text-2xl text-primary-700 font-bold ml-2" aria-hidden="true">➜</span>
         </button>
       </div>
     </div>
 
-    <!-- Topics Grid -->
-    <div class="space-y-4">
+    <!-- Topics Grid (with circular mastery ring & short description) -->
+    <div id="topics-grid" class="space-y-4 scroll-mt-20">
       <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+        <h2 class="text-xl font-black text-warm-900 flex items-center gap-2">
           <span>🗺️</span>
-          <span>Pick a Mathematical Territory ({{ currentTopics.length }} Topics)</span>
+          <span>Choose a Topic to Master ({{ currentTopics.length }} Topics)</span>
         </h2>
-        <span class="text-xs text-slate-500 font-medium">Click a topic to inspect rules or jump straight into a quiz</span>
+        <span class="text-xs text-warm-500 font-medium hidden sm:inline">Select a topic for study guide or instant quiz</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -201,7 +208,7 @@
           v-for="t in currentTopics"
           :key="t.id"
           @click="goToLearn(t.id)"
-          class="bg-white rounded-3xl p-6 border-2 border-slate-200 shadow-game hover:shadow-game-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group cursor-pointer"
+          class="card-game flex flex-col justify-between group cursor-pointer"
         >
           <div>
             <!-- Card Header -->
@@ -211,40 +218,52 @@
                   {{ t.emoji }}
                 </div>
                 <div>
-                  <h3 class="text-2xl font-extrabold text-slate-800 group-hover:text-indigo-600 transition">
+                  <h3 class="text-xl sm:text-2xl font-extrabold text-warm-900 group-hover:text-primary-700 transition">
                     {{ t.name }}
                   </h3>
-                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600 mt-0.5">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-warm-100 text-warm-700 border border-warm-200 mt-1">
                     <span>📜</span>
                     <span>{{ t.standardCode }}</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Mastery Pill -->
-              <div class="text-right">
-                <span class="text-xs font-bold text-slate-500 block uppercase">Mastery</span>
-                <span class="text-base font-extrabold text-indigo-600">
-                  {{ sessionStore.mastery[t.id] || 50 }}%
-                </span>
+              <!-- Mastery Circular Ring -->
+              <div class="flex flex-col items-center shrink-0">
+                <div class="relative w-12 h-12 flex items-center justify-center">
+                  <svg class="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
+                    <!-- Background circle track -->
+                    <path
+                      class="text-warm-200"
+                      stroke-width="3.5"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <!-- Foreground progress ring -->
+                    <path
+                      class="text-primary-600 transition-all duration-700"
+                      stroke-width="3.5"
+                      stroke-dasharray="100, 100"
+                      :stroke-dashoffset="100 - (sessionStore.mastery[t.id] || 50)"
+                      stroke-linecap="round"
+                      stroke="currentColor"
+                      fill="none"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <span class="absolute text-[11px] font-black text-warm-900">
+                    {{ sessionStore.mastery[t.id] || 50 }}%
+                  </span>
+                </div>
+                <span class="text-[10px] font-black uppercase text-warm-500 tracking-wider mt-0.5">Mastery</span>
               </div>
             </div>
 
-            <!-- Description -->
-            <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+            <!-- Short Description -->
+            <p class="text-sm text-warm-700 mb-4 leading-relaxed">
               {{ t.description }}
             </p>
-
-            <!-- Mastery Progress Bar -->
-            <div class="mb-6 space-y-1">
-              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                <div
-                  class="h-full rounded-full transition-all duration-500"
-                  :class="t.progressColor"
-                  :style="{ width: `${sessionStore.mastery[t.id] || 50}%` }"
-                ></div>
-              </div>
-            </div>
           </div>
 
           <!-- Action Buttons -->
@@ -252,8 +271,8 @@
             <button
               type="button"
               @click.stop="goToLearn(t.id)"
-              :aria-label="`Open study guide and video masterclass for ${t.name}`"
-              class="btn-game-white py-3 text-sm font-bold flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+              :aria-label="`Open study guide and video lesson for ${t.name}`"
+              class="btn-game-white py-3 text-sm font-bold flex items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-warm-400 min-h-[44px]"
             >
               <span aria-hidden="true">📖</span>
               <span>Learn Guide</span>
@@ -264,10 +283,7 @@
               @click.stop="startQuickQuiz(t.id)"
               :disabled="isLoading"
               :aria-label="`Start math quest for ${t.name}`"
-              :class="[
-                'btn-game py-3 text-sm font-bold flex items-center justify-center gap-1.5 text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-offset-2',
-                t.btnColor
-              ]"
+              class="btn-game-primary py-3 text-sm font-bold flex items-center justify-center gap-1.5 text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-400 min-h-[44px]"
             >
               <span v-if="isLoading" class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
               <span v-else aria-hidden="true">⚔️</span>

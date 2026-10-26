@@ -25,6 +25,8 @@ export interface AuthState {
 }
 
 const GUEST_STORAGE_KEY = 'mathquest_is_guest'
+const LOCAL_SESSION_KEY = 'mathquest_local_session'
+const LOCAL_ACCOUNTS_KEY = 'mathquest_local_accounts'
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
@@ -54,7 +56,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     /**
      * Initializes authentication state on application load.
-     * Checks client-side localStorage for guest status and Supabase session.
+     * Checks client-side localStorage for local session and Supabase session.
      */
     async init() {
       if (this.isInitialized) return
@@ -65,6 +67,36 @@ export const useAuthStore = defineStore('auth', {
           const guestSaved = localStorage.getItem(GUEST_STORAGE_KEY)
           if (guestSaved === 'true') {
             this.isGuest = true
+          }
+
+          // Restore local storage session if exists
+          const localSession = localStorage.getItem(LOCAL_SESSION_KEY)
+          if (localSession) {
+            try {
+              const parsedUser = JSON.parse(localSession)
+              if (parsedUser && parsedUser.id) {
+                this.user = parsedUser
+                this.isGuest = false
+                const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+                const account = Object.values(accounts).find((acc: any) => acc.id === parsedUser.id) as any
+                if (account) {
+                  this.profile = {
+                    id: account.id,
+                    user_id: account.id,
+                    email: account.email,
+                    display_name: account.displayName,
+                    grade: account.grade,
+                    curriculum_board: account.board,
+                    total_score: account.totalScore || 0,
+                  }
+                  const sessionStore = useSessionStore()
+                  if (account.grade) sessionStore.setGrade(account.grade as 5 | 6)
+                  if (account.board) sessionStore.setBoard(account.board)
+                }
+              }
+            } catch (e) {
+              console.warn('[MathQuest Auth] Failed to restore local session:', e)
+            }
           }
         }
 
@@ -97,7 +129,7 @@ export const useAuthStore = defineStore('auth', {
                   console.warn('[MathQuest Auth] Cloud progress load warning:', e)
                 }
               }
-            } else if (!this.isGuest) {
+            } else if (!this.isGuest && !localStorage.getItem(LOCAL_SESSION_KEY)) {
               this.user = null
               this.profile = null
             }
@@ -154,52 +186,127 @@ export const useAuthStore = defineStore('auth', {
       this.authError = null
 
       const supabase = useSupabase()
-      if (!supabase) {
-        this.isLoading = false
-        const msg = 'Supabase credentials are not configured in your environment. You can click "Continue as Guest" to explore MathQuest immediately!'
-        this.authError = msg
-        throw new Error(msg)
+
+      if (supabase) {
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: email.trim(),
+            password,
+          })
+
+          if (!error && data.user) {
+            this.user = data.user
+            this.isGuest = false
+            if (import.meta.client) {
+              localStorage.removeItem(GUEST_STORAGE_KEY)
+            }
+            await this.fetchProfile(data.user.id)
+            try {
+              const { loadUserCloudProgress } = useProgressSync()
+              await loadUserCloudProgress()
+            } catch (e) {
+              console.warn('[MathQuest Auth] Cloud progress load warning:', e)
+            }
+            return true
+          }
+
+          if (error) {
+            let friendly = error.message
+            const lower = error.message.toLowerCase()
+            if (lower.includes('invalid login credentials') || lower.includes('invalid grant')) {
+              friendly = 'Incorrect email or password. Please verify your details or use "Forgot password".'
+            } else if (lower.includes('email not confirmed')) {
+              friendly = 'Your email is not confirmed yet. Check your inbox or disable email confirmation in Supabase.'
+            } else if (lower.includes('network') || lower.includes('failed to fetch')) {
+              friendly = 'Network connection error. Could not reach authentication server. Please check your internet connection.'
+            } else if (lower.includes('rate limit') || lower.includes('too many requests')) {
+              friendly = 'Too many attempts. Please wait a few moments before trying again.'
+            }
+            this.authError = friendly
+            throw new Error(friendly)
+          }
+        } catch (supabaseErr: any) {
+          // If Supabase failed or local accounts exist, check local accounts
+          if (import.meta.client) {
+            const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+            const account = accounts[email.trim().toLowerCase()]
+            if (account && account.password === password) {
+              const localUser: any = {
+                id: account.id,
+                email: account.email,
+                user_metadata: { display_name: account.displayName },
+                app_metadata: {},
+                aud: 'authenticated',
+                created_at: new Date().toISOString(),
+              }
+              localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(localUser))
+              this.user = localUser
+              this.isGuest = false
+              this.profile = {
+                id: account.id,
+                user_id: account.id,
+                email: account.email,
+                display_name: account.displayName,
+                grade: account.grade,
+                curriculum_board: account.board,
+                total_score: account.totalScore || 0,
+              }
+              const sessionStore = useSessionStore()
+              if (account.grade) sessionStore.setGrade(account.grade as 5 | 6)
+              if (account.board) sessionStore.setBoard(account.board)
+              return true
+            }
+          }
+          this.authError = supabaseErr.message
+          throw supabaseErr
+        } finally {
+          this.isLoading = false
+        }
       }
 
+      // Supabase is not configured: authenticate against local storage accounts
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password,
-        })
+        if (import.meta.client) {
+          const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+          const account = accounts[email.trim().toLowerCase()]
 
-        if (error) {
-          let friendly = error.message
-          const lower = error.message.toLowerCase()
-          if (lower.includes('invalid login credentials') || lower.includes('invalid grant')) {
-            friendly = 'Incorrect email or password. Please verify your details or use "Forgot password".'
-          } else if (lower.includes('email not confirmed')) {
-            friendly = 'Your email is not confirmed yet. Check your inbox or disable email confirmation in Supabase.'
-          } else if (lower.includes('network') || lower.includes('failed to fetch')) {
-            friendly = 'Network connection error. Could not reach authentication server. Please check your internet connection.'
-          } else if (lower.includes('rate limit') || lower.includes('too many requests')) {
-            friendly = 'Too many attempts. Please wait a few moments before trying again.'
+          if (!account || account.password !== password) {
+            const friendly = 'Incorrect email or password. Please verify your details or create a new account.'
+            this.authError = friendly
+            throw new Error(friendly)
           }
-          this.authError = friendly
-          throw new Error(friendly)
-        }
 
-        if (data.user) {
-          this.user = data.user
+          const localUser: any = {
+            id: account.id,
+            email: account.email,
+            user_metadata: { display_name: account.displayName },
+            app_metadata: {},
+            aud: 'authenticated',
+            created_at: new Date().toISOString(),
+          }
+
+          localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(localUser))
+          this.user = localUser
           this.isGuest = false
-          if (import.meta.client) {
-            localStorage.removeItem(GUEST_STORAGE_KEY)
+          this.profile = {
+            id: account.id,
+            user_id: account.id,
+            email: account.email,
+            display_name: account.displayName,
+            grade: account.grade,
+            curriculum_board: account.board,
+            total_score: account.totalScore || 0,
           }
-          await this.fetchProfile(data.user.id)
-          // On login, load mastery, badges and history into the store
-          try {
-            const { loadUserCloudProgress } = useProgressSync()
-            await loadUserCloudProgress()
-          } catch (e) {
-            console.warn('[MathQuest Auth] Cloud progress load warning:', e)
-          }
+          this.needsSetup = false
+          const sessionStore = useSessionStore()
+          if (account.grade) sessionStore.setGrade(account.grade as 5 | 6)
+          if (account.board) sessionStore.setBoard(account.board)
           return true
         }
-        return false
+
+        const friendly = 'Incorrect email or password. Please verify your details.'
+        this.authError = friendly
+        throw new Error(friendly)
       } finally {
         this.isLoading = false
       }
@@ -213,50 +320,93 @@ export const useAuthStore = defineStore('auth', {
       this.authError = null
 
       const supabase = useSupabase()
-      if (!supabase) {
-        this.isLoading = false
-        const msg = 'Supabase credentials are not configured in your environment. Click "Continue as Guest" to test without an account!'
-        this.authError = msg
-        throw new Error(msg)
+
+      if (supabase) {
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email: email.trim(),
+            password,
+            options: {
+              data: metadata,
+            },
+          })
+
+          if (error) {
+            let friendly = error.message
+            const lower = error.message.toLowerCase()
+            if (lower.includes('already registered') || lower.includes('user already exists')) {
+              friendly = 'An account with this email already exists. Try signing in instead.'
+            } else if (lower.includes('at least 6 characters') || lower.includes('password should be')) {
+              friendly = 'Password must be at least 6 characters long.'
+            } else if (lower.includes('network') || lower.includes('failed to fetch')) {
+              friendly = 'Network connection error. Please check your internet connection.'
+            }
+            this.authError = friendly
+            throw new Error(friendly)
+          }
+
+          if (data.user) {
+            this.user = data.user
+            this.isGuest = false
+            this.needsSetup = true
+            if (import.meta.client) {
+              const existingSession = localStorage.getItem('mathquest_multi_curriculum_session_v2')
+              if (existingSession) {
+                localStorage.setItem('mathquest_guest_backup_before_auth', existingSession)
+              }
+              localStorage.removeItem(GUEST_STORAGE_KEY)
+            }
+            return true
+          }
+        } catch (supabaseErr: any) {
+          this.authError = supabaseErr.message
+          throw supabaseErr
+        } finally {
+          this.isLoading = false
+        }
       }
 
+      // Supabase not configured: create local account
       try {
-        const { data, error } = await supabase.auth.signUp({
-          email: email.trim(),
-          password,
-          options: {
-            data: metadata,
-          },
-        })
+        if (import.meta.client) {
+          const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+          const normalizedEmail = email.trim().toLowerCase()
 
-        if (error) {
-          let friendly = error.message
-          const lower = error.message.toLowerCase()
-          if (lower.includes('already registered') || lower.includes('user already exists')) {
-            friendly = 'An account with this email already exists. Try signing in instead.'
-          } else if (lower.includes('at least 6 characters') || lower.includes('password should be')) {
-            friendly = 'Password must be at least 6 characters long.'
-          } else if (lower.includes('network') || lower.includes('failed to fetch')) {
-            friendly = 'Network connection error. Please check your internet connection.'
+          if (accounts[normalizedEmail]) {
+            const friendly = 'An account with this email already exists. Try signing in instead.'
+            this.authError = friendly
+            throw new Error(friendly)
           }
-          this.authError = friendly
-          throw new Error(friendly)
-        }
 
-        if (data.user) {
-          this.user = data.user
+          const localId = 'local_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8)
+          const localUser: any = {
+            id: localId,
+            email: email.trim(),
+            user_metadata: { display_name: email.trim().split('@')[0], ...metadata },
+            app_metadata: {},
+            aud: 'authenticated',
+            created_at: new Date().toISOString(),
+          }
+
+          accounts[normalizedEmail] = {
+            id: localId,
+            email: email.trim(),
+            password: password,
+            displayName: email.trim().split('@')[0],
+            grade: 5,
+            board: 'georgia',
+            totalScore: 0,
+          }
+
+          localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts))
+          localStorage.setItem(LOCAL_SESSION_KEY, JSON.stringify(localUser))
+
+          this.user = localUser
           this.isGuest = false
           this.needsSetup = true
-          if (import.meta.client) {
-            // Backup guest progress so user can be prompted to import it
-            const existingSession = localStorage.getItem('mathquest_multi_curriculum_session_v2')
-            if (existingSession) {
-              localStorage.setItem('mathquest_guest_backup_before_auth', existingSession)
-            }
-            localStorage.removeItem(GUEST_STORAGE_KEY)
-          }
           return true
         }
+
         return false
       } finally {
         this.isLoading = false
@@ -278,9 +428,30 @@ export const useAuthStore = defineStore('auth', {
 
       this.isLoading = true
       const supabase = useSupabase()
-      if (!supabase) {
+
+      if (!supabase || this.user.id.startsWith('local_')) {
+        this.profile = {
+          ...(this.profile || { id: this.user.id, user_id: this.user.id, email: this.user.email, total_score: 0 }),
+          display_name: data.displayName.trim() || 'Student',
+          grade: data.grade,
+          curriculum_board: data.board,
+        }
+        if (import.meta.client) {
+          const accounts = JSON.parse(localStorage.getItem(LOCAL_ACCOUNTS_KEY) || '{}')
+          const normalizedEmail = (this.user.email || '').trim().toLowerCase()
+          if (accounts[normalizedEmail]) {
+            accounts[normalizedEmail].displayName = data.displayName.trim() || 'Student'
+            accounts[normalizedEmail].grade = data.grade
+            accounts[normalizedEmail].board = data.board
+            localStorage.setItem(LOCAL_ACCOUNTS_KEY, JSON.stringify(accounts))
+          }
+        }
+        this.needsSetup = false
+        const sessionStore = useSessionStore()
+        sessionStore.setGrade(data.grade)
+        sessionStore.setBoard(data.board)
         this.isLoading = false
-        return false
+        return true
       }
 
       try {
@@ -356,6 +527,7 @@ export const useAuthStore = defineStore('auth', {
         this.needsSetup = false
         this.authError = null
         if (import.meta.client) {
+          localStorage.removeItem(LOCAL_SESSION_KEY)
           localStorage.removeItem(GUEST_STORAGE_KEY)
         }
         if (typeof useRouter === 'function') {

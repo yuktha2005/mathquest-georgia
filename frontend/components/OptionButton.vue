@@ -6,7 +6,7 @@
     :aria-pressed="isSelected"
     :aria-label="`Option ${id}: ${text}`"
     :class="[
-      'w-full p-4 sm:p-5 rounded-2xl border-2 font-bold text-left transition-all duration-150 flex items-center gap-3.5 select-none relative group focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 focus-visible:ring-offset-2',
+      'w-full min-h-[56px] p-4 sm:p-5 rounded-2xl border-2 font-bold text-left transition-all duration-150 flex items-center gap-3.5 select-none relative group focus:outline-none focus-visible:ring-4 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
       stateClass
     ]"
   >
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Option Text -->
-    <div class="flex-1 text-slate-900 text-lg sm:text-xl font-extrabold tracking-tight">
+    <div class="flex-1 text-warm-900 text-lg sm:text-xl font-extrabold tracking-tight">
       {{ text }}
     </div>
 
@@ -30,12 +30,12 @@
     <span
       v-if="!isSubmitted"
       aria-hidden="true"
-      class="hidden sm:inline-flex items-center justify-center text-[10px] font-black uppercase text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-300"
+      class="hidden sm:inline-flex items-center justify-center text-[10px] font-black uppercase text-warm-500 bg-warm-100 px-2 py-0.5 rounded-md border border-warm-300"
     >
       Key {{ index + 1 }}
     </span>
 
-    <!-- Status Icons on Submission -->
+    <!-- Status Icons on Submission (Icon + text, never color alone) -->
     <div v-if="isSubmitted" class="shrink-0 text-2xl" aria-hidden="true">
       <span v-if="isCorrectOption" class="text-emerald-700 animate-pop">✅</span>
       <span v-else-if="isChosenWrong" class="text-rose-600 animate-wiggle">❌</span>
@@ -64,9 +64,9 @@ defineEmits<{
 const stateClass = computed(() => {
   if (!props.isSubmitted) {
     if (props.isSelected) {
-      return 'bg-indigo-50 border-indigo-600 shadow-game-blue text-indigo-950 scale-[1.01] ring-2 ring-indigo-300'
+      return 'bg-primary-50 border-primary-600 shadow-game-blue text-primary-950 scale-[1.01] ring-2 ring-primary-300'
     }
-    return 'bg-white border-slate-300 hover:border-indigo-400 hover:bg-slate-50 shadow-game active:translate-y-1 active:shadow-none cursor-pointer'
+    return 'bg-white border-warm-200 hover:border-primary-400 hover:bg-warm-50 shadow-game active:translate-y-1 active:shadow-none cursor-pointer'
   }
 
   // Submitted states
@@ -76,15 +76,15 @@ const stateClass = computed(() => {
   if (props.isChosenWrong) {
     return 'bg-rose-50 border-rose-500 text-rose-950 opacity-95 shadow-game-rose'
   }
-  return 'bg-slate-50 border-slate-300 opacity-60'
+  return 'bg-warm-100 border-warm-200 opacity-60'
 })
 
 const letterClass = computed(() => {
   if (!props.isSubmitted) {
     if (props.isSelected) {
-      return 'bg-indigo-600 text-white border-indigo-700'
+      return 'bg-primary-700 text-white border-primary-800'
     }
-    return 'bg-slate-100 text-slate-800 border-slate-300 group-hover:bg-indigo-100 group-hover:text-indigo-800'
+    return 'bg-warm-100 text-warm-800 border-warm-300 group-hover:bg-primary-100 group-hover:text-primary-800'
   }
 
   if (props.isCorrectOption) {
@@ -93,6 +93,6 @@ const letterClass = computed(() => {
   if (props.isChosenWrong) {
     return 'bg-rose-600 text-white border-rose-700'
   }
-  return 'bg-slate-200 text-slate-600 border-slate-400'
+  return 'bg-warm-200 text-warm-600 border-warm-400'
 })
 </script>

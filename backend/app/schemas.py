@@ -7,7 +7,7 @@ LLM question generation templates, and student answer evaluation.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
@@ -75,6 +75,10 @@ class Question(BaseModel):
         str,
         Field(description="Curriculum standard code, e.g. 'MGSE5.NF.1' or 'CBSE6.MATH.01'"),
     ]
+    source: Annotated[
+        Literal["llm", "fallback", "cache"],
+        Field(default="fallback", description="Source origin of the question"),
+    ] = "fallback"
 
     @model_validator(mode="after")
     def check_correct_option_in_options(self) -> Question:
@@ -108,7 +112,7 @@ class QuestionTemplate(BaseModel):
     Verification compares verify.evaluate(expression) to claimed_answer using exact Fraction equality.
     """
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="ignore")
 
     board: Annotated[
         str,
@@ -229,6 +233,10 @@ class QuestionRequest(BaseModel):
     topic: Annotated[MathTopic, Field(default=MathTopic.FRACTIONS, description="Topic: fractions, decimals, ratios, geometry, factors_multiples, integers")]
     tier: Annotated[Tier, Field(default=Tier.MEDIUM, description="Difficulty tier: easy, medium, hard")]
     count: Annotated[int, Field(ge=1, le=10, default=1, description="Number of questions to generate (1 to 10 for a round)")] = 1
+    exclude_ids: Annotated[
+        list[str],
+        Field(default_factory=list, description="List of question IDs already answered to prevent repetition"),
+    ]
 
     @field_validator("topic", mode="before")
     @classmethod
@@ -311,6 +319,7 @@ class ExplainResponse(BaseModel):
     grade: Annotated[int, Field(description="Target grade")]
     style: Annotated[ExplainStyle, Field(description="Explanation style requested")]
     cached: Annotated[bool, Field(default=False, description="Whether returned from cache")]
+    source: Annotated[Literal["llm", "fallback", "cache"], Field(default="fallback", description="Source of the explanation")] = "fallback"
 
 
 class InfographicResponse(BaseModel):

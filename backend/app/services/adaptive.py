@@ -95,7 +95,11 @@ def _to_tier(tier: Tier | str) -> Tier:
     return Tier(val)
 
 
-def next_tier(current_tier: Tier | str, history: list[bool]) -> Tier:
+def next_tier(
+    current_tier: Tier | str,
+    history: list[bool],
+    consecutive_correct: int | None = None,
+) -> Tier:
     """Calculate the next difficulty tier based on recent answer performance.
 
     Rules:
@@ -113,7 +117,14 @@ def next_tier(current_tier: Tier | str, history: list[bool]) -> Tier:
             return Tier.MEDIUM
         return Tier.EASY  # MEDIUM -> EASY, EASY -> EASY
 
-    # Rule: 2 correct in a row moves up one tier
+    # Rule: 2 correct in a row at this tier moves up one tier
+    if consecutive_correct is not None:
+        if consecutive_correct >= 2:
+            if tier == Tier.EASY:
+                return Tier.MEDIUM
+            return Tier.HARD
+        return tier
+
     if len(history) >= 2 and history[-1] is True and history[-2] is True:
         if tier == Tier.EASY:
             return Tier.MEDIUM
@@ -365,15 +376,36 @@ def evaluate_submission(submission: AnswerSubmission) -> AnswerResult:
         hints_used=submission.hints_used,
         streak=new_streak,
     )
-    adapted_tier = next_tier(current_tier=tier, history=updated_history)
+
+    # 5. Session Stats & Tier Transition Tracking
+    stats = dict(submission.session_stats)
+    if "consecutive_at_tier" in stats:
+        consec_at_tier = stats["consecutive_at_tier"]
+    else:
+        consec_at_tier = submission.streak
+
+    if is_correct:
+        consec_at_tier += 1
+    else:
+        consec_at_tier = 0
+
+    adapted_tier = next_tier(
+        current_tier=tier,
+        history=updated_history,
+        consecutive_correct=consec_at_tier,
+    )
+
+    if adapted_tier != tier:
+        # Reset consecutive counter on tier transition (up or down)
+        stats["consecutive_at_tier"] = 0
+    else:
+        stats["consecutive_at_tier"] = consec_at_tier
+
     new_mastery = update_mastery(
         current_mastery=submission.current_mastery,
         correct=is_correct,
         tier=tier,
     )
-
-    # 5. Session Stats & Badges
-    stats = dict(submission.session_stats)
     stats["total_answered"] = stats.get("total_answered", 0) + 1
     if is_correct:
         stats["correct_count"] = stats.get("correct_count", 0) + 1
@@ -415,6 +447,7 @@ def evaluate_submission(submission: AnswerSubmission) -> AnswerResult:
 
     already_earned = list(stats.get("earned_badges", []))
     newly_earned = get_new_badges(stats, already_earned)
+    stats["earned_badges"] = already_earned + [b for b in newly_earned if b not in already_earned]
 
     return AnswerResult(
         is_correct=is_correct,

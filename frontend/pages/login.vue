@@ -114,27 +114,6 @@
             <span>{{ isLoading ? 'Signing In...' : 'Sign In 🚀' }}</span>
           </button>
         </form>
-
-        <!-- Divider -->
-        <div class="relative my-6">
-          <div class="absolute inset-0 flex items-center" aria-hidden="true">
-            <div class="w-full border-t-2 border-slate-200"></div>
-          </div>
-          <div class="relative flex justify-center text-xs uppercase tracking-wider font-extrabold">
-            <span class="bg-white px-3 text-slate-400">or</span>
-          </div>
-        </div>
-
-        <!-- Continue as Guest Button -->
-        <button
-          type="button"
-          @click="handleGuest"
-          :disabled="isLoading"
-          class="w-full py-2.5 px-4 rounded-2xl font-bold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 active:scale-[0.98] transition border-2 border-slate-300 flex items-center justify-center gap-2"
-        >
-          <span>🎒</span>
-          <span>Continue as Guest</span>
-        </button>
       </div>
 
       <!-- Footer / Switch to Signup -->
@@ -206,11 +185,5 @@ async function handleLogin() {
   } finally {
     isLoading.value = false
   }
-}
-
-async function handleGuest() {
-  authStore.continueAsGuest()
-  const target = (route.query.redirect as string) || '/dashboard'
-  await router.push(target)
 }
 </script>

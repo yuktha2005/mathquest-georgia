@@ -4,21 +4,23 @@
 
 @layer base {
   html {
-    font-family: 'Fredoka', 'Outfit', sans-serif;
+    font-family: 'Fredoka', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: #f8fafc;
-    color: #1e293b;
+    background-color: #faf8f5;
+    color: #292524;
     min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.6;
   }
 
-  /* Accessible focus indicators */
+  /* Accessible focus indicators with high contrast */
   :focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #6366f1 !important;
+    box-shadow: 0 0 0 3px #faf8f5, 0 0 0 6px #4338ca !important;
   }
 }
 
@@ -40,25 +42,33 @@ html.dyslexia-font,
 }
 
 @layer components {
-  /* Tactile Gamified Buttons with 3D press effect & high contrast */
+  /* Tactile Friendly Buttons with 3D press effect & >= 44px tap target */
   .btn-game {
-    @apply inline-flex items-center justify-center font-bold select-none cursor-pointer text-center rounded-2xl transition-all duration-150 active:translate-y-1 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center font-bold select-none cursor-pointer text-center rounded-2xl min-h-[44px] px-4 py-2.5 transition-all duration-150 active:translate-y-1 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-offset-2;
+  }
+
+  .btn-game-primary {
+    @apply btn-game bg-primary-700 hover:bg-primary-800 text-white shadow-game-blue focus-visible:ring-primary-400;
   }
 
   .btn-game-blue {
-    @apply btn-game bg-blue-600 hover:bg-blue-700 text-white shadow-game-blue focus-visible:ring-blue-400;
+    @apply btn-game bg-primary-700 hover:bg-primary-800 text-white shadow-game-blue focus-visible:ring-primary-400;
   }
 
-  .btn-game-green {
-    @apply btn-game bg-emerald-600 hover:bg-emerald-700 text-white shadow-game-green focus-visible:ring-emerald-400;
-  }
-
-  .btn-game-purple {
-    @apply btn-game bg-purple-600 hover:bg-purple-700 text-white shadow-game-purple focus-visible:ring-purple-400;
+  .btn-game-accent {
+    @apply btn-game bg-accent-500 hover:bg-accent-600 text-warm-900 shadow-game-amber focus-visible:ring-accent-400;
   }
 
   .btn-game-amber {
-    @apply btn-game bg-amber-500 hover:bg-amber-600 text-slate-900 shadow-game-amber focus-visible:ring-amber-400;
+    @apply btn-game bg-accent-500 hover:bg-accent-600 text-warm-900 shadow-game-amber focus-visible:ring-accent-400;
+  }
+
+  .btn-game-green {
+    @apply btn-game bg-emerald-700 hover:bg-emerald-800 text-white shadow-game-green focus-visible:ring-emerald-400;
+  }
+
+  .btn-game-purple {
+    @apply btn-game bg-primary-800 hover:bg-primary-900 text-white shadow-game-purple focus-visible:ring-primary-400;
   }
 
   .btn-game-rose {
@@ -66,16 +76,16 @@ html.dyslexia-font,
   }
 
   .btn-game-white {
-    @apply btn-game bg-white hover:bg-slate-50 text-slate-900 shadow-game border-2 border-slate-300 focus-visible:ring-slate-400;
+    @apply btn-game bg-white hover:bg-warm-100 text-warm-900 shadow-game border-2 border-warm-200 focus-visible:ring-warm-400;
   }
 
   /* Playful Rounded Game Cards */
   .card-game {
-    @apply bg-white rounded-3xl p-4 sm:p-6 shadow-game border-2 border-slate-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-game-lg;
+    @apply bg-white rounded-3xl p-5 sm:p-7 shadow-game border-2 border-warm-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-game-lg;
   }
 
   .badge-game {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase;
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black tracking-wide uppercase border;
   }
 }
 

@@ -5,15 +5,32 @@
   >
     <!-- Top Metadata Bar -->
     <div class="flex flex-wrap items-center justify-between gap-2.5">
-      <!-- Standard Code Badge -->
-      <span
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black bg-indigo-50 text-indigo-800 border border-indigo-300 shadow-sm"
-        :title="`Georgia Standards of Excellence code: ${standardCode}`"
-        aria-label="Standard code {{ standardCode }}"
-      >
-        <span aria-hidden="true">📜</span>
-        <span>{{ standardCode }}</span>
-      </span>
+      <!-- Standard Code & Source Badge -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <span
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black bg-indigo-50 text-indigo-800 border border-indigo-300 shadow-sm"
+          :title="`Georgia Standards of Excellence code: ${standardCode}`"
+          aria-label="Standard code {{ standardCode }}"
+        >
+          <span aria-hidden="true">📜</span>
+          <span>{{ standardCode }}</span>
+        </span>
+
+        <span
+          v-if="source"
+          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black border uppercase tracking-wider"
+          :class="[
+            source === 'llm'
+              ? 'bg-purple-50 text-purple-800 border-purple-300'
+              : source === 'cache'
+              ? 'bg-amber-50 text-amber-800 border-amber-300'
+              : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+          ]"
+        >
+          <span aria-hidden="true">{{ source === 'llm' ? '✨' : source === 'cache' ? '⚡' : '📚' }}</span>
+          <span>{{ source === 'llm' ? 'AI Gen' : source === 'cache' ? 'Cached' : 'Vetted Bank' }}</span>
+        </span>
+      </div>
 
       <!-- Action Controls: Read Aloud + Hint Ladder -->
       <div class="flex items-center flex-wrap gap-2">
@@ -34,25 +51,25 @@
           <span>{{ isSpeaking ? 'Stop Reading' : 'Read Aloud' }}</span>
         </button>
 
-        <!-- 3-Level Progressive Hint Ladder Toggle -->
+        <!-- 3-Level Progressive Hint Ladder Toggle with transparent cost -->
         <button
           type="button"
           @click="isHintOpen = !isHintOpen"
           :disabled="isSubmitted"
           :aria-expanded="isHintOpen"
           :class="[
-            'inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-1.5 rounded-xl border transition active:translate-y-0.5 cursor-pointer disabled:opacity-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-400',
+            'inline-flex items-center gap-1.5 text-xs font-black px-3.5 py-1.5 rounded-xl border transition active:translate-y-0.5 cursor-pointer disabled:opacity-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-400 min-h-[38px]',
             hintsUsed > 0
-              ? 'bg-amber-100 text-amber-950 border-amber-400'
-              : 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100'
+              ? 'bg-accent-100 text-warm-900 border-accent-400'
+              : 'bg-accent-50 text-warm-900 border-accent-300 hover:bg-accent-100'
           ]"
-          aria-label="Toggle progressive hints"
+          aria-label="Toggle hints (-5 XP per hint)"
         >
           <span aria-hidden="true">💡</span>
-          <span>{{ isHintOpen ? 'Hide Hints' : hintsUsed === 0 ? 'Need a Clue?' : `Hints (${hintsUsed}/3)` }}</span>
+          <span>{{ isHintOpen ? 'Hide Hints' : hintsUsed === 0 ? 'Need a Hint? (-5 XP)' : `Hints (${hintsUsed}/3, -${hintsUsed * 5} XP)` }}</span>
           <span
             v-if="hintsUsed > 0"
-            class="w-4 h-4 rounded-full bg-amber-400 text-amber-950 text-[10px] flex items-center justify-center font-bold"
+            class="w-4 h-4 rounded-full bg-accent-400 text-warm-900 text-[10px] flex items-center justify-center font-bold"
             aria-hidden="true"
           >
             {{ hintsUsed }}
@@ -62,7 +79,7 @@
     </div>
 
     <!-- Question Stem -->
-    <h2 class="text-xl sm:text-2xl font-black text-slate-900 leading-snug tracking-tight">
+    <h2 class="text-xl sm:text-2xl font-black text-warm-900 leading-snug tracking-tight">
       {{ stem }}
     </h2>
 
@@ -70,12 +87,12 @@
     <div
       role="region"
       aria-label="Mathematical expression to solve"
-      class="bg-gradient-to-b from-indigo-50 to-indigo-100/60 border-2 border-indigo-300 rounded-2xl p-4 sm:p-5 text-center shadow-inner relative overflow-hidden"
+      class="bg-warm-100/90 border-2 border-warm-300 rounded-2xl p-4 sm:p-5 text-center shadow-inner relative overflow-hidden"
     >
-      <span class="text-[11px] font-black uppercase tracking-widest text-indigo-700 block mb-1">
+      <span class="text-[11px] font-black uppercase tracking-widest text-primary-700 block mb-1">
         Mathematical Expression
       </span>
-      <span class="text-2xl sm:text-4xl font-extrabold text-indigo-950 font-mono tracking-wider drop-shadow-sm inline-block">
+      <span class="text-2xl sm:text-4xl font-extrabold text-warm-900 font-mono tracking-wider drop-shadow-sm inline-block">
         {{ expression }}
       </span>
     </div>
@@ -247,6 +264,7 @@ const props = defineProps<{
   hintsUsed: number
   isSubmitted: boolean
   options?: OptionItem[]
+  source?: string
 }>()
 
 const emit = defineEmits<{

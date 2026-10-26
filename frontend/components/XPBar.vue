@@ -1,16 +1,16 @@
 <template>
-  <div class="bg-white rounded-2xl p-3 sm:p-4 border-2 border-slate-200 shadow-sm flex items-center justify-between gap-3 flex-wrap">
+  <div class="card-game p-3.5 sm:p-4.5 flex items-center justify-between gap-3 flex-wrap">
     <!-- Topic & Tier Indicator -->
     <div class="flex items-center gap-2">
       <!-- Topic Pill -->
-      <span class="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+      <span class="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-warm-100 text-warm-700 border border-warm-200">
         {{ topic }}
       </span>
 
       <!-- Dynamic Tier Indicator -->
       <div
         :class="[
-          'inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider border transition-all duration-300',
+          'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider border transition-all duration-300',
           tierConfig.badgeClass
         ]"
       >
@@ -24,15 +24,15 @@
       <!-- Streak Counter -->
       <div
         v-if="streak > 0"
-        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-orange-50 border-2 border-orange-200 text-orange-600 font-black text-xs sm:text-sm animate-pop"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 border-2 border-orange-200 text-orange-600 font-black text-xs sm:text-sm animate-pop"
       >
-        <span class="text-base animate-pulse">🔥</span>
+        <span class="text-base animate-pulse" aria-hidden="true">🔥</span>
         <span>{{ streak }} Streak</span>
       </div>
 
       <!-- XP Points Counter -->
-      <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-xl bg-amber-50 border-2 border-amber-300 text-amber-800 font-black text-xs sm:text-sm shadow-sm">
-        <span class="text-base">⭐</span>
+      <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-accent-50 border-2 border-accent-300 text-warm-900 font-black text-xs sm:text-sm shadow-xs">
+        <span class="text-base" aria-hidden="true">⭐</span>
         <span class="tabular-nums">{{ score }} XP</span>
       </div>
     </div>
@@ -62,13 +62,13 @@ const tierConfig = computed(() => {
     return {
       label: 'Hard',
       icon: '⚡',
-      badgeClass: 'bg-purple-50 text-purple-800 border-purple-300',
+      badgeClass: 'bg-rose-50 text-rose-800 border-rose-300',
     }
   }
   return {
     label: 'Medium',
     icon: '🎯',
-    badgeClass: 'bg-blue-50 text-blue-800 border-blue-300',
+    badgeClass: 'bg-accent-50 text-warm-900 border-accent-300',
   }
 })
 </script>

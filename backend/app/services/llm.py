@@ -36,9 +36,10 @@ def get_model_name(use_alt: bool = False) -> str:
 def get_gemini_client() -> genai.Client:
     """Create and return a configured google-genai Client."""
     api_key = os.getenv("GEMINI_API_KEY")
+    http_opts = types.HttpOptions(timeout=15000)
     if api_key:
-        return genai.Client(api_key=api_key)
-    return genai.Client()
+        return genai.Client(api_key=api_key, http_options=http_opts)
+    return genai.Client(http_options=http_opts)
 
 
 def generate_question_template(
@@ -62,6 +63,9 @@ def generate_question_template(
         ValueError: If model name cannot be resolved or API returns empty response.
         Exception: If network error, API failure, or response generation fails.
     """
+    if os.getenv("TESTING") == "true" and client is None and not os.getenv("ENABLE_LIVE_LLM_TESTS"):
+        raise ValueError("Live LLM calls disabled in testing mode; triggering fallback pipeline.")
+
     target_model = model_name or get_model_name(use_alt=use_alt_model)
     if client is None:
         client = get_gemini_client()

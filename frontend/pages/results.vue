@@ -28,19 +28,19 @@
       </button>
     </div>
 
-    <!-- Victory Hero Banner -->
-    <div class="bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 rounded-3xl p-8 sm:p-12 text-white shadow-game-amber text-center relative overflow-hidden">
+    <!-- Victory Hero Banner (Warm celebratory hero without purple/pink gradient) -->
+    <div class="bg-primary-900 rounded-3xl p-8 sm:p-12 text-white shadow-warm-lg border-2 border-primary-950 text-center relative overflow-hidden">
       <!-- Decorative background icon -->
-      <div class="absolute -right-6 -bottom-6 text-9xl opacity-15 select-none pointer-events-none">
+      <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 select-none pointer-events-none">
         ⭐
       </div>
 
       <div class="max-w-2xl mx-auto space-y-3 relative z-10">
-        <span class="text-6xl sm:text-7xl animate-bounce inline-block">🏆</span>
-        <h1 class="text-3xl sm:text-5xl font-black tracking-tight">
+        <span class="text-6xl sm:text-7xl animate-bounce inline-block" aria-hidden="true">🏆</span>
+        <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white">
           Round Completed!
         </h1>
-        <p class="text-white/95 text-base sm:text-xl font-bold max-w-lg mx-auto leading-relaxed">
+        <p class="text-warm-100 text-base sm:text-xl font-bold max-w-lg mx-auto leading-relaxed">
           {{ performanceMessage }}
         </p>
       </div>
@@ -49,65 +49,104 @@
     <!-- 4 Key Performance Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <!-- 1. Accuracy Card -->
-      <div class="bg-white rounded-3xl p-5 border-2 border-slate-200 shadow-game text-center space-y-1">
-        <span class="text-xs font-black uppercase text-slate-500 tracking-wider">Accuracy</span>
-        <div class="text-3xl sm:text-4xl font-black text-emerald-600">
+      <div class="card-game p-5 text-center space-y-1">
+        <span class="text-xs font-black uppercase text-warm-500 tracking-wider">Accuracy</span>
+        <div class="text-3xl sm:text-4xl font-black text-emerald-700">
           {{ sessionStore.roundAccuracyPercent }}%
         </div>
-        <span class="text-xs text-slate-500 font-bold block">
+        <span class="text-xs text-warm-600 font-bold block">
           {{ sessionStore.roundCorrectCount }} of {{ sessionStore.roundRecords.length || 10 }} Correct
         </span>
       </div>
 
       <!-- 2. Round Score Earned -->
-      <div class="bg-white rounded-3xl p-5 border-2 border-slate-200 shadow-game text-center space-y-1">
-        <span class="text-xs font-black uppercase text-slate-500 tracking-wider">Round XP</span>
-        <div class="text-3xl sm:text-4xl font-black text-amber-500">
+      <div class="card-game p-5 text-center space-y-1">
+        <span class="text-xs font-black uppercase text-warm-500 tracking-wider">Round XP</span>
+        <div class="text-3xl sm:text-4xl font-black text-accent-600">
           +{{ roundPointsEarned }}
         </div>
-        <span class="text-xs text-slate-500 font-bold block">
+        <span class="text-xs text-warm-600 font-bold block">
           Total: {{ sessionStore.score }} XP
         </span>
       </div>
 
       <!-- 3. Highest Streak -->
-      <div class="bg-white rounded-3xl p-5 border-2 border-slate-200 shadow-game text-center space-y-1">
-        <span class="text-xs font-black uppercase text-slate-500 tracking-wider">Best Streak</span>
-        <div class="text-3xl sm:text-4xl font-black text-orange-500 flex items-center justify-center gap-1">
-          <span>🔥</span>
+      <div class="card-game p-5 text-center space-y-1">
+        <span class="text-xs font-black uppercase text-warm-500 tracking-wider">Best Streak</span>
+        <div class="text-3xl sm:text-4xl font-black text-orange-600 flex items-center justify-center gap-1">
+          <span aria-hidden="true">🔥</span>
           <span>{{ sessionStore.bestStreak }}</span>
         </div>
-        <span class="text-xs text-slate-500 font-bold block">
+        <span class="text-xs text-warm-600 font-bold block">
           In a row
         </span>
       </div>
 
       <!-- 4. Adapted Tier Reached -->
-      <div class="bg-white rounded-3xl p-5 border-2 border-slate-200 shadow-game text-center space-y-1">
-        <span class="text-xs font-black uppercase text-slate-500 tracking-wider">Tier Reached</span>
-        <div class="text-2xl sm:text-3xl font-black text-indigo-600 uppercase flex items-center justify-center gap-1">
-          <span>{{ tierEmoji }}</span>
+      <div class="card-game p-5 text-center space-y-1">
+        <span class="text-xs font-black uppercase text-warm-500 tracking-wider">Tier Reached</span>
+        <div class="text-2xl sm:text-3xl font-black text-primary-700 uppercase flex items-center justify-center gap-1">
+          <span aria-hidden="true">{{ tierEmoji }}</span>
           <span>{{ sessionStore.tier }}</span>
         </div>
-        <span class="text-xs text-slate-500 font-bold block">
+        <span class="text-xs text-warm-600 font-bold block">
           {{ sessionStore.mastery[sessionStore.topic] || 50 }}% Mastery
         </span>
       </div>
     </div>
 
+    <!-- Diagnostic Summary: Most Common Mistake Section -->
+    <div class="card-game space-y-3">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl" aria-hidden="true">💡</span>
+        <h2 class="text-lg sm:text-xl font-black text-warm-900">
+          Diagnostic Clue: Most Common Mistake
+        </h2>
+      </div>
+
+      <div
+        v-if="mostCommonMistake"
+        class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-4 sm:p-5 text-sm space-y-2"
+      >
+        <div class="flex items-center gap-2 font-black uppercase text-xs text-rose-800">
+          <span>⚠️ Misconception Trap Identified</span>
+          <span class="font-mono text-[11px] bg-white px-2 py-0.5 rounded border border-rose-300">
+            {{ mostCommonMistake.tag }}
+          </span>
+        </div>
+        <p class="font-bold text-warm-900 text-base leading-snug">
+          {{ mostCommonMistake.feedback }}
+        </p>
+        <p class="text-xs text-warm-600 pt-1 border-t border-rose-200">
+          Identified in {{ mostCommonMistake.count }} question{{ mostCommonMistake.count > 1 ? 's' : '' }} during this round. Use the solution steps below to master this concept!
+        </p>
+      </div>
+
+      <div
+        v-else
+        class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4 sm:p-5 text-sm text-emerald-950 flex items-center gap-3"
+      >
+        <span class="text-3xl" aria-hidden="true">🌟</span>
+        <div>
+          <p class="font-extrabold text-base text-emerald-900">Flawless Mathematical Reasoning!</p>
+          <p class="text-xs sm:text-sm text-emerald-800">You didn't fall for any common misconception traps or distractor traps in this quest.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Badges Earned Showcase Section -->
-    <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-game space-y-4">
+    <div class="card-game space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <h2 class="text-xl font-bold text-warm-900 flex items-center gap-2">
             <span>🎖️</span>
             <span>Earned Achievement Badges</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500">
+          <p class="text-xs sm:text-sm text-warm-500">
             Badges unlocked through mastery, streaks, and perseverance
           </p>
         </div>
-        <span class="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-200">
+        <span class="text-xs font-black text-primary-700 bg-primary-50 px-3 py-1.5 rounded-full border border-primary-200">
           {{ sessionStore.badges.length }} Unlocked
         </span>
       </div>
@@ -116,16 +155,16 @@
         <div
           v-for="badge in sessionStore.badges"
           :key="badge"
-          class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-center space-y-1 shadow-game-amber animate-pop"
+          class="bg-accent-50 border-2 border-accent-300 rounded-2xl p-4 text-center space-y-1 shadow-game-amber animate-pop"
         >
           <span class="text-3xl block">{{ getBadgeEmoji(badge) }}</span>
-          <span class="font-extrabold text-xs sm:text-sm text-slate-800 block leading-tight">
+          <span class="font-extrabold text-xs sm:text-sm text-warm-900 block leading-tight">
             {{ badge }}
           </span>
-          <span class="text-[10px] font-bold text-amber-800 uppercase block">Earned</span>
+          <span class="text-[10px] font-black text-accent-800 uppercase block">Earned</span>
         </div>
       </div>
-      <div v-else class="text-center py-4 text-slate-400 text-sm italic font-medium">
+      <div v-else class="text-center py-4 text-warm-400 text-sm italic font-medium">
         Keep playing to earn your First Steps and 5-Streak badges!
       </div>
     </div>
@@ -133,22 +172,22 @@
     <!-- Problem-by-Problem Diagnostic Review List -->
     <div
       v-if="sessionStore.roundRecords.length > 0"
-      class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-game space-y-5"
+      class="card-game space-y-5"
     >
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <h2 class="text-xl font-bold text-warm-900 flex items-center gap-2">
             <span>📝</span>
             <span>Step-by-Step Question Review</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500">
+          <p class="text-xs sm:text-sm text-warm-500">
             Examine the correct procedures and diagnostic hints for every problem
           </p>
         </div>
         <button
           type="button"
           @click="showAllDetails = !showAllDetails"
-          class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition"
+          class="text-xs font-bold text-primary-700 hover:text-primary-800 transition min-h-[36px] flex items-center"
         >
           {{ showAllDetails ? 'Collapse All' : 'Expand All' }}
         </button>
@@ -172,10 +211,10 @@
                 {{ rec.isCorrect ? '✅' : '❌' }}
               </span>
               <div>
-                <span class="font-extrabold text-sm sm:text-base text-slate-900 block">
+                <span class="font-extrabold text-sm sm:text-base text-warm-900 block">
                   Question {{ idx + 1 }}: {{ rec.question.stem }}
                 </span>
-                <span class="text-xs font-mono font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-md border border-slate-200 inline-block mt-0.5">
+                <span class="text-xs font-mono font-bold text-primary-700 bg-white px-2 py-0.5 rounded-md border border-warm-200 inline-block mt-0.5">
                   Expression: {{ rec.question.expression }}
                 </span>
               </div>
@@ -199,7 +238,7 @@
             <div class="flex items-center gap-1.5 text-xs font-black uppercase text-rose-700">
               <span>⚠️ Misconception Trap Identified</span>
             </div>
-            <p class="font-extrabold text-slate-800 leading-snug">
+            <p class="font-extrabold text-warm-900 leading-snug">
               {{ rec.misconceptionFeedback }}
             </p>
           </div>
@@ -207,9 +246,9 @@
           <!-- Detailed Solution Walkthrough -->
           <div
             v-if="showAllDetails || !rec.isCorrect"
-            class="bg-white/80 rounded-xl p-3 border border-slate-200 text-xs sm:text-sm text-slate-700 font-medium"
+            class="bg-white/80 rounded-xl p-3 border border-warm-200 text-xs sm:text-sm text-warm-700 font-medium"
           >
-            <span class="font-extrabold text-indigo-600 block text-xs uppercase mb-0.5">Solution Steps:</span>
+            <span class="font-extrabold text-primary-700 block text-xs uppercase mb-0.5">Solution Steps:</span>
             <p class="whitespace-pre-line leading-relaxed font-bold">
               {{ rec.explanation }}
             </p>
@@ -218,37 +257,49 @@
       </div>
     </div>
 
-    <!-- Bottom Navigation & Play Again Buttons -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-      <!-- Play Again Button -->
+    <!-- Action Buttons Row: Practice Weak Topic / Next Topic / Play Again / Map -->
+    <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+      <!-- Practice Weak Topic Button -->
+      <button
+        type="button"
+        @click="goToWeakTopic"
+        aria-label="Practice your weakest topic based on round diagnostics"
+        class="btn-game-accent px-6 py-3.5 text-sm sm:text-base font-black shadow-game-amber cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
+      >
+        <span aria-hidden="true">🎯</span>
+        <span>Practice Weak Topic ({{ weakTopicName }})</span>
+      </button>
+
+      <!-- Next Topic Button -->
+      <button
+        type="button"
+        @click="goToNextTopic"
+        aria-label="Advance to next curriculum topic"
+        class="btn-game-primary px-6 py-3.5 text-sm sm:text-base font-black shadow-game-blue cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
+      >
+        <span aria-hidden="true">➡️</span>
+        <span>Next Topic ({{ nextTopicName }})</span>
+      </button>
+
+      <!-- Play Another Round -->
       <button
         type="button"
         @click="playAgain"
         aria-label="Play another round on this topic"
-        class="w-full sm:w-auto btn-game-green px-8 py-4 text-base sm:text-lg font-black shadow-game-green cursor-pointer flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400 focus-visible:ring-offset-2"
+        class="btn-game-green px-6 py-3.5 text-sm sm:text-base font-black shadow-game-green cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
       >
         <span aria-hidden="true">🔄</span>
-        <span>Play Another Round ({{ sessionStore.tier.toUpperCase() }})</span>
+        <span>Play Again ({{ sessionStore.tier.toUpperCase() }})</span>
       </button>
 
       <!-- Return to Map -->
       <NuxtLink
         to="/"
         aria-label="Return to territory map"
-        class="w-full sm:w-auto btn-game-white px-6 py-4 text-base font-black shadow-game flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+        class="btn-game-white px-5 py-3.5 text-sm sm:text-base font-bold shadow-game flex items-center justify-center gap-2 min-h-[44px]"
       >
         <span aria-hidden="true">🗺️</span>
         <span>Territory Map</span>
-      </NuxtLink>
-
-      <!-- Go to Dashboard -->
-      <NuxtLink
-        to="/dashboard"
-        aria-label="Go to student dashboard"
-        class="w-full sm:w-auto btn-game-white px-6 py-4 text-base font-black shadow-game flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
-      >
-        <span aria-hidden="true">🏠</span>
-        <span>Dashboard</span>
       </NuxtLink>
     </div>
   </div>
@@ -346,6 +397,88 @@ onMounted(async () => {
 
 const handleRetrySync = async () => {
   await retryPendingSync()
+}
+
+// Most Common Mistake calculation across round records
+const mostCommonMistake = computed(() => {
+  const mistakes: Record<string, { tag: string; feedback: string; count: number }> = {}
+  for (const rec of sessionStore.roundRecords) {
+    if (!rec.isCorrect && rec.misconceptionTag) {
+      if (!mistakes[rec.misconceptionTag]) {
+        mistakes[rec.misconceptionTag] = {
+          tag: rec.misconceptionTag,
+          feedback: rec.misconceptionFeedback || 'Review the arithmetic operation and unit steps carefully.',
+          count: 0
+        }
+      }
+      mistakes[rec.misconceptionTag].count++
+    }
+  }
+  const sorted = Object.values(mistakes).sort((a, b) => b.count - a.count)
+  return sorted[0] || null
+})
+
+// Topic list based on curriculum board & grade
+const activeCurriculumTopics = computed<string[]>(() => {
+  if (sessionStore.board === 'cbse') {
+    return ['factors_multiples', 'integers', 'fractions', 'decimals', 'ratios']
+  }
+  return sessionStore.grade === 5
+    ? ['fractions', 'decimals', 'ratios', 'geometry']
+    : ['ratios', 'fractions', 'decimals', 'geometry']
+})
+
+const topicDisplayNames: Record<string, string> = {
+  fractions: 'Fractions',
+  decimals: 'Decimals',
+  ratios: 'Ratios',
+  geometry: 'Geometry',
+  factors_multiples: 'Factors & Multiples',
+  integers: 'Integers',
+}
+
+const weakTopic = computed<string>(() => {
+  const topics = activeCurriculumTopics.value
+  let lowestTopic = topics[0]
+  let lowestMastery = 101
+
+  for (const t of topics) {
+    const m = sessionStore.mastery[t] !== undefined ? sessionStore.mastery[t] : 50
+    if (m < lowestMastery) {
+      lowestMastery = m
+      lowestTopic = t
+    }
+  }
+  return lowestTopic
+})
+
+const weakTopicName = computed(() => {
+  return topicDisplayNames[weakTopic.value] || weakTopic.value
+})
+
+const nextTopic = computed<string>(() => {
+  const topics = activeCurriculumTopics.value
+  const currentIdx = topics.indexOf(sessionStore.topic)
+  if (currentIdx === -1 || currentIdx === topics.length - 1) {
+    return topics[0]
+  }
+  return topics[currentIdx + 1]
+})
+
+const nextTopicName = computed(() => {
+  return topicDisplayNames[nextTopic.value] || nextTopic.value
+})
+
+const goToWeakTopic = () => {
+  sessionStore.setTopic(weakTopic.value as any)
+  sessionStore.roundRecords = []
+  router.push(`/learn/${sessionStore.grade}/${weakTopic.value}`)
+}
+
+const goToNextTopic = () => {
+  sessionStore.setTopic(nextTopic.value as any)
+  sessionStore.roundRecords = []
+  router.push(`/learn/${sessionStore.grade}/${nextTopic.value}`)
 }
 
 const playAgain = () => {

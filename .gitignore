@@ -41,3 +41,7 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Runtime Application Caches
+backend/data/cache/
+backend/data/cache/*.json

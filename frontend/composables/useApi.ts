@@ -246,20 +246,25 @@ export const useApi = () => {
     topic: string,
     tier: 'easy' | 'medium' | 'hard' = 'medium',
     count: number = 1,
-    board: string = 'georgia'
+    board: string = 'georgia',
+    excludeIds: string[] = []
   ): Promise<Question | BatchQuestionResponse> => {
     try {
       return await requestWithColdStartHandling<Question | BatchQuestionResponse>('api/question', {
         method: 'POST',
-        body: JSON.stringify({ grade, topic, tier, count, board }),
+        body: JSON.stringify({ grade, topic, tier, count, board, exclude_ids: excludeIds }),
       })
     } catch (err) {
       console.warn('Backend unavailable, using pre-verified offline question:', err)
       const matching = (offlineQuestions as Question[]).filter(
         (q) => (q.board === board || !q.board) && q.topic === topic && q.grade === grade
       )
-      const pool = matching.length > 0 ? matching : (offlineQuestions as Question[]).filter((q) => q.topic === topic)
-      const selected = pool.length > 0 ? pool[0] : (offlineQuestions as Question[])[0]
+      let pool = matching.length > 0 ? matching : (offlineQuestions as Question[]).filter((q) => q.topic === topic)
+      if (pool.length === 0) pool = offlineQuestions as Question[]
+
+      const unseen = pool.filter((q) => !excludeIds.includes(q.id) && !excludeIds.some((eid) => eid.startsWith(q.id)))
+      const candidates = unseen.length > 0 ? unseen : pool
+      const selected = candidates[Math.floor(Math.random() * candidates.length)]
       return selected
     }
   }

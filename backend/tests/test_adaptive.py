@@ -504,3 +504,86 @@ def test_api_answer_hard_tier_unlocks_tenacious_thinker() -> None:
     assert res.is_correct is True
     assert "Tenacious Thinker" in res.new_badges
 
+
+def test_next_tier_counter_reset_across_tiers() -> None:
+    """Verify consecutive_correct counter resets when advancing or dropping tiers."""
+    # Start at EASY with 1 correct -> stays EASY
+    assert next_tier(Tier.EASY, [True], consecutive_correct=1) == Tier.EASY
+
+    # 2 correct at EASY -> moves to MEDIUM
+    assert next_tier(Tier.EASY, [True, True], consecutive_correct=2) == Tier.MEDIUM
+
+    # Once at MEDIUM, 1 correct does NOT immediately advance to HARD
+    assert next_tier(Tier.MEDIUM, [True, True, True], consecutive_correct=1) == Tier.MEDIUM
+
+    # 2 correct at MEDIUM -> advances to HARD
+    assert next_tier(Tier.MEDIUM, [True, True, True, True], consecutive_correct=2) == Tier.HARD
+
+    # 1 wrong at HARD -> drops to MEDIUM
+    assert next_tier(Tier.HARD, [False]) == Tier.MEDIUM
+
+    # 1 wrong at MEDIUM -> drops to EASY
+    assert next_tier(Tier.MEDIUM, [False]) == Tier.EASY
+
+
+def test_evaluate_submission_tier_sequence_with_counter_resets() -> None:
+    """Simulate sequence: [correct, correct, wrong, wrong, correct] and verify tier progression."""
+    from app.services.adaptive import evaluate_submission
+
+    # Q1: EASY, correct -> stays EASY, consec=1
+    sub1 = AnswerSubmission(
+        question_id="test-q1",
+        selected_option_id="A",
+        tier=Tier.EASY,
+        correct_option_id="A",
+        options=[Option(id="A", text="1/2"), Option(id="B", text="1/3")],
+        history=[],
+        session_stats={"consecutive_at_tier": 0},
+    )
+    r1 = evaluate_submission(sub1)
+    assert r1.is_correct is True
+    assert r1.next_tier == Tier.EASY
+
+    # Q2: EASY, correct -> advances to MEDIUM, consec resets to 0
+    sub2 = AnswerSubmission(
+        question_id="test-q2",
+        selected_option_id="A",
+        tier=Tier.EASY,
+        correct_option_id="A",
+        options=[Option(id="A", text="1/2"), Option(id="B", text="1/3")],
+        history=[True],
+        session_stats={"consecutive_at_tier": 1},
+    )
+    r2 = evaluate_submission(sub2)
+    assert r2.is_correct is True
+    assert r2.next_tier == Tier.MEDIUM
+
+    # Q3: MEDIUM, correct -> 1st correct at MEDIUM -> stays MEDIUM!
+    sub3 = AnswerSubmission(
+        question_id="test-q3",
+        selected_option_id="A",
+        tier=Tier.MEDIUM,
+        correct_option_id="A",
+        options=[Option(id="A", text="1/2"), Option(id="B", text="1/3")],
+        history=[True, True],
+        session_stats={"consecutive_at_tier": 0},
+    )
+    r3 = evaluate_submission(sub3)
+    assert r3.is_correct is True
+    assert r3.next_tier == Tier.MEDIUM  # Does NOT prematurely jump to HARD!
+
+    # Q4: MEDIUM, wrong -> drops to EASY
+    sub4 = AnswerSubmission(
+        question_id="test-q4",
+        selected_option_id="B",
+        tier=Tier.MEDIUM,
+        correct_option_id="A",
+        options=[Option(id="A", text="1/2"), Option(id="B", text="1/3")],
+        history=[True, True, True],
+        session_stats={"consecutive_at_tier": 1},
+    )
+    r4 = evaluate_submission(sub4)
+    assert r4.is_correct is False
+    assert r4.next_tier == Tier.EASY
+
+

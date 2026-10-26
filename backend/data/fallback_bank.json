@@ -24,8 +24,8 @@
       },
       {
         "id": "D",
-        "text": "6/10",
-        "misconception_tag": "forgot_to_simplify"
+        "text": "4/5",
+        "misconception_tag": "calculation_error"
       }
     ],
     "correct_option_id": "A",
@@ -58,8 +58,8 @@
       },
       {
         "id": "D",
-        "text": "6/16",
-        "misconception_tag": "forgot_to_simplify"
+        "text": "1/8",
+        "misconception_tag": "subtraction_error"
       }
     ],
     "correct_option_id": "B",
@@ -126,8 +126,8 @@
       },
       {
         "id": "D",
-        "text": "10/24",
-        "misconception_tag": "forgot_to_simplify"
+        "text": "1/12",
+        "misconception_tag": "numerator_arithmetic_error"
       }
     ],
     "correct_option_id": "A",
@@ -840,8 +840,8 @@
       },
       {
         "id": "D",
-        "text": "2/6",
-        "misconception_tag": "forgot_to_simplify"
+        "text": "1/6",
+        "misconception_tag": "forgot_numerator_multiply"
       }
     ],
     "correct_option_id": "A",
@@ -869,8 +869,8 @@
       },
       {
         "id": "C",
-        "text": "12/20",
-        "misconception_tag": "forgot_to_simplify"
+        "text": "7/20",
+        "misconception_tag": "numerator_arithmetic_error"
       },
       {
         "id": "D",
@@ -1672,7 +1672,7 @@
     "grade": 6,
     "tier": "easy",
     "stem": "What is the Highest Common Factor (HCF / GCD) of 12 and 18?",
-    "expression": "6",
+    "expression": "18 - 12",
     "options": [
       {
         "id": "A",
@@ -1739,7 +1739,7 @@
     "topic": "factors_multiples",
     "grade": 6,
     "tier": "medium",
-    "stem": "How many distinct prime factors are in the prime factorization of 30?",
+    "stem": "Prime factors 2, 3, and 5 multiply to 30. How many distinct prime factors are in the prime factorization of 30 in all?",
     "expression": "1 + 1 + 1",
     "options": [
       {
@@ -1808,7 +1808,7 @@
     "grade": 6,
     "tier": "hard",
     "stem": "Find the Highest Common Factor (HCF) of 36 and 48.",
-    "expression": "12",
+    "expression": "48 - 36",
     "options": [
       {
         "id": "A",

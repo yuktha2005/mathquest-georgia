@@ -9,15 +9,19 @@
       <span class="text-indigo-600 font-black">{{ Math.round((current / total) * 100) }}%</span>
     </div>
 
-    <!-- Animated Progress Bar Track -->
-    <div class="w-full bg-slate-200/80 h-3.5 sm:h-4 rounded-full p-0.5 border border-slate-300 shadow-inner overflow-hidden">
+    <!-- Progress Bar Track -->
+    <div
+      class="w-full bg-warm-200 h-3.5 sm:h-4 rounded-full p-0.5 border border-warm-300 shadow-inner overflow-hidden"
+      role="progressbar"
+      :aria-valuenow="current"
+      aria-valuemin="1"
+      :aria-valuemax="total"
+      :aria-label="`Question ${current} of ${total}`"
+    >
       <div
-        class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-500 ease-out shadow-sm relative overflow-hidden"
+        class="h-full bg-primary-600 rounded-full transition-all duration-500 ease-out shadow-sm"
         :style="{ width: `${Math.min(100, Math.max(5, (current / total) * 100))}%` }"
-      >
-        <!-- Shimmer highlight bar -->
-        <div class="absolute inset-0 bg-white/20 -skew-x-12 animate-pulse"></div>
-      </div>
+      ></div>
     </div>
   </div>
 </template>

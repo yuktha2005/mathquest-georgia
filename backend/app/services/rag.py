@@ -116,14 +116,17 @@ def retrieve_standards(
     """Retrieve top relevant MGSE standards via Supabase pgvector, with automatic local fallback."""
     supabase_url = os.getenv("SUPABASE_URL")
     supabase_key = os.getenv("SUPABASE_KEY")
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    if os.getenv("TESTING") == "true":
+        return _search_local_standards(query=query, topic=topic, grade=grade, limit=limit)
 
     if supabase_url and supabase_key:
         try:
-            from supabase import create_client
-            supabase = create_client(supabase_url, supabase_key)
+            from supabase import ClientOptions, create_client
+            client_options = ClientOptions(postgrest_client_timeout=2.0)
+            supabase = create_client(supabase_url, supabase_key, options=client_options)
 
             # Try semantic pgvector search if query and Gemini key are present
+            gemini_api_key = os.getenv("GEMINI_API_KEY")
             search_query = query.strip() or f"{topic or ''} Grade {grade or ''}".strip()
             if search_query and gemini_api_key:
                 try:
@@ -133,9 +136,12 @@ def retrieve_standards(
                     embed_model = os.getenv("GEMINI_EMBED_MODEL")
                     if not embed_model:
                         logger.warning("GEMINI_EMBED_MODEL not set; using local markdown standards fallback.")
-                        return _local_standards_fallback(topic=topic, grade=grade, limit=limit)
+                        return _search_local_standards(query=search_query, topic=topic, grade=grade, limit=limit)
 
-                    client = genai.Client(api_key=gemini_api_key)
+                    client = genai.Client(
+                        api_key=gemini_api_key,
+                        http_options=types.HttpOptions(timeout=2.0),
+                    )
                     embed_res = client.models.embed_content(
                         model=embed_model,
                         contents=search_query,

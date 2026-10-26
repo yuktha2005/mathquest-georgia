@@ -1,12 +1,12 @@
 <template>
-  <div :class="['min-h-screen flex flex-col bg-slate-50 selection:bg-indigo-500 selection:text-white', isDyslexic ? 'dyslexia-font' : 'font-fredoka']">
+  <div :class="['min-h-screen flex flex-col bg-warm-50 text-warm-900 selection:bg-primary-600 selection:text-white', isDyslexic ? 'dyslexia-font' : 'font-fredoka']">
     <!-- Global Nuxt Loading Progress Bar -->
-    <NuxtLoadingIndicator color="#4f46e5" :height="3" />
+    <NuxtLoadingIndicator color="#4338ca" :height="3" />
 
     <!-- Skip to Content (Keyboard Accessibility) -->
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-indigo-600 focus:text-white focus:font-bold focus:rounded-xl focus:shadow-xl focus:ring-4 focus:ring-indigo-300"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-primary-700 focus:text-white focus:font-bold focus:rounded-xl focus:shadow-xl focus:ring-4 focus:ring-primary-300 min-h-[44px] flex items-center"
     >
       Skip to main content
     </a>
@@ -24,36 +24,16 @@
         v-if="isServerWakingUp"
         role="status"
         aria-live="polite"
-        class="bg-amber-400 text-slate-900 px-4 py-3 text-center font-bold text-xs sm:text-sm border-b-4 border-amber-500 shadow-md flex items-center justify-center gap-2 z-50 sticky top-0"
+        class="bg-accent-400 text-warm-900 px-4 py-3 text-center font-bold text-xs sm:text-sm border-b-4 border-accent-600 shadow-md flex items-center justify-center gap-2 z-50 sticky top-0"
       >
         <span class="animate-bounce text-lg" aria-hidden="true">🚀</span>
-        <span>{{ wakeUpNotice || 'Waking up the MathQuest adventure server... Render free instances take ~50s to wake up from sleep. Thanks for your patience!' }}</span>
-        <span class="inline-block w-4 h-4 border-2 border-slate-900 border-t-transparent rounded-full animate-spin ml-2" aria-hidden="true"></span>
+        <span>{{ wakeUpNotice || 'Waking up the MathQuest adventure server... Free tier instances take ~50s to wake up from sleep. Thanks for your patience!' }}</span>
+        <span class="inline-block w-4 h-4 border-2 border-warm-900 border-t-transparent rounded-full animate-spin ml-2" aria-hidden="true"></span>
       </div>
     </transition>
 
-    <!-- Guest "Sign up to save progress" Banner -->
-    <div
-      v-if="authStore.isGuest"
-      class="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-3 sm:px-6 py-2 text-xs sm:text-sm font-bold flex items-center justify-between gap-2 shadow-sm sticky z-40"
-      :style="{ top: isServerWakingUp ? '48px' : '0px' }"
-    >
-      <div class="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-        <span aria-hidden="true">🎒</span>
-        <span class="truncate">Exploring in Guest Mode — Sign up to save your progress, streaks, and badges permanently!</span>
-      </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <NuxtLink
-          to="/signup"
-          class="px-3 py-1 bg-white text-slate-900 font-extrabold text-xs rounded-xl shadow hover:bg-slate-100 active:scale-95 transition"
-        >
-          Sign Up Free ✨
-        </NuxtLink>
-      </div>
-    </div>
-
-    <!-- Desktop & Tablet Top Navbar -->
-    <header class="bg-white border-b-2 border-slate-200 sticky top-0 z-30 shadow-sm" role="banner">
+    <!-- Desktop & Tablet Top Navbar (Only visible when user is authenticated and not on auth pages) -->
+    <header v-if="showNavigation" class="bg-white border-b-2 border-warm-200 sticky top-0 z-30 shadow-warm-sm" role="banner">
       <div class="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
         <!-- Brand Logo -->
         <NuxtLink
@@ -227,25 +207,27 @@
       </div>
     </header>
 
-    <!-- Main Content Slot (with mobile bottom padding so fixed tab bar never overlaps) -->
+    <!-- Main Content Slot (with mobile bottom padding only when tab bar is visible) -->
     <main
       id="main-content"
-      class="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 md:p-8 outline-none pb-24 md:pb-8"
+      class="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-6 md:p-8 outline-none"
+      :class="showNavigation ? 'pb-24 md:pb-8' : 'pb-8'"
       tabindex="-1"
     >
       <slot />
     </main>
 
-    <!-- Mobile Bottom Tab Bar (fixed on mobile, hidden on desktop) -->
+    <!-- Mobile Bottom Tab Bar (Only visible when user is authenticated and not on auth pages) -->
     <nav
-      class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t-2 border-slate-200 z-40 shadow-lg px-2 py-1.5 flex items-center justify-around"
+      v-if="showNavigation"
+      class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t-2 border-warm-200 z-40 shadow-lg px-2 py-1 flex items-center justify-around"
       role="navigation"
       aria-label="Mobile Navigation Bar"
     >
       <NuxtLink
         to="/dashboard"
-        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold"
-        :class="isActive('/dashboard') ? 'text-indigo-700 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold min-h-[48px] min-w-[48px]"
+        :class="isActive('/dashboard') ? 'text-primary-700 font-extrabold scale-105' : 'text-warm-500 hover:text-warm-800'"
       >
         <span class="text-lg" aria-hidden="true">🏠</span>
         <span>Home</span>
@@ -253,8 +235,8 @@
 
       <NuxtLink
         to="/"
-        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold"
-        :class="isActive('/') ? 'text-indigo-700 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold min-h-[48px] min-w-[48px]"
+        :class="isActive('/') ? 'text-primary-700 font-extrabold scale-105' : 'text-warm-500 hover:text-warm-800'"
       >
         <span class="text-lg" aria-hidden="true">🗺️</span>
         <span>Topics</span>
@@ -262,8 +244,8 @@
 
       <NuxtLink
         to="/progress"
-        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold"
-        :class="isActive('/progress') ? 'text-indigo-700 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold min-h-[48px] min-w-[48px]"
+        :class="isActive('/progress') ? 'text-primary-700 font-extrabold scale-105' : 'text-warm-500 hover:text-warm-800'"
       >
         <span class="text-lg" aria-hidden="true">📊</span>
         <span>Progress</span>
@@ -271,25 +253,25 @@
 
       <NuxtLink
         to="/profile"
-        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold"
-        :class="isActive('/profile') ? 'text-indigo-700 font-extrabold scale-105' : 'text-slate-500 hover:text-slate-800'"
+        class="flex flex-col items-center justify-center py-1 px-3 rounded-xl transition text-xs font-bold min-h-[48px] min-w-[48px]"
+        :class="isActive('/profile') ? 'text-primary-700 font-extrabold scale-105' : 'text-warm-500 hover:text-warm-800'"
       >
         <span class="text-lg" aria-hidden="true">👤</span>
         <span>Profile</span>
       </NuxtLink>
     </nav>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t-2 border-slate-200 py-6 text-center text-xs text-slate-600 hidden md:block" role="contentinfo">
+    <!-- Footer (Only visible when user is authenticated and not on auth pages) -->
+    <footer v-if="showNavigation" class="bg-white border-t-2 border-warm-200 py-6 text-center text-xs text-warm-600 hidden md:block" role="contentinfo">
       <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center gap-1.5 text-slate-700 font-semibold flex-wrap justify-center">
+        <div class="flex items-center gap-1.5 text-warm-700 font-semibold flex-wrap justify-center">
           <span>Georgia Standards (MGSE)</span>
           <span aria-hidden="true">•</span>
           <span>CBSE Class 6 (NCERT)</span>
           <span aria-hidden="true">•</span>
           <span>Grades 5 & 6</span>
         </div>
-        <div class="text-slate-500 text-xs">
+        <div class="text-warm-500 text-xs">
           Safe AST math verification • Child-friendly adaptive learning • Zero hallucinated math
         </div>
       </div>
@@ -298,7 +280,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useSessionStore } from '~/stores/session'
@@ -312,6 +294,14 @@ const authStore = useAuthStore()
 const { isDyslexic, toggleDyslexia } = useAccessibility()
 
 const isProfileMenuOpen = ref(false)
+
+const showNavigation = computed(() => {
+  if (!authStore.isAuthenticated) return false
+  if (['/signup', '/login', '/forgot', '/onboarding'].includes(route.path)) {
+    return false
+  }
+  return true
+})
 
 function isActive(path: string): boolean {
   if (path === '/') return route.path === '/'

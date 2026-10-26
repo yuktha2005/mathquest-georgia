@@ -24,17 +24,12 @@ function evaluateAuthRoute(
     return { action: 'allow' }
   }
 
-  // 2. Guest mode: allows all learning and quiz routes
-  if (authStore.isGuest) {
-    return { action: 'allow' }
-  }
-
-  // 3. Unauthenticated non-guest: redirect to login
+  // 2. Unauthenticated: protect all internal routes, redirecting to /signup
   if (!isPublicRoute) {
     return {
       action: 'redirect',
       to: {
-        path: '/login',
+        path: '/signup',
         query: {
           redirect: to.fullPath && to.fullPath !== '/' ? to.fullPath : undefined,
         },
@@ -52,18 +47,18 @@ describe('Route Middleware (auth.global.ts)', () => {
     vi.clearAllMocks()
   })
 
-  it('redirects unauthenticated non-guest from protected /dashboard to /login', () => {
+  it('redirects unauthenticated user from protected /dashboard to /signup', () => {
     const auth = useAuthStore()
     const decision = evaluateAuthRoute(auth, { path: '/dashboard', fullPath: '/dashboard' })
 
     expect(decision.action).toBe('redirect')
     expect(decision.to).toEqual({
-      path: '/login',
+      path: '/signup',
       query: { redirect: '/dashboard' },
     })
   })
 
-  it('redirects unauthenticated non-guest from /quiz to /login with deep-link redirect', () => {
+  it('redirects unauthenticated user from /quiz to /signup with deep-link redirect', () => {
     const auth = useAuthStore()
     const decision = evaluateAuthRoute(auth, {
       path: '/quiz',
@@ -72,7 +67,7 @@ describe('Route Middleware (auth.global.ts)', () => {
 
     expect(decision.action).toBe('redirect')
     expect(decision.to).toEqual({
-      path: '/login',
+      path: '/signup',
       query: { redirect: '/quiz?board=georgia&grade=5&topic=fractions' },
     })
   })
@@ -85,17 +80,15 @@ describe('Route Middleware (auth.global.ts)', () => {
     expect(evaluateAuthRoute(auth, { path: '/eval' }).action).toBe('allow')
   })
 
-  it('allows guests to access all learning routes without redirection', () => {
+  it('redirects unauthenticated user attempting to access learning routes to /signup', () => {
     const auth = useAuthStore()
-    auth.continueAsGuest()
-    expect(auth.isGuest).toBe(true)
-
-    expect(evaluateAuthRoute(auth, { path: '/' }).action).toBe('allow')
-    expect(evaluateAuthRoute(auth, { path: '/learn/5/fractions' }).action).toBe('allow')
-    expect(evaluateAuthRoute(auth, { path: '/quiz' }).action).toBe('allow')
-    expect(evaluateAuthRoute(auth, { path: '/results' }).action).toBe('allow')
-    expect(evaluateAuthRoute(auth, { path: '/dashboard' }).action).toBe('allow')
-    expect(evaluateAuthRoute(auth, { path: '/progress' }).action).toBe('allow')
+    expect(evaluateAuthRoute(auth, { path: '/' }).action).toBe('redirect')
+    expect(evaluateAuthRoute(auth, { path: '/' }).to).toEqual({ path: '/signup', query: { redirect: undefined } })
+    expect(evaluateAuthRoute(auth, { path: '/learn/5/fractions', fullPath: '/learn/5/fractions' }).action).toBe('redirect')
+    expect(evaluateAuthRoute(auth, { path: '/quiz', fullPath: '/quiz' }).action).toBe('redirect')
+    expect(evaluateAuthRoute(auth, { path: '/results', fullPath: '/results' }).action).toBe('redirect')
+    expect(evaluateAuthRoute(auth, { path: '/dashboard', fullPath: '/dashboard' }).action).toBe('redirect')
+    expect(evaluateAuthRoute(auth, { path: '/progress', fullPath: '/progress' }).action).toBe('redirect')
   })
 
   it('redirects signed-in user away from /login to /dashboard', () => {

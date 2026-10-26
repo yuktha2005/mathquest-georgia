@@ -29,16 +29,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
-  // 2. Guest mode: allows access to all learning and quiz routes
-  if (authStore.isGuest) {
-    // Guests can freely view public and protected learning routes
-    return
-  }
-
-  // 3. Unauthenticated and non-guest: protect all internal routes
+  // 2. Unauthenticated: protect all internal routes, redirecting to /signup
   if (!isPublicRoute) {
     return navigateTo({
-      path: '/login',
+      path: '/signup',
       query: {
         redirect: to.fullPath !== '/' ? to.fullPath : undefined,
       },

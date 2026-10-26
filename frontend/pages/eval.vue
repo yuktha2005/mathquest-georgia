@@ -41,7 +41,7 @@
     <!-- Hero Card -->
     <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-game relative overflow-hidden space-y-4">
       <div class="space-y-2">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black bg-gradient-to-r from-indigo-600 to-indigo-800 text-white shadow-xs">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black bg-primary-700 text-white shadow-xs">
           <span>🏛️</span>
           <span>Empirical LLM & Prompt Benchmarking</span>
         </div>
@@ -262,11 +262,11 @@
       </div>
     </div>
 
-    <!-- Conclusion Section -->
-    <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 rounded-3xl p-6 sm:p-8 text-white shadow-game-blue space-y-4 border-2 border-indigo-700/50">
+    <!-- Conclusion Section (Warm / solid primary background) -->
+    <div class="bg-primary-950 rounded-3xl p-6 sm:p-8 text-white shadow-warm-lg space-y-4 border-2 border-primary-900">
       <div class="flex items-center gap-2.5">
         <span class="text-2xl">💡</span>
-        <h2 class="text-xl sm:text-2xl font-black tracking-tight text-amber-300">
+        <h2 class="text-xl sm:text-2xl font-black tracking-tight text-accent-300">
           Evaluation Conclusion & Recommendations
         </h2>
       </div>

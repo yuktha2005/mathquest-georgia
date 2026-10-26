@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 import logging
 import os
 from pathlib import Path
@@ -28,10 +29,28 @@ logger = logging.getLogger(__name__)
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown logging."""
+    api_key_configured = bool(os.getenv("GEMINI_API_KEY"))
+    model = os.getenv("GEMINI_MODEL", "not set")
+    model_alt = os.getenv("GEMINI_MODEL_ALT", "not set")
+    logger.info(
+        "MathQuest API starting up | GEMINI_API_KEY present: %s | GEMINI_MODEL: %s | GEMINI_MODEL_ALT: %s",
+        api_key_configured,
+        model,
+        model_alt,
+    )
+    yield
+    logger.info("MathQuest API shutting down.")
+
+
 app = FastAPI(
     title="MathQuest Georgia API",
     description="Gamified, adaptive math learning platform backend for Grade 5 & 6 (MGSE).",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 # Attach slowapi rate limiter state
@@ -103,8 +122,9 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 frontend_env = os.getenv("FRONTEND_URL", "http://localhost:3000")
 allowed_origins = [origin.strip() for origin in frontend_env.split(",") if origin.strip()]
 
-# Ensure local dev default is always accessible
-if "http://localhost:3000" not in allowed_origins:
+# In development mode, ensure local dev default is accessible
+env_name = os.getenv("ENV", "development").lower()
+if env_name == "development" and "http://localhost:3000" not in allowed_origins:
     allowed_origins.append("http://localhost:3000")
 
 app.add_middleware(

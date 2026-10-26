@@ -38,6 +38,7 @@ def create_question(request: Request, payload: QuestionRequest) -> Question | Ba
             tier=payload.tier,
             count=payload.count,
             board=payload.board,
+            exclude_ids=payload.exclude_ids,
         )
         logger.info(
             "POST /api/question (batch %d) completed in %.2fms | total retries: %d | board: %s | topic: %s | tier: %s",
@@ -60,6 +61,7 @@ def create_question(request: Request, payload: QuestionRequest) -> Question | Ba
         topic=payload.topic,
         tier=payload.tier,
         board=payload.board,
+        exclude_ids=payload.exclude_ids,
     )
 
     logger.info(
